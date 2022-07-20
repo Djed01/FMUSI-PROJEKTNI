@@ -1,0 +1,15 @@
+/home/gordan/Desktop/FMUSI-PROJEKTNI/FMUSI/bin/Debug/net6.0/FMUSI
+/home/gordan/Desktop/FMUSI-PROJEKTNI/FMUSI/bin/Debug/net6.0/FMUSI.deps.json
+/home/gordan/Desktop/FMUSI-PROJEKTNI/FMUSI/bin/Debug/net6.0/FMUSI.runtimeconfig.json
+/home/gordan/Desktop/FMUSI-PROJEKTNI/FMUSI/bin/Debug/net6.0/FMUSI.dll
+/home/gordan/Desktop/FMUSI-PROJEKTNI/FMUSI/bin/Debug/net6.0/ref/FMUSI.dll
+/home/gordan/Desktop/FMUSI-PROJEKTNI/FMUSI/bin/Debug/net6.0/FMUSI.pdb
+/home/gordan/Desktop/FMUSI-PROJEKTNI/FMUSI/obj/Debug/net6.0/FMUSI.csproj.AssemblyReference.cache
+/home/gordan/Desktop/FMUSI-PROJEKTNI/FMUSI/obj/Debug/net6.0/FMUSI.GeneratedMSBuildEditorConfig.editorconfig
+/home/gordan/Desktop/FMUSI-PROJEKTNI/FMUSI/obj/Debug/net6.0/FMUSI.AssemblyInfoInputs.cache
+/home/gordan/Desktop/FMUSI-PROJEKTNI/FMUSI/obj/Debug/net6.0/FMUSI.AssemblyInfo.cs
+/home/gordan/Desktop/FMUSI-PROJEKTNI/FMUSI/obj/Debug/net6.0/FMUSI.csproj.CoreCompileInputs.cache
+/home/gordan/Desktop/FMUSI-PROJEKTNI/FMUSI/obj/Debug/net6.0/FMUSI.dll
+/home/gordan/Desktop/FMUSI-PROJEKTNI/FMUSI/obj/Debug/net6.0/ref/FMUSI.dll
+/home/gordan/Desktop/FMUSI-PROJEKTNI/FMUSI/obj/Debug/net6.0/FMUSI.pdb
+/home/gordan/Desktop/FMUSI-PROJEKTNI/FMUSI/obj/Debug/net6.0/FMUSI.genruntimeconfig.cache
