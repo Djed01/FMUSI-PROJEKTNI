@@ -1,9 +1,7 @@
 namespace FMUSI;
 
-public class Nfa
+public class Nfa : Automat
 {
-    public string StartState;
-    private List<string> finalStates = new List<string>();
     private Dictionary<(string, char), HashSet<string>> delta = new();
     public void AddTransition(string currentState, char symbol, string nextState)
     {
@@ -19,12 +17,6 @@ public class Nfa
             delta[(currentState, symbol)].Add(nextState);
         }
     }
-    
-    public void AddFinalState(string state)
-    {
-        finalStates.Add(state);
-    }
-
     public bool Accepts(string input)
     {
         //Kreira se pomocni graf na osnovu kojeg pronalazimo sve epsilon prelaze
@@ -70,9 +62,203 @@ public class Nfa
         return false;
     }
 
- 
+    public Nfa Unija(Nfa other)
+    {
+        Nfa newNfa = new();
+        newNfa.StartState = this.StartState + other.StartState;
+
+        foreach (var state1 in this.states)
+        {
+            foreach (var state2 in other.states)
+            {
+                string newState = state1 + state2;
+                newNfa.states.Add(newState);
+
+                if ((this.finalStates.Contains(state1) == true) || (other.finalStates.Contains(state2) == true))
+                {
+                    newNfa.finalStates.Add(newState);
+                }
+
+                foreach (var symbol in alphabet)
+                {
+                    if (this.delta.ContainsKey((state1, symbol)) && other.delta.ContainsKey((state1, symbol)))
+                    {
+                        foreach (var temp1 in this.delta[(state1, symbol)])
+                        {
+                            foreach (var temp2 in other.delta[(state2, symbol)])
+                            {
+                                if (!newNfa.delta.ContainsKey((newState, symbol)))
+                                {
+                                    HashSet<string> set = new();
+                                    newNfa.delta.Add((newState, symbol), set);
+                                    newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
+                                }
+                                else
+                                {
+                                    newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return newNfa;
+    }
+
+    public Nfa Presjek(Nfa other)
+    {
+        Nfa newNfa = new();
+        newNfa.StartState = this.StartState + other.StartState;
+
+        foreach (var state1 in this.states)
+        {
+            foreach (var state2 in other.states)
+            {
+                string newState = state1 + state2;
+                newNfa.states.Add(newState);
+
+                if ((this.finalStates.Contains(state1) == true) && (other.finalStates.Contains(state2) == true))
+                {
+                    newNfa.finalStates.Add(newState);
+                }
+
+                foreach (var symbol in alphabet)
+                {
+                    foreach (var temp1 in this.delta[(state1, symbol)])
+                    {
+                        foreach (var temp2 in other.delta[(state2, symbol)])
+                        {
+                            if (!newNfa.delta.ContainsKey((newState, symbol)))
+                            {
+                                HashSet<string> set = new();
+                                newNfa.delta.Add((newState,symbol),set);
+                                newNfa.delta[(newState, symbol)].Add(temp1+temp2);
+                            }
+                            else
+                            {
+                                newNfa.delta[(newState, symbol)].Add(temp1+temp2);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return newNfa;
+    }
     
+    public Nfa SimetricnaRazlika(Nfa other)
+    {
+        Nfa newNfa = new();
+        newNfa.StartState = this.StartState + other.StartState;
+
+        foreach (var state1 in this.states)
+        {
+            foreach (var state2 in other.states)
+            {
+                string newState = state1 + state2;
+                newNfa.states.Add(newState);
+
+                if (((this.finalStates.Contains(state1) == true) &&
+                     (other.finalStates.Contains(state2) == false)) ||
+                    ((this.finalStates.Contains(state1) == false) && (other.finalStates.Contains(state2) == true)))
+                {
+                    newNfa.finalStates.Add(newState);
+                }
+
+                foreach (var symbol in alphabet)
+                {
+                    foreach (var temp1 in this.delta[(state1, symbol)])
+                    {
+                        foreach (var temp2 in other.delta[(state2, symbol)])
+                        {
+                            if (!newNfa.delta.ContainsKey((newState, symbol)))
+                            {
+                                HashSet<string> set = new();
+                                newNfa.delta.Add((newState,symbol),set);
+                                newNfa.delta[(newState, symbol)].Add(temp1+temp2);
+                            }
+                            else
+                            {
+                                newNfa.delta[(newState, symbol)].Add(temp1+temp2);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return newNfa;
+    }
+
+    public Nfa Spajanje(Nfa other)
+    {
+        Nfa newNfa = new();
+        newNfa.StartState = this.StartState + other.StartState;
+        foreach (var state1 in this.states)
+        {
+            foreach (var state2 in other.states)
+            {
+                string newState = state1 + state2;
+                newNfa.states.Add(newState);
+                
+                if (other.finalStates.Contains(state2))
+                {
+                    newNfa.finalStates.Add(newState);
+                }
+                foreach (var symbol in alphabet)
+                {
+                    foreach (var temp1 in this.delta[(state1, symbol)])
+                    {
+                        foreach (var temp2 in other.delta[(state2, symbol)])
+                        {
+                            if (!newNfa.delta.ContainsKey((newState, symbol)))
+                            {
+                                HashSet<string> set = new();
+                                newNfa.delta.Add((newState,symbol),set);
+                                newNfa.delta[(newState, symbol)].Add(temp1+temp2);
+                            }
+                            else
+                            {
+                                newNfa.delta[(newState, symbol)].Add(temp1+temp2);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return newNfa;
+    }
+    public Nfa Komplement()
+    {
+        Nfa newNfa = new();
+        newNfa.StartState = this.StartState;
+        foreach (var state in this.states)
+        {
+            newNfa.states.Add(state);
+            if (!this.finalStates.Contains(state))
+            {
+                newNfa.finalStates.Add(state);
+            }
+
+            foreach (var symbol in alphabet)
+            {
+                foreach (var temp in this.delta[(state,symbol)])
+                {
+                    if (!newNfa.delta.ContainsKey((state, symbol)))
+                    {
+                        HashSet<string> set = new();
+                        newNfa.delta.Add((state,symbol),set);
+                        newNfa.delta[(state, symbol)].Add(temp);
+                    }
+                    else
+                    {
+                        newNfa.delta[(state, symbol)].Add(temp);
+                    }
+                }
+            }
+        }
+        return newNfa;
+    }
     
-    
-    
+
 }
