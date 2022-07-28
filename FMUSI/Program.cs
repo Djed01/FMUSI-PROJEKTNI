@@ -1,7 +1,5 @@
 ﻿using FMUSI;
 
-;
-
 Dfa dfa = new();
 dfa.StartState = "q0";
 Console.WriteLine(dfa.StartState);
@@ -33,7 +31,7 @@ nfa.AddTransition("q5", 'b', "q3");
 nfa.AddFinalState("q3");
 Console.WriteLine(nfa.Accepts("abab"));
 
-Nfa dfa1 = new();
+Dfa dfa1 = new();
 dfa1.StartState = "q0";
 dfa1.AddFinalState("q1");
 dfa1.AddSymbolToAlphabet('a');
@@ -41,7 +39,7 @@ dfa1.AddSymbolToAlphabet('b');
 dfa1.AddState("q0");
 dfa1.AddState("q1");
 
-Nfa dfa2 = new();
+Dfa dfa2 = new();
 dfa2.StartState = "p0";
 dfa2.AddFinalState("p0");
 dfa2.AddSymbolToAlphabet('a');
@@ -59,7 +57,10 @@ dfa2.AddTransition("p0", 'a', "p1");
 dfa2.AddTransition("p1", 'a', "p0");
 dfa2.AddTransition("p1", 'b', "p1");
 
-var novi = dfa1.Unija(nfa).Komplement().Spajanje(dfa2);
+var novi = dfa1.Spajanje(dfa2);
 novi.printFinalStates();
 Console.Write("==============================\n");
 novi.PrintStates();
+Console.WriteLine(dfa1.najkracaRijec());
+Console.WriteLine(nfa.najkracaRijec());
+var newNka = nfa.KleenovaZvijezda();

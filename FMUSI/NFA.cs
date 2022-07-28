@@ -2,7 +2,7 @@ namespace FMUSI;
 
 public class Nfa : Automat
 {
-    private readonly Dictionary<(string, char), HashSet<string>> delta = new();
+    public Dictionary<(string, char), HashSet<string>> delta = new();
 
     public void AddTransition(string currentState, char symbol, string nextState)
     {
@@ -219,5 +219,111 @@ public class Nfa : Automat
                         }
         }
         return newNfa;
+    }
+
+    public Nfa KleenovaZvijezda()
+    {
+        // Kreiramo novi NFA automat koji ce imati ista stanja i prelaze kao trenutni automat
+        Nfa newNfa = new();
+        newNfa.StartState = this.StartState;
+        newNfa.AddSymbolToAlphabet(EPSILON);
+        // Popunjavanje alfabeta
+        foreach (var symbol in this.alphabet)
+        {
+            newNfa.AddSymbolToAlphabet(symbol);
+        }
+        // Popunjavanje finalnih stanja
+        foreach (var state in this.finalStates)
+        {
+            newNfa.AddFinalState(state);
+        }
+        // Dodavanje stanja
+        foreach (var state in this.states)
+        {
+            newNfa.AddState(state);
+        }
+        // Popunjavanje funkcije prelaza (delta)
+        foreach (var state in this.states)
+        {
+            foreach (var symbol in this.alphabet)
+            {
+                if (this.delta.ContainsKey((state, symbol)))
+                {
+                    if (!newNfa.delta.ContainsKey((state, symbol)))
+                    {
+                        HashSet<string> set = new();
+                        newNfa.delta.Add((state, symbol), set);
+                        foreach(var temp in this.delta[(state, symbol)])
+                        newNfa.delta[(state, symbol)].Add(temp);
+                    }
+                    else
+                    {
+                        foreach (var temp in this.delta[(state, symbol)])
+                        newNfa.delta[(state, symbol)].Add(temp);
+                    }
+                }
+            }
+        }
+        // Dodajemo novo stanje q
+        newNfa.AddState("q");
+        HashSet<string> tempSet = new();
+        newNfa.delta.Add(("q", EPSILON), tempSet);
+        // Iz novog stanja q dodajemo epsilon prelaz u pocetno stanje trenutnog automata
+        newNfa.delta[("q", EPSILON)].Add(this.StartState);
+        newNfa.StartState = "q";
+        // Stanje q smo postavili kao pocetno stanje
+        // Za svako finalno stanje automata dodajemo epsilon prelaz u novokreirano stanje q
+        foreach (var state in this.finalStates)
+        {
+            if (!newNfa.delta.ContainsKey((state, EPSILON)))
+            {
+                HashSet<string> set = new();
+                newNfa.delta.Add((state, EPSILON), set);
+                newNfa.delta[(state, EPSILON)].Add(newNfa.StartState);
+            }
+            else
+            {
+                newNfa.delta[(state, EPSILON)].Add(newNfa.StartState);
+            }
+        }
+        // Vracamo novokreirani automat
+        return newNfa;
+    }
+
+    public int najkracaRijec()
+    {
+        int shortestPath = 0;
+        Queue<string> queue = new Queue<string>();
+        // Dodajemo pocetno stanje na kraj reda
+        queue.Enqueue(StartState);
+
+        while (queue.Count != 0)
+        {
+            // Uklanjamo stanje sa pocetka reda i dodjeljujemo ga pomocnoj promjenljivoj temp
+            string temp = queue.Dequeue();
+
+            // Za svaki simbol alfabeta automata citamo sljedece stanje i provjeravamo da li je finalno
+            foreach (char symbol in alphabet)
+            {
+                if (delta.ContainsKey((temp, symbol)))
+                    foreach (string state in delta[(temp, symbol)])
+                    {
+                    if (finalStates.Contains(state))
+                    {
+                            // Ako je finalno povecavamo brojac i vracamo vrijednost brojaca
+                            shortestPath++;
+                            return shortestPath;
+                    }
+                    else
+                    {
+                            // Inace stanje dodajemo na kraj reda
+                            queue.Enqueue(state);
+                    }
+                }
+            }
+            // Povecavamo brojac
+            shortestPath++;
+        }
+        return -1;
     }
 }
