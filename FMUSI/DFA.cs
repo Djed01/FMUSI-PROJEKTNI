@@ -37,12 +37,14 @@ public class Dfa : Automat
         {
             var newState = state1 + state2;
             newDfa.states.Add(newState);
-
+            
+            // Ako jedan automat sadrzi stanje a drugi ne sadrzi dodajemo novo stanje u novi automat
             if ((finalStates.Contains(state1) &&
                  other.finalStates.Contains(state2) == false) ||
                 (finalStates.Contains(state1) == false && other.finalStates.Contains(state2)))
                 newDfa.finalStates.Add(newState);
 
+            // Popunjavamo funkciju prelaza sa novim stanjima
             foreach (var symbol in alphabet)
                 newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
         }
@@ -61,8 +63,10 @@ public class Dfa : Automat
             var newState = state1 + state2;
             newDfa.states.Add(newState);
 
+            // Ako je jedno od stanja automata finalno dodajemo novo stanje kao finalno u novom automatu
             if (finalStates.Contains(state1) || other.finalStates.Contains(state2)) newDfa.finalStates.Add(newState);
 
+            // Popunjavamo funkciju prelaza sa novim stanjima
             foreach (var symbol in alphabet)
                 newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
         }
@@ -81,8 +85,10 @@ public class Dfa : Automat
             var newState = state1 + state2;
             newDfa.states.Add(newState);
 
+            //Ako su oba stanja finalna dodajemo novo stanje kao finalno u novi automat
             if (finalStates.Contains(state1) && other.finalStates.Contains(state2)) newDfa.finalStates.Add(newState);
 
+            // Popunjavamo funkciju prelaza sa novim stanjima
             foreach (var symbol in alphabet)
                 newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
         }
@@ -99,8 +105,12 @@ public class Dfa : Automat
         {
             var newState = state1 + state2;
             newDfa.states.Add(newState);
+            
+            // Provjeravamo da li su stanja finalna za drugi automat cija smo stanja konkatenirali na prvi
+            // I ukoliko je stanje finalno dodajemo novo stanje kao finalno za novi automat
             if (other.finalStates.Contains(state2)) newDfa.finalStates.Add(newState);
 
+            // Popunjavamo funkciju prelaza sa novim stanjima
             foreach (var symbol in alphabet)
                 newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
         }
@@ -115,8 +125,10 @@ public class Dfa : Automat
         foreach (var state in states)
         {
             newDfa.states.Add(state);
+            // Ako stanje nije finalno dodajemo ga kao finalno u novi automat
             if (!finalStates.Contains(state)) newDfa.finalStates.Add(state);
-
+            
+            // Popunjavamo funkciju prelaza sa novim stanjima
             foreach (var symbol in alphabet) newDfa.delta[(state, symbol)] = delta[(state, symbol)];
         }
 

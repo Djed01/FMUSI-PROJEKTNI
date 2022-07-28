@@ -65,9 +65,10 @@ public class Nfa : Automat
         {
             var newState = state1 + state2;
             newNfa.states.Add(newState);
-
+            // Ako je jedno od stanja automata finalno dodajemo novo stanje kao finalno u novom automatu
             if (finalStates.Contains(state1) || other.finalStates.Contains(state2)) newNfa.finalStates.Add(newState);
 
+            // Popunjavamo funkciju prelaza sa novim stanjima
             foreach (var symbol in alphabet)
                 if (delta.ContainsKey((state1, symbol)))
                     foreach (var temp1 in delta[(state1, symbol)])
@@ -84,7 +85,6 @@ public class Nfa : Automat
                                     newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
                                 }
         }
-
         return newNfa;
     }
 
@@ -98,9 +98,11 @@ public class Nfa : Automat
         {
             var newState = state1 + state2;
             newNfa.states.Add(newState);
-
+            
+            //Ako su oba stanja finalna dodajemo novo stanje kao finalno u novi automat
             if (finalStates.Contains(state1) && other.finalStates.Contains(state2)) newNfa.finalStates.Add(newState);
-
+            
+            // Popunjavamo funkciju prelaza sa novim stanjima
             foreach (var symbol in alphabet)
                 if (delta.ContainsKey((state1, symbol)))
                     foreach (var temp1 in delta[(state1, symbol)])
@@ -117,7 +119,6 @@ public class Nfa : Automat
                                     newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
                                 }
         }
-
         return newNfa;
     }
 
@@ -132,11 +133,13 @@ public class Nfa : Automat
             var newState = state1 + state2;
             newNfa.states.Add(newState);
 
+            // Ako jedan automat sadrzi stanje a drugi ne sadrzi dodajemo novo stanje u novi automat
             if ((finalStates.Contains(state1) &&
                  other.finalStates.Contains(state2) == false) ||
                 (finalStates.Contains(state1) == false && other.finalStates.Contains(state2)))
                 newNfa.finalStates.Add(newState);
-
+            
+            // Popunjavamo funkciju prelaza sa novim stanjima
             foreach (var symbol in alphabet)
                 if (delta.ContainsKey((state1, symbol)))
                     foreach (var temp1 in delta[(state1, symbol)])
@@ -153,7 +156,6 @@ public class Nfa : Automat
                                     newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
                                 }
         }
-
         return newNfa;
     }
 
@@ -167,7 +169,11 @@ public class Nfa : Automat
             var newState = state1 + state2;
             newNfa.states.Add(newState);
 
+            // Provjeravamo da li su stanja finalna za drugi automat cija smo stanja konkatenirali na prvi
+            // I ukoliko je stanje finalno dodajemo novo stanje kao finalno za novi automat
             if (other.finalStates.Contains(state2)) newNfa.finalStates.Add(newState);
+            
+            // Popunjavamo funkciju prelaza sa novim stanjima
             foreach (var symbol in alphabet)
                 if (delta.ContainsKey((state1, symbol)))
                     foreach (var temp1 in delta[(state1, symbol)])
@@ -184,7 +190,6 @@ public class Nfa : Automat
                                     newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
                                 }
         }
-
         return newNfa;
     }
 
@@ -195,8 +200,10 @@ public class Nfa : Automat
         foreach (var state in states)
         {
             newNfa.states.Add(state);
+            // Ako stanje nije finalno dodajemo ga kao finalno u novi automat
             if (!finalStates.Contains(state)) newNfa.finalStates.Add(state);
-
+            
+            // Popunjavamo funkciju prelaza sa novim stanjima
             foreach (var symbol in alphabet)
                 if (delta.ContainsKey((state, symbol)))
                     foreach (var temp in delta[(state, symbol)])
@@ -211,7 +218,6 @@ public class Nfa : Automat
                             newNfa.delta[(state, symbol)].Add(temp);
                         }
         }
-
         return newNfa;
     }
 }
