@@ -326,4 +326,93 @@ public class Nfa : Automat
         }
         return -1;
     }
+
+
+    public Dfa toDfa()
+    {
+        Dfa newDfa = new Dfa();
+        List<string> setList = new();
+        foreach (char symbol in this.alphabet)
+        {
+            if (symbol != EPSILON)
+                newDfa.AddSymbolToAlphabet(symbol);
+        }
+        foreach (var state in this.states)
+        {
+            setList.Add(state);
+        }
+        var automatGraph = new AutomatGraph(this.StartState, delta);
+        automatGraph.dfs(automatGraph.start);
+        var eStates = automatGraph.getEStates();
+        newDfa.StartState = String.Join("", eStates); // Spajamo HashSet stanja u string
+        HashSet<String> tempSet = new();
+        HashSet<String> newEStates = new();
+
+        do
+        {
+            foreach (char symbol in newDfa.alphabet)
+            {
+                foreach (var state in setList)
+                {
+                    if (this.delta.ContainsKey((state, symbol)))
+                    {
+                        foreach (var temp in this.delta[(state, symbol)])
+                        {
+                            tempSet.Add(temp);
+                        }
+                    }
+                }
+                foreach (var tempState in tempSet)
+                {
+                    var tempAutomatGraph = new AutomatGraph(tempState, delta);
+                    tempAutomatGraph.setStart(tempState);
+                    tempAutomatGraph.dfs(tempAutomatGraph.start);
+                    var tempEStates = tempAutomatGraph.getEStates();
+                    foreach (var temp in tempEStates)
+                    {
+                        newEStates.Add(temp);
+                    }
+                }
+                foreach(var finalState in this.finalStates)
+                {
+                    if(String.Join("", eStates).Contains(finalState))
+                    {
+                        newDfa.AddFinalState(String.Join("", eStates));
+                    }
+                }
+                newDfa.AddState(String.Join("", eStates));
+                if ("".Equals(String.Join("", newEStates))){
+                    newDfa.AddState("qd");
+                    newDfa.AddTransition(String.Join("", eStates), symbol, "qd");
+                }
+                else {
+                    newDfa.AddState(String.Join("", newEStates));
+                    newDfa.AddTransition(String.Join("", eStates), symbol, String.Join("", newEStates));
+                }
+
+                newEStates.Clear();
+                tempSet.Clear();
+            }
+            eStates.Clear();
+            setList.RemoveAt(0);
+            bool tempBool = false;
+            foreach(var key in newDfa.states)
+            {
+                foreach(var symbol in newDfa.alphabet)
+                if (!newDfa.delta.ContainsKey((key,symbol)))
+                {
+                    eStates.Add(key);
+                        tempBool = true;
+                        break;
+                }
+
+                if (tempBool) break;
+            }
+           
+        } while (setList.Count!=0);
+
+
+        return newDfa;
+
+    }
 }

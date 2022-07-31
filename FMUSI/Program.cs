@@ -1,6 +1,6 @@
 ﻿using FMUSI;
 
-Dfa dfa = new();
+/*Dfa dfa = new();
 dfa.StartState = "q0";
 Console.WriteLine(dfa.StartState);
 
@@ -56,11 +56,30 @@ dfa2.AddTransition("p0", 'b', "p0");
 dfa2.AddTransition("p0", 'a', "p1");
 dfa2.AddTransition("p1", 'a', "p0");
 dfa2.AddTransition("p1", 'b', "p1");
+*/
+Nfa nfaToDfa = new();
+nfaToDfa.AddSymbolToAlphabet('a');
+nfaToDfa.AddSymbolToAlphabet('b'); 
+nfaToDfa.AddSymbolToAlphabet('c');
+nfaToDfa.AddSymbolToAlphabet('$');
+nfaToDfa.AddFinalState("q2");
+nfaToDfa.StartState = "q0";
+nfaToDfa.AddState("q0");
+nfaToDfa.AddState("q1");
+nfaToDfa.AddState("q2");
+nfaToDfa.AddTransition("q0", 'a', "q0");
+nfaToDfa.AddTransition("q0", '$', "q1");
+nfaToDfa.AddTransition("q1", 'b', "q1");
+nfaToDfa.AddTransition("q1", '$', "q2");
+nfaToDfa.AddTransition("q2", 'c', "q2");
 
-var novi = dfa1.Spajanje(dfa2);
+nfaToDfa.toDfa();
+
+/*var novi = dfa1.Spajanje(dfa2);
 novi.printFinalStates();
 Console.Write("==============================\n");
 novi.PrintStates();
 Console.WriteLine(dfa1.najkracaRijec());
 Console.WriteLine(nfa.najkracaRijec());
-var newNka = nfa.KleenovaZvijezda();
+var newNka = nfa.KleenovaZvijezda(); */
+

@@ -2,7 +2,7 @@ namespace FMUSI;
 
 public class Dfa : Automat
 {
-    private readonly Dictionary<(string, char), string> delta = new(); // F-JA PRELAZA IZMEDJU STANJA
+    public Dictionary<(string, char), string> delta = new(); // F-JA PRELAZA IZMEDJU STANJA
 
     public void AddTransition(string currentState, char symbol, string nextState)
     {

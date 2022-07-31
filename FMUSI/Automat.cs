@@ -3,10 +3,10 @@ namespace FMUSI;
 public abstract class Automat
 {
     public static char EPSILON = '$';
-    protected HashSet<char> alphabet = new();
+    public HashSet<char> alphabet = new();
     protected HashSet<string> finalStates = new();
     public string StartState;
-    protected HashSet<string> states = new();
+    public HashSet<string> states = new();
 
     public void AddSymbolToAlphabet(char symbol)
     {

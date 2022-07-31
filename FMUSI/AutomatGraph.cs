@@ -82,6 +82,7 @@ public class AutomatGraph
     public void setStart(string state)
     {
         start = nodes.IndexOf(state);
+        this.startState = state;
     }
 
     public HashSet<string> getEStates()
