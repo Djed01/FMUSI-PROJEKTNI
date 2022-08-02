@@ -135,7 +135,7 @@ public class Dfa : Automat
         return newDfa;
     }
 
-    public Nfa KleenovaZvijezda()
+    public Automat KleenovaZvijezda()
     {
         // Kreiramo novi NFA automat koji ce imati ista stanja i prelaze kao trenutni automat
         Nfa newNfa = new();
@@ -203,8 +203,6 @@ public class Dfa : Automat
         // return newNfa.toDfa();
         return newNfa;
     }
-
-
 
 
     public int najkracaRijec()

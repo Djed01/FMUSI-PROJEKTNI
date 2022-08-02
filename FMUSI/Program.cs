@@ -56,8 +56,9 @@ dfa2.AddTransition("p0", 'b', "p0");
 dfa2.AddTransition("p0", 'a', "p1");
 dfa2.AddTransition("p1", 'a', "p0");
 dfa2.AddTransition("p1", 'b', "p1");
+
 */
-Nfa nfaToDfa = new();
+/*Nfa nfaToDfa = new();
 nfaToDfa.AddSymbolToAlphabet('a');
 nfaToDfa.AddSymbolToAlphabet('b'); 
 nfaToDfa.AddSymbolToAlphabet('c');
@@ -68,18 +69,35 @@ nfaToDfa.AddState("q0");
 nfaToDfa.AddState("q1");
 nfaToDfa.AddState("q2");
 nfaToDfa.AddTransition("q0", 'a', "q0");
-nfaToDfa.AddTransition("q0", '$', "q1");
 nfaToDfa.AddTransition("q1", 'b', "q1");
-nfaToDfa.AddTransition("q1", '$', "q2");
+nfaToDfa.AddTransition("q0", '$', "q1");
 nfaToDfa.AddTransition("q2", 'c', "q2");
+nfaToDfa.AddTransition("q1", '$', "q2");
 
-nfaToDfa.toDfa();
 
-/*var novi = dfa1.Spajanje(dfa2);
+nfaToDfa.toDfa();*/
+
+Nfa nfaToDfa = new();
+nfaToDfa.AddSymbolToAlphabet('a');
+nfaToDfa.AddSymbolToAlphabet('b');
+nfaToDfa.AddSymbolToAlphabet('$');
+nfaToDfa.AddFinalState("q1");
+nfaToDfa.StartState = "q1";
+nfaToDfa.AddState("q1");
+nfaToDfa.AddState("q2");
+nfaToDfa.AddState("q3");
+nfaToDfa.AddTransition("q1", 'b', "q2");
+nfaToDfa.AddTransition("q1", '$', "q3");
+nfaToDfa.AddTransition("q2", 'a', "q2");
+nfaToDfa.AddTransition("q2", 'a', "q3");
+nfaToDfa.AddTransition("q2", 'b', "q3");
+nfaToDfa.AddTransition("q3", 'a', "q1");
+
+Dfa dfa = nfaToDfa.toDfa();
+dfa.PrintStates();
+
+
+/*var novi = dfa1.Spajanje(dfa2).KleenovaZvijezda();
 novi.printFinalStates();
 Console.Write("==============================\n");
-novi.PrintStates();
-Console.WriteLine(dfa1.najkracaRijec());
-Console.WriteLine(nfa.najkracaRijec());
-var newNka = nfa.KleenovaZvijezda(); */
-
+novi.PrintStates();*/

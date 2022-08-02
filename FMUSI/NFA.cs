@@ -330,40 +330,50 @@ public class Nfa : Automat
 
     public Dfa toDfa()
     {
+        // Kreiramo novi DKA
         Dfa newDfa = new Dfa();
-        List<string> setList = new();
+        // Dodajemo sve simbole alfabeta u novokreirani automat osim EPSILON-a
         foreach (char symbol in this.alphabet)
         {
             if (symbol != EPSILON)
                 newDfa.AddSymbolToAlphabet(symbol);
         }
-        foreach (var state in this.states)
-        {
-            setList.Add(state);
-        }
+       
+        // Kreiramo pomocni graf na osnovu kojeg pronalazimo
+        // stanja do kojih dolazimo epsilon prelazima
+        // Pocetno stanje DKA je epsilon clousure pocetnog stanja e-NKA
         var automatGraph = new AutomatGraph(this.StartState, delta);
         automatGraph.dfs(automatGraph.start);
         var eStates = automatGraph.getEStates();
         newDfa.StartState = String.Join("", eStates); // Spajamo HashSet stanja u string
-        HashSet<String> tempSet = new();
-        HashSet<String> newEStates = new();
+        newDfa.AddState(String.Join("", eStates));
+        HashSet<String> tempSet = new();  // Pomocni set
+        HashSet<String> newEStates = new(); // Epsilon prelazi za nova stanja
+        bool check = false;
 
         do
         {
             foreach (char symbol in newDfa.alphabet)
             {
-                foreach (var state in setList)
+                foreach (var state in this.states)
                 {
                     if (this.delta.ContainsKey((state, symbol)))
                     {
-                        foreach (var temp in this.delta[(state, symbol)])
-                        {
-                            tempSet.Add(temp);
-                        }
+                            // Ako dobijena stanja u DKA sadrze neko od stanja eNKA
+                            // Dodajemo stanje u pomocni set za dalje trazenje epsilon prelaza
+                            if(String.Join("", eStates).Contains(state))
+                            foreach (var temp in this.delta[(state, symbol)])
+                            {
+                                tempSet.Add(temp);
+                            }
                     }
                 }
+               
+          
                 foreach (var tempState in tempSet)
                 {
+                    // Nadjemo stanja epsilon prelaza za uniju stanja iz pomocnog seta tempSet
+                    // I dodamo ih u set novih epsilon stanja
                     var tempAutomatGraph = new AutomatGraph(tempState, delta);
                     tempAutomatGraph.setStart(tempState);
                     tempAutomatGraph.dfs(tempAutomatGraph.start);
@@ -375,44 +385,60 @@ public class Nfa : Automat
                 }
                 foreach(var finalState in this.finalStates)
                 {
+                    // Od seta pravimo jedno stanje konkatenacijom stringa
+                    // Ako novo stanje sadrzi jedno od finalnih stanja iz eNKA
+                    // Dodajemo novo stanje kao finalno u DKA
                     if(String.Join("", eStates).Contains(finalState))
                     {
                         newDfa.AddFinalState(String.Join("", eStates));
                     }
                 }
+                // Vrsimo konkatenaciju stanja u jedan string i dodajemo novo stanje
                 newDfa.AddState(String.Join("", eStates));
+                // Ukoliko je novo stanje prazan string dakle nemamo prelaza u novo stanje
+                // Pravimo novo stanje qd (dead state) i vrsimo prelaz u novo stanje qd
                 if ("".Equals(String.Join("", newEStates))){
                     newDfa.AddState("qd");
                     newDfa.AddTransition(String.Join("", eStates), symbol, "qd");
                 }
                 else {
+                    // Inace dodajemo novo stanje dobijeno konkatenacijom i dodajemo prelaz za dati simbol
                     newDfa.AddState(String.Join("", newEStates));
                     newDfa.AddTransition(String.Join("", eStates), symbol, String.Join("", newEStates));
                 }
-
+                // Brisemo sadrzaj novih stanja i pomocnog seta
+                // Da bi bili prazni u narednoj iteraciji za sljedeci simbol alfabeta
                 newEStates.Clear();
                 tempSet.Clear();
+                
             }
+            // Brisemo sadrzaj stanja
             eStates.Clear();
-            setList.RemoveAt(0);
-            bool tempBool = false;
+         
+            bool tempBool = false; // Pomocni bool
+            // Sljedece stanje je ono za koje nismo definisali prelaz,
+            // a nalazi se u skupu stanja DKA
             foreach(var key in newDfa.states)
             {
                 foreach(var symbol in newDfa.alphabet)
                 if (!newDfa.delta.ContainsKey((key,symbol)))
                 {
-                    eStates.Add(key);
+                    eStates.Add(key); 
                         tempBool = true;
                         break;
                 }
 
                 if (tempBool) break;
             }
-           
-        } while (setList.Count!=0);
+            // Ako nemamo vise novih stanja za koje nismo definisali prelaze
+            // Prekidamo sa izvrsavanjem do while petlje i vracamo novokreirani DKA
+           if("".Equals(String.Join("", eStates))) { check = true; }
+
+        } while (!check);
 
 
         return newDfa;
 
     }
+
 }

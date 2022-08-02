@@ -32,4 +32,5 @@ public abstract class Automat
     {
         foreach (var s in states) Console.WriteLine(s);
     }
+
 }
