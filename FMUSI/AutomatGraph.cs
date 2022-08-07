@@ -31,11 +31,6 @@ public class AutomatGraph
             if (!nodes.Contains(pom))
                 nodes.Add(pom);
 
-        /*  foreach (var var in nodes)
-        {
-            Console.WriteLine(var);
-        } */
-
         // Kreiramo matricu susjednosti te je popunjavamo na nacin da
         // Ukoliko imamo epsilon prelaz izmedju stanja unosimo 1 u matricu susjednosti
         // Inace unosimo 0
@@ -49,13 +44,6 @@ public class AutomatGraph
                 else
                     ms[i, j] = 0;
             }
-
-        /*    for (int i = 0; i < nodes.Count; i++)
-        {
-            Console.WriteLine("");
-            for (int j = 0; j < nodes.Count; j++)
-                Console.Write(ms[i, j] + " ");
-        } */
 
         start = nodes.IndexOf(startState);
         visited = new bool[nodes.Count];

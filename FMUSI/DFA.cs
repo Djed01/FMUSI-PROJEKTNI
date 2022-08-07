@@ -2,8 +2,12 @@ namespace FMUSI;
 
 public class Dfa : Automat
 {
-    public Dictionary<(string, char), string> delta = new(); // F-JA PRELAZA IZMEDJU STANJA
+    private Dictionary<(string, char), string> delta = new(); // F-JA PRELAZA IZMEDJU STANJA
 
+    public Dictionary<(string, char), string> getDelta()
+    {
+        return delta;
+    }
     public void AddTransition(string currentState, char symbol, string nextState)
     {
         delta[(currentState, symbol)] = nextState;
@@ -44,9 +48,12 @@ public class Dfa : Automat
                 (finalStates.Contains(state1) == false && other.finalStates.Contains(state2)))
                 newDfa.finalStates.Add(newState);
 
-            // Popunjavamo funkciju prelaza sa novim stanjima
-            foreach (var symbol in alphabet)
-                newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
+                // Popunjavamo funkciju prelaza sa novim stanjima
+                foreach (var symbol in alphabet)
+                {
+                    newDfa.AddSymbolToAlphabet(symbol);  
+                    newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
+                }
         }
 
         return newDfa;
@@ -66,9 +73,12 @@ public class Dfa : Automat
             // Ako je jedno od stanja automata finalno dodajemo novo stanje kao finalno u novom automatu
             if (finalStates.Contains(state1) || other.finalStates.Contains(state2)) newDfa.finalStates.Add(newState);
 
-            // Popunjavamo funkciju prelaza sa novim stanjima
-            foreach (var symbol in alphabet)
-                newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
+                // Popunjavamo funkciju prelaza sa novim stanjima
+                foreach (var symbol in alphabet)
+                {
+                    newDfa.AddSymbolToAlphabet(symbol);
+                    newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
+                }
         }
 
         return newDfa;
@@ -88,9 +98,12 @@ public class Dfa : Automat
             //Ako su oba stanja finalna dodajemo novo stanje kao finalno u novi automat
             if (finalStates.Contains(state1) && other.finalStates.Contains(state2)) newDfa.finalStates.Add(newState);
 
-            // Popunjavamo funkciju prelaza sa novim stanjima
-            foreach (var symbol in alphabet)
-                newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
+                // Popunjavamo funkciju prelaza sa novim stanjima
+                foreach (var symbol in alphabet)
+                {
+                    newDfa.AddSymbolToAlphabet(symbol);
+                    newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
+                }
         }
 
         return newDfa;
@@ -98,24 +111,82 @@ public class Dfa : Automat
 
     public Dfa Spajanje(Dfa other)
     {
-        Dfa newDfa = new();
-        newDfa.StartState = StartState + other.StartState;
+        // Pravimo novi NKA automat sa pocetnim stanjem prvog automata
+        Nfa newNfa = new();
+        newNfa.StartState = StartState;
+        newNfa.AddSymbolToAlphabet(EPSILON);
+        // Dodajemo stanja i simbole u novi automat
         foreach (var state1 in states)
+        {
+            newNfa.AddState(state1);
+        }
         foreach (var state2 in other.states)
         {
-            var newState = state1 + state2;
-            newDfa.states.Add(newState);
-            
-            // Provjeravamo da li su stanja finalna za drugi automat cija smo stanja konkatenirali na prvi
-            // I ukoliko je stanje finalno dodajemo novo stanje kao finalno za novi automat
-            if (other.finalStates.Contains(state2)) newDfa.finalStates.Add(newState);
-
-            // Popunjavamo funkciju prelaza sa novim stanjima
-            foreach (var symbol in alphabet)
-                newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
+            newNfa.AddState(state2);
         }
+        foreach (var symbol in alphabet)
+        {
+            newNfa.AddSymbolToAlphabet(symbol);
+        }
+        foreach (var symbol in other.alphabet)
+        {
+            newNfa.AddSymbolToAlphabet(symbol);
+        }
+        // Popunjavamo f-ju prelaza za novi automat sa prelazima prvog automata
+        foreach (var state in states)
+        {
+            foreach (var symbol in alphabet)
+            {
+                if (delta.ContainsKey((state, symbol)))
+                {
+                        if (!newNfa.getDelta().ContainsKey((state, symbol)))
+                        {
+                            HashSet<string> set = new();
+                            newNfa.getDelta().Add((state, symbol), set);
+                            newNfa.getDelta()[(state, symbol)].Add(this.delta[(state, symbol)]);
+                        }
+                        else
+                        {
+                            newNfa.getDelta()[(state, symbol)].Add(this.delta[(state, symbol)]);
+                        }
+                }
 
-        return newDfa;
+             }
+        }
+        // Popunjavamo f-ju prelaza za novi automat sa prelazima drugog automata
+        foreach (var state in other.states)
+        {
+            foreach (var symbol in other.alphabet)
+            {
+                if (other.delta.ContainsKey((state, symbol)))
+                {
+                    if (!newNfa.getDelta().ContainsKey((state, symbol)))
+                    {
+                        HashSet<string> set = new();
+                        newNfa.getDelta().Add((state, symbol), set);
+                        newNfa.getDelta()[(state, symbol)].Add(other.delta[(state, symbol)]);
+                    }
+                    else
+                    {
+                        newNfa.getDelta()[(state, symbol)].Add(other.delta[(state, symbol)]);
+                    }
+                }
+
+            }
+        }
+        // Dodajemo finalna stanja u novi automat od drugog automata
+        foreach (var finalState in other.finalStates)
+        {
+            newNfa.AddFinalState(finalState);
+        }
+        // Za svako finalno stanje prvog automata dodajemo epsilon prelaz u pocetno stanje drugog automata
+        foreach (var initialFinalState in this.finalStates)
+        {
+            newNfa.AddTransition(initialFinalState, EPSILON, other.StartState);
+        }
+        // Vracamo novokreirani automat
+        return newNfa.toDfa();
+
     }
 
     public Dfa Komplement()
@@ -127,15 +198,19 @@ public class Dfa : Automat
             newDfa.states.Add(state);
             // Ako stanje nije finalno dodajemo ga kao finalno u novi automat
             if (!finalStates.Contains(state)) newDfa.finalStates.Add(state);
-            
+
             // Popunjavamo funkciju prelaza sa novim stanjima
-            foreach (var symbol in alphabet) newDfa.delta[(state, symbol)] = delta[(state, symbol)];
+            foreach (var symbol in alphabet)
+            {
+                newDfa.AddSymbolToAlphabet(symbol);
+                newDfa.delta[(state, symbol)] = delta[(state, symbol)];
+            }
         }
 
         return newDfa;
     }
 
-    public Automat KleenovaZvijezda()
+    public Dfa KleenovaZvijezda()
     {
         // Kreiramo novi NFA automat koji ce imati ista stanja i prelaze kao trenutni automat
         Nfa newNfa = new();
@@ -163,15 +238,15 @@ public class Dfa : Automat
             {
                 if (this.delta.ContainsKey((state, symbol)))
                 {
-                    if (!newNfa.delta.ContainsKey((state, symbol)))
+                    if (!newNfa.getDelta().ContainsKey((state, symbol)))
                     {
                         HashSet<string> set = new();
-                        newNfa.delta.Add((state, symbol), set);
-                        newNfa.delta[(state, symbol)].Add(this.delta[(state,symbol)]);
+                        newNfa.getDelta().Add((state, symbol), set);
+                        newNfa.getDelta()[(state, symbol)].Add(this.delta[(state,symbol)]);
                     }
                     else
                     {
-                        newNfa.delta[(state, symbol)].Add(this.delta[(state, symbol)]);
+                        newNfa.getDelta()[(state, symbol)].Add(this.delta[(state, symbol)]);
                     }
                 }
             }
@@ -179,29 +254,30 @@ public class Dfa : Automat
        // Dodajemo novo stanje q
         newNfa.AddState("q");
         HashSet<string> tempSet = new();
-        newNfa.delta.Add(("q", EPSILON), tempSet);
+        newNfa.getDelta().Add(("q", EPSILON), tempSet);
         // Iz novog stanja q dodajemo epsilon prelaz u pocetno stanje trenutnog automata
-        newNfa.delta[("q", EPSILON)].Add(this.StartState);
+        newNfa.getDelta()[("q", EPSILON)].Add(this.StartState);
         newNfa.StartState = "q";
         // Stanje q smo postavili kao pocetno stanje
         // Za svako finalno stanje automata dodajemo epsilon prelaz u novokreirano stanje q
         foreach (var state in this.finalStates)
         {
-            if (!newNfa.delta.ContainsKey((state, EPSILON)))
+            if (!newNfa.getDelta().ContainsKey((state, EPSILON)))
             {
                 HashSet<string> set = new();
-                newNfa.delta.Add((state, EPSILON), set);
-                newNfa.delta[(state, EPSILON)].Add(newNfa.StartState);
+                newNfa.getDelta().Add((state, EPSILON), set);
+                newNfa.getDelta()[(state, EPSILON)].Add(newNfa.StartState);
             }
             else
             {
-                newNfa.delta[(state, EPSILON)].Add(newNfa.StartState);
+                newNfa.getDelta()[(state, EPSILON)].Add(newNfa.StartState);
             }
         }
         // Dobijeni NKA automat pretvaramo u DKA te ga kao takvog vracamo iz metode
         // Ovim smo omogucili dalje ulancavanje operacija
         // return newNfa.toDfa();
-        return newNfa;
+        Dfa newDfa = newNfa.toDfa();
+        return newDfa;
     }
 
 
@@ -238,4 +314,5 @@ public class Dfa : Automat
         }
         return -1;
     }
+
 }

@@ -2,7 +2,12 @@ namespace FMUSI;
 
 public class Nfa : Automat
 {
-    public Dictionary<(string, char), HashSet<string>> delta = new();
+    private Dictionary<(string, char), HashSet<string>> delta = new();
+
+    public Dictionary<(string, char), HashSet<string>> getDelta()
+    {
+        return delta;
+    }
 
     public void AddTransition(string currentState, char symbol, string nextState)
     {
@@ -79,10 +84,12 @@ public class Nfa : Automat
                                     HashSet<string> set = new();
                                     newNfa.delta.Add((newState, symbol), set);
                                     newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
+                                    newNfa.AddSymbolToAlphabet(symbol);
                                 }
                                 else
                                 {
                                     newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
+                                    newNfa.AddSymbolToAlphabet(symbol);
                                 }
         }
         return newNfa;
@@ -113,10 +120,12 @@ public class Nfa : Automat
                                     HashSet<string> set = new();
                                     newNfa.delta.Add((newState, symbol), set);
                                     newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
+                                    newNfa.AddSymbolToAlphabet(symbol);
                                 }
                                 else
                                 {
                                     newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
+                                    newNfa.AddSymbolToAlphabet(symbol);
                                 }
         }
         return newNfa;
@@ -150,10 +159,12 @@ public class Nfa : Automat
                                     HashSet<string> set = new();
                                     newNfa.delta.Add((newState, symbol), set);
                                     newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
+                                    newNfa.AddSymbolToAlphabet(symbol);
                                 }
                                 else
                                 {
                                     newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
+                                    newNfa.AddSymbolToAlphabet(symbol);
                                 }
         }
         return newNfa;
@@ -161,35 +172,86 @@ public class Nfa : Automat
 
     public Nfa Spajanje(Nfa other)
     {
+        // Pravimo novi NKA automat sa pocetnim stanjem prvog automata
         Nfa newNfa = new();
-        newNfa.StartState = StartState + other.StartState;
+        newNfa.StartState = StartState;
+        newNfa.AddSymbolToAlphabet(EPSILON);
+        // Dodajemo stanja i simbole u novi automat
         foreach (var state1 in states)
-        foreach (var state2 in other.states)
         {
-            var newState = state1 + state2;
-            newNfa.states.Add(newState);
-
-            // Provjeravamo da li su stanja finalna za drugi automat cija smo stanja konkatenirali na prvi
-            // I ukoliko je stanje finalno dodajemo novo stanje kao finalno za novi automat
-            if (other.finalStates.Contains(state2)) newNfa.finalStates.Add(newState);
-            
-            // Popunjavamo funkciju prelaza sa novim stanjima
-            foreach (var symbol in alphabet)
-                if (delta.ContainsKey((state1, symbol)))
-                    foreach (var temp1 in delta[(state1, symbol)])
-                        if (other.delta.ContainsKey((state2, symbol)))
-                            foreach (var temp2 in other.delta[(state2, symbol)])
-                                if (!newNfa.delta.ContainsKey((newState, symbol)))
-                                {
-                                    HashSet<string> set = new();
-                                    newNfa.delta.Add((newState, symbol), set);
-                                    newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
-                                }
-                                else
-                                {
-                                    newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
-                                }
+            newNfa.AddState(state1);
         }
+        foreach(var state2 in other.states)
+        {
+            newNfa.AddState(state2);
+        }
+        foreach(var symbol in alphabet)
+        {
+            newNfa.AddSymbolToAlphabet(symbol);
+        }
+        foreach(var symbol in other.alphabet)
+        {
+            newNfa.AddSymbolToAlphabet(symbol);
+        }
+        // Popunjavamo f-ju prelaza za novi automat sa prelazima prvog automata
+        foreach (var state in states)
+        {
+            foreach(var symbol in alphabet)
+            {
+                if (delta.ContainsKey((state, symbol)))
+                {
+                    foreach (var temp in delta[(state, symbol)])
+                    {
+                        if (!newNfa.delta.ContainsKey((state, symbol)))
+                        {
+                            HashSet<string> set = new();
+                            newNfa.delta.Add((state, symbol), set);
+                            newNfa.delta[(state, symbol)].Add(temp);
+                        }
+                        else
+                        {
+                            newNfa.delta[(state, symbol)].Add(temp);
+                        }
+                    }
+                
+                }
+            }
+        }
+        // Popunjavamo f-ju prelaza za novi automat sa prelazima drugog automata
+        foreach (var state in other.states)
+        {
+            foreach (var symbol in other.alphabet)
+            {
+                if (other.delta.ContainsKey((state, symbol)))
+                {
+                    foreach (var temp in other.delta[(state, symbol)])
+                    {
+                        if (!newNfa.delta.ContainsKey((state, symbol)))
+                        {
+                            HashSet<string> set = new();
+                            newNfa.delta.Add((state, symbol), set);
+                            newNfa.delta[(state, symbol)].Add(temp);
+                        }
+                        else
+                        {
+                            newNfa.delta[(state, symbol)].Add(temp);
+                        }
+                    }
+
+                }
+            }
+        }
+        // Dodajemo finalna stanja u novi automat od drugog automata
+        foreach (var finalState in other.finalStates)
+        {
+            newNfa.AddFinalState(finalState);
+        }
+        // Za svako finalno stanje prvog automata dodajemo epsilon prelaz u pocetno stanje drugog automata
+        foreach (var initialFinalState in this.finalStates)
+        {
+            newNfa.AddTransition(initialFinalState, EPSILON, other.StartState);
+        }
+        // Vracamo novokreirani automat
         return newNfa;
     }
 
@@ -209,12 +271,14 @@ public class Nfa : Automat
                     foreach (var temp in delta[(state, symbol)])
                         if (!newNfa.delta.ContainsKey((state, symbol)))
                         {
+                            newNfa.AddSymbolToAlphabet(symbol);
                             HashSet<string> set = new();
                             newNfa.delta.Add((state, symbol), set);
                             newNfa.delta[(state, symbol)].Add(temp);
                         }
                         else
                         {
+                            newNfa.AddSymbolToAlphabet(symbol);
                             newNfa.delta[(state, symbol)].Add(temp);
                         }
         }
@@ -421,7 +485,7 @@ public class Nfa : Automat
             foreach(var key in newDfa.states)
             {
                 foreach(var symbol in newDfa.alphabet)
-                if (!newDfa.delta.ContainsKey((key,symbol)))
+                if (!newDfa.getDelta().ContainsKey((key,symbol)))
                 {
                     eStates.Add(key); 
                         tempBool = true;
@@ -438,7 +502,6 @@ public class Nfa : Automat
 
 
         return newDfa;
-
     }
 
 }
