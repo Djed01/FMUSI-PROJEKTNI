@@ -108,7 +108,69 @@ namespace FMUSI
             string result = "";
             int rank = 0;
             char x;
-            foreach (char next in this.regex.Replace(" ",String.Empty))
+            this.regex.Replace(" ", String.Empty);
+            bool isLastSymbol = false;
+            bool isLastCloseBracket = false;
+            bool isLastOpenBracket = false;
+            int i = 0;
+            foreach(char symbol in this.regex)
+            {
+                if (Char.IsLetter(symbol)){
+                    if (isLastSymbol)
+                    {
+                        this.regex = this.regex.Insert(i, "-");
+                        i++;
+                        isLastSymbol = true;
+                        isLastCloseBracket = false;
+                        isLastOpenBracket = false;
+                    }
+                    else if(isLastCloseBracket)
+                    {
+                        this.regex = this.regex.Insert(i, "-");
+                        i++;
+                        isLastSymbol = true;
+                        isLastCloseBracket = false;
+                        isLastOpenBracket = false;
+                    }
+                    else
+                    {
+                        isLastSymbol = true;
+                        isLastCloseBracket = false;
+                        isLastOpenBracket = false;
+                    }
+                }
+                else if (symbol == '(')
+                {
+                    if (isLastSymbol)
+                    {
+                        this.regex = this.regex.Insert(i, "-");
+                        i++;
+                        isLastSymbol = false;
+                        isLastCloseBracket = false;
+                        isLastOpenBracket = true;
+                    }
+                    else
+                    {
+                        isLastSymbol = false;
+                        isLastCloseBracket = false;
+                        isLastOpenBracket = true;
+                    }
+                }
+                else if (symbol == ')')
+                {
+                    isLastCloseBracket = true;
+                    isLastSymbol = false;
+                    isLastOpenBracket = false;
+                }
+                else
+                {
+                    isLastSymbol = false;
+                    isLastCloseBracket = false;
+                    isLastOpenBracket = false;
+                }
+                i++;
+            }
+            foreach (char next in this.regex)
             {
                 if (Char.IsLetter(next))
                 {
@@ -155,43 +217,92 @@ namespace FMUSI
         public Stack<string> evaluatePostfix(string postfix)
         {
             Stack<string> result = new();
+            bool first = true;
             Nfa newNfa = new();
             Nfa tempNfa = new();
-            newNfa.StartState = "q0";
-            newNfa.AddTransition("q0", EPSILON, "q0");
-            newNfa.AddSymbolToAlphabet(EPSILON);
             int i = 0;
-            bool lastIsLetter = false;
            
            String rez = "";
            foreach(char x in postfix)
-            { 
+           { 
                 if (Char.IsLetter(x))
                 {
-                    tempNfa.AddState("q" + ++i);
-                    tempNfa.AddState("q" + ++i);
-                    tempNfa.AddTransition("q" + (i - 2), x, "q" + (i - 1));
-                    tempNfa.AddSymbolToAlphabet(x);
-                    newNfa.Spajanje(tempNfa);
+                    if (first)
+                    {
+                        newNfa.AddState("q" + i++);
+                        newNfa.AddState("q" + i++);
+                        newNfa.StartState = "q" + (i - 2);
+                        newNfa.AddFinalState("q" + (i - 1));
+                        newNfa.AddSymbolToAlphabet(x);
+                        newNfa.AddTransition("q" + (i - 2), x, "q" + (i - 1));
+                        first = false;
+                    }
                     result.Push(x.ToString());
                 } else if (x == '*')
                 {
-                    newNfa.KleenovaZvijezda();
-                    tempNfa = newNfa; // !!!
+                    newNfa = newNfa.KleenovaZvijezda();
+           
                     string oprnd = result.Pop();
                     rez = x.ToString() + oprnd.ToString();
                     result.Push(rez);
-                } else if( x == '+')
+                } else if(x == '+')
                 {
-                    
+                    char symbol;
                     string oprnd2 = result.Pop();
                     string oprnd1 = result.Pop();
+                    if(oprnd2.Count() == 1)
+                    {
+                        symbol = Char.Parse(oprnd2);
+                    }
+                    else
+                    {
+                        symbol = Char.Parse(oprnd1);
+                    }
+                    
+                    rez = oprnd1.ToString() + x.ToString() + oprnd2.ToString();
+                    tempNfa.AddState("q" + i++);
+                    tempNfa.AddState("q" + i++);
+                    tempNfa.StartState = "q" + (i - 2);
+                    tempNfa.AddFinalState("q"+(i-1));
+                    tempNfa.AddSymbolToAlphabet(symbol);
+                    tempNfa.AddTransition("q" + (i - 2), symbol, "q" + (i - 1));
+                    newNfa = newNfa.Unija(tempNfa);
+                    result.Push(rez);
+                    tempNfa.states.Clear();
+                    tempNfa.finalStates.Clear();
+                    tempNfa.getDelta().Clear();
+                    tempNfa.alphabet.Clear();
+                } else if(x == '-')
+                {
+                    char symbol;
+                    string oprnd2 = result.Pop();
+                    string oprnd1 = result.Pop();
+                    if (oprnd1.Count() == 1)
+                    {
+                        symbol = Char.Parse(oprnd1);
+                    }
+                    else
+                    {
+                        symbol = Char.Parse(oprnd2);
+                    }
+
                     rez = oprnd1.ToString() + x.ToString() + oprnd2.ToString();
                     tempNfa.AddState("q" + ++i);
                     tempNfa.AddState("q" + ++i);
-                    tempNfa.AddTransition("q" + (i - 2), x, "q" + (i - 1));
-                    newNfa.Unija(tempNfa);
+                    tempNfa.StartState = "q" + (i - 2);
+                    tempNfa.AddFinalState("q" + (i - 1));
+                    tempNfa.AddSymbolToAlphabet(symbol);
+                    tempNfa.AddTransition("q" + (i - 2), symbol, "q" + (i - 1));
+                    newNfa = newNfa.Spajanje(tempNfa);
                     result.Push(rez);
+                    tempNfa.states.Clear();
+                    tempNfa.finalStates.Clear();
+                    tempNfa.getDelta().Clear();
+                    tempNfa.alphabet.Clear();
+                }
+                else
+                {
+                    throw new Exception("NEKOREKTAN REGEX");
                 }
             }
             rez = result.Pop().ToString();

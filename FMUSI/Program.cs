@@ -57,9 +57,9 @@ dfa2.AddTransition("p0", 'a', "p1");
 dfa2.AddTransition("p1", 'a', "p0");
 dfa2.AddTransition("p1", 'b', "p1");
 
-var novi = dfa1.Spajanje(dfa2);
+var novi = nfa.SimetricnaRazlika(dfa1);
+int a = 2;
 */
-
 /*Nfa nfaToDfa = new();
 nfaToDfa.AddSymbolToAlphabet('a');
 nfaToDfa.AddSymbolToAlphabet('b'); 
@@ -129,5 +129,5 @@ nfaToDfa.AddTransition("q3", 'a', "q4");
 Dfa dfa = nfaToDfa.toDfa();
 dfa.PrintStates();*/
 
-RegularExpression regex = new RegularExpression("A + B + C");
+RegularExpression regex = new RegularExpression("a+b+c");
 regex.toDfa();

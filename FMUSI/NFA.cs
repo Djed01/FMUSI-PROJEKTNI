@@ -66,32 +66,121 @@ public class Nfa : Automat
         newNfa.StartState = StartState + other.StartState;
 
         foreach (var state1 in states)
-        foreach (var state2 in other.states)
-        {
-            var newState = state1 + state2;
-            newNfa.states.Add(newState);
-            // Ako je jedno od stanja automata finalno dodajemo novo stanje kao finalno u novom automatu
-            if (finalStates.Contains(state1) || other.finalStates.Contains(state2)) newNfa.finalStates.Add(newState);
+            foreach (var state2 in other.states)
+            {
+                var newState = state1 + state2;
+                newNfa.states.Add(newState);
+                // Ako je jedno od stanja automata finalno dodajemo novo stanje kao finalno u novom automatu
+                if (finalStates.Contains(state1) || other.finalStates.Contains(state2)) newNfa.finalStates.Add(newState);
 
-            // Popunjavamo funkciju prelaza sa novim stanjima
-            foreach (var symbol in alphabet)
-                if (delta.ContainsKey((state1, symbol)))
-                    foreach (var temp1 in delta[(state1, symbol)])
-                        if (other.delta.ContainsKey((state2, symbol)))
-                            foreach (var temp2 in other.delta[(state2, symbol)])
-                                if (!newNfa.delta.ContainsKey((newState, symbol)))
+                // Popunjavamo funkciju prelaza sa novim stanjima
+                foreach (var symbol1 in alphabet)
+                {
+                    foreach (var symbol2 in other.alphabet)
+                    {
+                        if (delta.ContainsKey((state1, symbol1)) && other.delta.ContainsKey((state2, symbol1)))
+                        {
+                            foreach (var temp1 in delta[(state1, symbol1)])
+                                    foreach (var temp2 in other.delta[(state2, symbol1)])
+                                        if (!newNfa.delta.ContainsKey((newState, symbol1)))
+                                        {
+                                            HashSet<string> set = new();
+                                            newNfa.delta.Add((newState, symbol1), set);
+                                            newNfa.delta[(newState, symbol1)].Add(temp1+temp2);
+                                            newNfa.AddSymbolToAlphabet(symbol1);
+                                        }
+                                        else
+                                        {
+                                            newNfa.delta[(newState, symbol1)].Add(temp1 + temp2);
+                                            newNfa.AddSymbolToAlphabet(symbol1);
+                                        }
+                        }
+                        else if (delta.ContainsKey((state1, symbol1)) && !other.delta.ContainsKey((state2, symbol1)))
+                        {
+                            foreach (var temp1 in delta[(state1, symbol1)])
+                                    if (!newNfa.delta.ContainsKey((newState, symbol1)))
+                                    {
+                                        HashSet<string> set = new();
+                                        newNfa.delta.Add((newState, symbol1), set);
+                                        newNfa.delta[(newState, symbol1)].Add(temp1 + state2);
+                                        newNfa.AddSymbolToAlphabet(symbol1);
+                                    }
+                                    else
+                                    {
+                                        newNfa.delta[(newState, symbol1)].Add(temp1 + state2);
+                                        newNfa.AddSymbolToAlphabet(symbol1);
+                                    }
+                        }
+                        else if (!delta.ContainsKey((state1, symbol1)) && other.delta.ContainsKey((state2, symbol1)))
+                        {
+                                foreach (var temp2 in other.delta[(state2, symbol1)])
+                                    if (!newNfa.delta.ContainsKey((newState, symbol1)))
+                                    {
+                                        HashSet<string> set = new();
+                                        newNfa.delta.Add((newState, symbol1), set);
+                                        newNfa.delta[(newState, symbol1)].Add(state1 + temp2);
+                                        newNfa.AddSymbolToAlphabet(symbol1);
+                                    }
+                                    else
+                                    {
+                                        newNfa.delta[(newState, symbol1)].Add(state1 + temp2);
+                                        newNfa.AddSymbolToAlphabet(symbol1);
+                                    }
+                        }
+                        if (delta.ContainsKey((state1, symbol2)) && other.delta.ContainsKey((state2, symbol2)))
+                        {
+                            foreach (var temp1 in delta[(state1, symbol2)])
+                                foreach (var temp2 in other.delta[(state2, symbol2)])
+                                    if (!newNfa.delta.ContainsKey((newState, symbol2)))
+                                    {
+                                        HashSet<string> set = new();
+                                        newNfa.delta.Add((newState, symbol2), set);
+                                        newNfa.delta[(newState, symbol2)].Add(temp1 + temp2);
+                                        newNfa.AddSymbolToAlphabet(symbol2);
+                                    }
+                                    else
+                                    {
+                                        newNfa.delta[(newState, symbol2)].Add(temp1 + temp2);
+                                        newNfa.AddSymbolToAlphabet(symbol2);
+                                    }
+                        }
+                        else if (delta.ContainsKey((state1, symbol2)) && !other.delta.ContainsKey((state2, symbol2)))
+                        {
+                            foreach (var temp1 in delta[(state1, symbol2)])
+
+                                    if (!newNfa.delta.ContainsKey((newState, symbol2)))
+                                    {
+                                        HashSet<string> set = new();
+                                        newNfa.delta.Add((newState, symbol2), set);
+                                        newNfa.delta[(newState, symbol2)].Add(temp1 + state2);
+                                        newNfa.AddSymbolToAlphabet(symbol2);
+                                    }
+                                    else
+                                    {
+                                        newNfa.delta[(newState, symbol2)].Add(temp1 + state2);
+                                        newNfa.AddSymbolToAlphabet(symbol2);
+                                    }
+                        }
+                        else if (!delta.ContainsKey((state1, symbol2)) && other.delta.ContainsKey((state2, symbol2)))
+                        {
+                            foreach (var temp2 in other.delta[(state2, symbol2)])
+                                if (!newNfa.delta.ContainsKey((newState, symbol2)))
                                 {
                                     HashSet<string> set = new();
-                                    newNfa.delta.Add((newState, symbol), set);
-                                    newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
-                                    newNfa.AddSymbolToAlphabet(symbol);
+                                    newNfa.delta.Add((newState, symbol2), set);
+                                    newNfa.delta[(newState, symbol2)].Add(state1 + temp2);
+                                    newNfa.AddSymbolToAlphabet(symbol2);
                                 }
                                 else
                                 {
-                                    newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
-                                    newNfa.AddSymbolToAlphabet(symbol);
+                                    newNfa.delta[(newState, symbol2)].Add(state1 + temp2);
+                                    newNfa.AddSymbolToAlphabet(symbol2);
                                 }
-        }
+                        }
+
+                    }
+                }
+            }
         return newNfa;
     }
 
@@ -101,33 +190,33 @@ public class Nfa : Automat
         newNfa.StartState = StartState + other.StartState;
 
         foreach (var state1 in states)
-        foreach (var state2 in other.states)
-        {
-            var newState = state1 + state2;
-            newNfa.states.Add(newState);
-            
-            //Ako su oba stanja finalna dodajemo novo stanje kao finalno u novi automat
-            if (finalStates.Contains(state1) && other.finalStates.Contains(state2)) newNfa.finalStates.Add(newState);
-            
-            // Popunjavamo funkciju prelaza sa novim stanjima
-            foreach (var symbol in alphabet)
-                if (delta.ContainsKey((state1, symbol)))
-                    foreach (var temp1 in delta[(state1, symbol)])
-                        if (other.delta.ContainsKey((state2, symbol)))
-                            foreach (var temp2 in other.delta[(state2, symbol)])
-                                if (!newNfa.delta.ContainsKey((newState, symbol)))
-                                {
-                                    HashSet<string> set = new();
-                                    newNfa.delta.Add((newState, symbol), set);
-                                    newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
-                                    newNfa.AddSymbolToAlphabet(symbol);
-                                }
-                                else
-                                {
-                                    newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
-                                    newNfa.AddSymbolToAlphabet(symbol);
-                                }
-        }
+            foreach (var state2 in other.states)
+            {
+                var newState = state1 + state2;
+                newNfa.states.Add(newState);
+
+                //Ako su oba stanja finalna dodajemo novo stanje kao finalno u novi automat
+                if (finalStates.Contains(state1) && other.finalStates.Contains(state2)) newNfa.finalStates.Add(newState);
+
+                // Popunjavamo funkciju prelaza sa novim stanjima
+                foreach (var symbol in alphabet)
+                    if (delta.ContainsKey((state1, symbol)))
+                        foreach (var temp1 in delta[(state1, symbol)])
+                            if (other.delta.ContainsKey((state2, symbol)))
+                                foreach (var temp2 in other.delta[(state2, symbol)])
+                                    if (!newNfa.delta.ContainsKey((newState, symbol)))
+                                    {
+                                        HashSet<string> set = new();
+                                        newNfa.delta.Add((newState, symbol), set);
+                                        newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
+                                        newNfa.AddSymbolToAlphabet(symbol);
+                                    }
+                                    else
+                                    {
+                                        newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
+                                        newNfa.AddSymbolToAlphabet(symbol);
+                                    }
+            }
         return newNfa;
     }
 
@@ -137,37 +226,41 @@ public class Nfa : Automat
         newNfa.StartState = StartState + other.StartState;
 
         foreach (var state1 in states)
-        foreach (var state2 in other.states)
-        {
-            var newState = state1 + state2;
-            newNfa.states.Add(newState);
+            foreach (var state2 in other.states)
+            {
+                var newState = state1 + state2;
+                newNfa.states.Add(newState);
 
-            // Ako jedan automat sadrzi stanje a drugi ne sadrzi dodajemo novo stanje u novi automat
-            if ((finalStates.Contains(state1) &&
-                 other.finalStates.Contains(state2) == false) ||
-                (finalStates.Contains(state1) == false && other.finalStates.Contains(state2)))
-                newNfa.finalStates.Add(newState);
-            
-            // Popunjavamo funkciju prelaza sa novim stanjima
-            foreach (var symbol in alphabet)
-                if (delta.ContainsKey((state1, symbol)))
-                    foreach (var temp1 in delta[(state1, symbol)])
-                        if (other.delta.ContainsKey((state2, symbol)))
-                            foreach (var temp2 in other.delta[(state2, symbol)])
-                                if (!newNfa.delta.ContainsKey((newState, symbol)))
-                                {
-                                    HashSet<string> set = new();
-                                    newNfa.delta.Add((newState, symbol), set);
-                                    newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
-                                    newNfa.AddSymbolToAlphabet(symbol);
-                                }
-                                else
-                                {
-                                    newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
-                                    newNfa.AddSymbolToAlphabet(symbol);
-                                }
-        }
+                // Ako jedan automat sadrzi stanje a drugi ne sadrzi dodajemo novo stanje u novi automat
+                if ((finalStates.Contains(state1) &&
+                     other.finalStates.Contains(state2) == false) ||
+                    (finalStates.Contains(state1) == false && other.finalStates.Contains(state2)))
+                    newNfa.finalStates.Add(newState);
+
+                // Popunjavamo funkciju prelaza sa novim stanjima
+                foreach (var symbol in alphabet)
+                    if (delta.ContainsKey((state1, symbol)))
+                        foreach (var temp1 in delta[(state1, symbol)])
+                            if (other.delta.ContainsKey((state2, symbol)))
+                                foreach (var temp2 in other.delta[(state2, symbol)])
+                                    if (!newNfa.delta.ContainsKey((newState, symbol)))
+                                    {
+                                        HashSet<string> set = new();
+                                        newNfa.delta.Add((newState, symbol), set);
+                                        newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
+                                        newNfa.AddSymbolToAlphabet(symbol);
+                                    }
+                                    else
+                                    {
+                                        newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
+                                        newNfa.AddSymbolToAlphabet(symbol);
+                                    }
+            }
         return newNfa;
+    }
+    public Nfa SimetricnaRazlika(Dfa other)
+    {
+        return this.SimetricnaRazlika(other.toNfa());
     }
 
     public Nfa Spajanje(Nfa other)
@@ -181,22 +274,22 @@ public class Nfa : Automat
         {
             newNfa.AddState(state1);
         }
-        foreach(var state2 in other.states)
+        foreach (var state2 in other.states)
         {
             newNfa.AddState(state2);
         }
-        foreach(var symbol in alphabet)
+        foreach (var symbol in alphabet)
         {
             newNfa.AddSymbolToAlphabet(symbol);
         }
-        foreach(var symbol in other.alphabet)
+        foreach (var symbol in other.alphabet)
         {
             newNfa.AddSymbolToAlphabet(symbol);
         }
         // Popunjavamo f-ju prelaza za novi automat sa prelazima prvog automata
         foreach (var state in states)
         {
-            foreach(var symbol in alphabet)
+            foreach (var symbol in alphabet)
             {
                 if (delta.ContainsKey((state, symbol)))
                 {
@@ -213,7 +306,7 @@ public class Nfa : Automat
                             newNfa.delta[(state, symbol)].Add(temp);
                         }
                     }
-                
+
                 }
             }
         }
@@ -255,6 +348,11 @@ public class Nfa : Automat
         return newNfa;
     }
 
+    public Nfa Spajanje(Dfa other)
+    {
+        return this.Spajanje(other.toNfa());
+    }
+
     public Nfa Komplement()
     {
         Nfa newNfa = new();
@@ -264,7 +362,7 @@ public class Nfa : Automat
             newNfa.states.Add(state);
             // Ako stanje nije finalno dodajemo ga kao finalno u novi automat
             if (!finalStates.Contains(state)) newNfa.finalStates.Add(state);
-            
+
             // Popunjavamo funkciju prelaza sa novim stanjima
             foreach (var symbol in alphabet)
                 if (delta.ContainsKey((state, symbol)))
@@ -317,13 +415,13 @@ public class Nfa : Automat
                     {
                         HashSet<string> set = new();
                         newNfa.delta.Add((state, symbol), set);
-                        foreach(var temp in this.delta[(state, symbol)])
-                        newNfa.delta[(state, symbol)].Add(temp);
+                        foreach (var temp in this.delta[(state, symbol)])
+                            newNfa.delta[(state, symbol)].Add(temp);
                     }
                     else
                     {
                         foreach (var temp in this.delta[(state, symbol)])
-                        newNfa.delta[(state, symbol)].Add(temp);
+                            newNfa.delta[(state, symbol)].Add(temp);
                     }
                 }
             }
@@ -372,18 +470,18 @@ public class Nfa : Automat
                 if (delta.ContainsKey((temp, symbol)))
                     foreach (string state in delta[(temp, symbol)])
                     {
-                    if (finalStates.Contains(state))
-                    {
+                        if (finalStates.Contains(state))
+                        {
                             // Ako je finalno povecavamo brojac i vracamo vrijednost brojaca
                             shortestPath++;
                             return shortestPath;
-                    }
-                    else
-                    {
+                        }
+                        else
+                        {
                             // Inace stanje dodajemo na kraj reda
                             queue.Enqueue(state);
+                        }
                     }
-                }
             }
             // Povecavamo brojac
             shortestPath++;
@@ -402,7 +500,7 @@ public class Nfa : Automat
             if (symbol != EPSILON)
                 newDfa.AddSymbolToAlphabet(symbol);
         }
-       
+
         // Kreiramo pomocni graf na osnovu kojeg pronalazimo
         // stanja do kojih dolazimo epsilon prelazima
         // Pocetno stanje DKA je epsilon clousure pocetnog stanja e-NKA
@@ -423,17 +521,17 @@ public class Nfa : Automat
                 {
                     if (this.delta.ContainsKey((state, symbol)))
                     {
-                            // Ako dobijena stanja u DKA sadrze neko od stanja eNKA
-                            // Dodajemo stanje u pomocni set za dalje trazenje epsilon prelaza
-                            if(String.Join("", eStates).Contains(state))
+                        // Ako dobijena stanja u DKA sadrze neko od stanja eNKA
+                        // Dodajemo stanje u pomocni set za dalje trazenje epsilon prelaza
+                        if (String.Join("", eStates).Contains(state))
                             foreach (var temp in this.delta[(state, symbol)])
                             {
                                 tempSet.Add(temp);
                             }
                     }
                 }
-               
-          
+
+
                 foreach (var tempState in tempSet)
                 {
                     // Nadjemo stanja epsilon prelaza za uniju stanja iz pomocnog seta tempSet
@@ -447,12 +545,12 @@ public class Nfa : Automat
                         newEStates.Add(temp);
                     }
                 }
-                foreach(var finalState in this.finalStates)
+                foreach (var finalState in this.finalStates)
                 {
                     // Od seta pravimo jedno stanje konkatenacijom stringa
                     // Ako novo stanje sadrzi jedno od finalnih stanja iz eNKA
                     // Dodajemo novo stanje kao finalno u DKA
-                    if(String.Join("", eStates).Contains(finalState))
+                    if (String.Join("", eStates).Contains(finalState))
                     {
                         newDfa.AddFinalState(String.Join("", eStates));
                     }
@@ -461,11 +559,13 @@ public class Nfa : Automat
                 newDfa.AddState(String.Join("", eStates));
                 // Ukoliko je novo stanje prazan string dakle nemamo prelaza u novo stanje
                 // Pravimo novo stanje qd (dead state) i vrsimo prelaz u novo stanje qd
-                if ("".Equals(String.Join("", newEStates))){
+                if ("".Equals(String.Join("", newEStates)))
+                {
                     newDfa.AddState("qd");
                     newDfa.AddTransition(String.Join("", eStates), symbol, "qd");
                 }
-                else {
+                else
+                {
                     // Inace dodajemo novo stanje dobijeno konkatenacijom i dodajemo prelaz za dati simbol
                     newDfa.AddState(String.Join("", newEStates));
                     newDfa.AddTransition(String.Join("", eStates), symbol, String.Join("", newEStates));
@@ -474,29 +574,29 @@ public class Nfa : Automat
                 // Da bi bili prazni u narednoj iteraciji za sljedeci simbol alfabeta
                 newEStates.Clear();
                 tempSet.Clear();
-                
+
             }
             // Brisemo sadrzaj stanja
             eStates.Clear();
-         
+
             bool tempBool = false; // Pomocni bool
             // Sljedece stanje je ono za koje nismo definisali prelaz,
             // a nalazi se u skupu stanja DKA
-            foreach(var key in newDfa.states)
+            foreach (var key in newDfa.states)
             {
-                foreach(var symbol in newDfa.alphabet)
-                if (!newDfa.getDelta().ContainsKey((key,symbol)))
-                {
-                    eStates.Add(key); 
+                foreach (var symbol in newDfa.alphabet)
+                    if (!newDfa.getDelta().ContainsKey((key, symbol)))
+                    {
+                        eStates.Add(key);
                         tempBool = true;
                         break;
-                }
+                    }
 
                 if (tempBool) break;
             }
             // Ako nemamo vise novih stanja za koje nismo definisali prelaze
             // Prekidamo sa izvrsavanjem do while petlje i vracamo novokreirani DKA
-           if("".Equals(String.Join("", eStates))) { check = true; }
+            if ("".Equals(String.Join("", eStates))) { check = true; }
 
         } while (!check);
 

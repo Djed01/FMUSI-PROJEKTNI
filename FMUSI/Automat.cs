@@ -4,7 +4,7 @@ public abstract class Automat
 {
     public static char EPSILON = '$';
     public HashSet<char> alphabet = new();
-    protected HashSet<string> finalStates = new();
+    public HashSet<string> finalStates = new();
     public string StartState;
     public HashSet<string> states = new();
 

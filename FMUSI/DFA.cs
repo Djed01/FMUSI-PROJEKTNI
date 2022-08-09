@@ -59,6 +59,12 @@ public class Dfa : Automat
         return newDfa;
     }
 
+    public Dfa SimetricnaRazlika(Nfa other)
+    {
+        Dfa newDfa = other.toDfa();
+        return this.SimetricnaRazlika((Dfa)newDfa); 
+    }
+
     public Dfa Unija(Dfa other)
     {
         Dfa newDfa = new();
@@ -84,6 +90,11 @@ public class Dfa : Automat
         return newDfa;
     }
 
+    public Dfa Unija(Nfa other)
+    {
+        return this.Unija((Dfa)other.toDfa());
+    }
+
     public Dfa Presjek(Dfa other)
     {
         Dfa newDfa = new();
@@ -107,6 +118,11 @@ public class Dfa : Automat
         }
 
         return newDfa;
+    }
+
+    public Dfa Presjek(Nfa other)
+    {
+        return this.Presjek(other.toDfa());
     }
 
     public Dfa Spajanje(Dfa other)
@@ -187,6 +203,11 @@ public class Dfa : Automat
         // Vracamo novokreirani automat
         return newNfa.toDfa();
 
+    }
+
+    public Dfa Spajanje(Nfa other)
+    {
+        return this.Spajanje(other.toDfa());
     }
 
     public Dfa Komplement()
@@ -313,6 +334,36 @@ public class Dfa : Automat
             shortestPath++;
         }
         return -1;
+    }
+
+    public Nfa toNfa()
+    {
+        // Prekopiramo sva stanja i prelaze u novokreirani NFA
+        Nfa newNfa = new();
+        newNfa.StartState = this.StartState;
+        foreach (var symbol in this.alphabet)
+        {
+            newNfa.AddSymbolToAlphabet(symbol);
+        }
+        foreach (var state in this.states)
+        {
+            newNfa.AddState(state);
+            if (this.finalStates.Contains(state))
+            {
+                newNfa.AddFinalState(state);
+            }
+        }
+        foreach (var state in this.states)
+        {
+            foreach (var symbol in this.alphabet)
+            {
+                if (this.getDelta().ContainsKey((state, symbol)))
+                {
+                    newNfa.AddTransition(state, symbol, this.getDelta()[(state, symbol)]);
+                }
+            }
+        }
+        return newNfa;
     }
 
 }
