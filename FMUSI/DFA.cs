@@ -3,7 +3,7 @@ namespace FMUSI;
 public class Dfa : Automat
 {
     private Dictionary<(string, char), string> delta = new(); // F-JA PRELAZA IZMEDJU STANJA
-
+    private static int i = 0;
     public Dictionary<(string, char), string> getDelta()
     {
         return delta;
@@ -273,12 +273,12 @@ public class Dfa : Automat
             }
         }
        // Dodajemo novo stanje q
-        newNfa.AddState("q");
+        newNfa.AddState("r"+i++);
         HashSet<string> tempSet = new();
-        newNfa.getDelta().Add(("q", EPSILON), tempSet);
+        newNfa.getDelta().Add(("r"+(i-1), EPSILON), tempSet);
         // Iz novog stanja q dodajemo epsilon prelaz u pocetno stanje trenutnog automata
-        newNfa.getDelta()[("q", EPSILON)].Add(this.StartState);
-        newNfa.StartState = "q";
+        newNfa.getDelta()[("r"+(i-1), EPSILON)].Add(this.StartState);
+        newNfa.StartState = "r"+(i-1);
         // Stanje q smo postavili kao pocetno stanje
         // Za svako finalno stanje automata dodajemo epsilon prelaz u novokreirano stanje q
         foreach (var state in this.finalStates)
