@@ -129,5 +129,6 @@ nfaToDfa.AddTransition("q3", 'a', "q4");
 Dfa dfa = nfaToDfa.toDfa();
 dfa.PrintStates();*/
 
-RegularExpression regex = new RegularExpression("a+b*c+d");
-regex.toDfa();
+RegularExpression regex = new RegularExpression("A * B + C * D");
+Dfa newNfa = regex.toDfa();
+

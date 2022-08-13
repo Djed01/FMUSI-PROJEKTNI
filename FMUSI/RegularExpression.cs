@@ -89,12 +89,16 @@ namespace FMUSI
             string result = "";
             int rank = 0;
             char x;
-            this.regex.Replace(" ", String.Empty);
+            // Brisemo nepotrebne spejsove
+            this.regex = this.regex.Replace(" ", String.Empty);
             bool isLastSymbol = false;
             bool isLastCloseBracket = false;
             bool isLastOpenBracket = false;
             bool isLastKleeneStar = false;
             int i = 0;
+
+            // Dodajemo specijalni znak konkatenacije -
+            // Na odgovarajuca mjesta
             foreach (char symbol in this.regex)
             {
                 if (Char.IsLetter(symbol))
@@ -102,60 +106,43 @@ namespace FMUSI
                     if (isLastSymbol)
                     {
                         this.regex = this.regex.Insert(i, "-");
-                        i++;
-                        isLastSymbol = true;
-                        isLastCloseBracket = false;
-                        isLastOpenBracket = false;
-                        isLastKleeneStar = false;
                     }
                     else if (isLastCloseBracket)
                     {
                         this.regex = this.regex.Insert(i, "-");
-                        i++;
-                        isLastSymbol = true;
-                        isLastCloseBracket = false;
-                        isLastOpenBracket = false;
-                        isLastKleeneStar = false;
                     }
                     else if (isLastKleeneStar)
                     {
                         this.regex = this.regex.Insert(i, "-");
-                        i++;
-                        isLastSymbol = true;
-                        isLastCloseBracket = false;
-                        isLastOpenBracket = false;
-                        isLastKleeneStar = false;
                     }
-                    else
-                    {
-                        isLastSymbol = true;
-                        isLastCloseBracket = false;
-                        isLastOpenBracket = false;
-                        isLastKleeneStar = false;
-                    }
+                    isLastSymbol = true;
+                    isLastCloseBracket = false;
+                    isLastOpenBracket = false;
+                    isLastKleeneStar = false;
+                    i++;
                 }
                 else if (symbol == '(')
                 {
                     if (isLastSymbol)
                     {
                         this.regex = this.regex.Insert(i, "-");
-                        i++;
-                        isLastSymbol = false;
-                        isLastCloseBracket = false;
-                        isLastOpenBracket = true;
                     }
-                    else
+                    else if(isLastKleeneStar)
                     {
-                        isLastSymbol = false;
-                        isLastCloseBracket = false;
-                        isLastOpenBracket = true;
+                        this.regex = this.regex.Insert(i, "-");
                     }
+                    i++;
+                    isLastSymbol = false;
+                    isLastCloseBracket = false;
+                    isLastOpenBracket = true;
+                    isLastKleeneStar = false;
                 }
                 else if (symbol == ')')
                 {
                     isLastCloseBracket = true;
                     isLastSymbol = false;
                     isLastOpenBracket = false;
+                    isLastKleeneStar = false;
                 }
                 else if (symbol == '*')
                 {
@@ -173,6 +160,7 @@ namespace FMUSI
                 }
                 i++;
             }
+            // Vrsimo konverziju iz infiksa u postfiks
             foreach (char next in this.regex)
             {
                 if (Char.IsLetter(next))
@@ -189,7 +177,7 @@ namespace FMUSI
                         rank += R(x);
                         if (rank < 1)
                         {
-                            //       throw new Exception("Nekorektan regex!");
+               //                    throw new Exception("Nekorektan regex!");
                         }
 
                     }
@@ -212,17 +200,23 @@ namespace FMUSI
             }
             if (rank != 1)
             {
-                //     throw new Exception("Nekorektan regex!");
+          //      throw new Exception("Nekorektan regex!");
             }
             return result;
         }
 
-        public Stack<string> evaluatePostfix(string postfix)
+        // Izracunavanje postfiksnog izraza u automat
+        // Logika se zasniva na tome da cuvamo svaki automat koji konstruisemo u mapi
+        // Pri cemu je kljuc jednak vrijednosti regexa automata
+        // Dalje kada naidjemo na operaciju skidamo sa steka stringove i pomocu njih pretrazimo 
+        // Automate u mapi i nad njima vrsimo neku od operacija (konkatenacija, unija, Kleenov operator)
+        // Nakon izvrsene operacije, novodobijeni automat smjestamo u mapu, a njegov regex vracamo na stek
+        // Postupak se ponavlja skroz dok ne iscitamo citav postfix
+        public Nfa evaluatePostfix(string postfix)
         {
             Dictionary<string, Nfa> set = new();
             Stack<string> result = new();
             Nfa newNfa = new();
-            Nfa tempNfa = new();
             int i = 0;
 
             String rez = "";
@@ -251,8 +245,8 @@ namespace FMUSI
 
                     string oprnd = result.Pop();
                     newNfa = set[(oprnd)].KleenovaZvijezda();
-                    rez = x.ToString() + oprnd.ToString();
-                    set.Add(x.ToString() + oprnd.ToString(), new Nfa(newNfa));
+                    rez = oprnd.ToString() + x.ToString();
+                    set.Add(oprnd.ToString()+ x.ToString(), new Nfa(newNfa));
                     result.Push(rez);
                     newNfa.states.Clear();
                     newNfa.finalStates.Clear();
@@ -302,17 +296,23 @@ namespace FMUSI
             {
                 throw new Exception();
             }
-            return result;
+            return set[(this.regex.Replace("(",String.Empty).Replace(")",String.Empty))];
 
         }
 
 
+        public Nfa toNfa()
+        {
+            Nfa newNfa = new();
+            string postfix = this.infixToPostfix();
+            return this.evaluatePostfix(postfix);
+        }
+
         public Dfa toDfa()
         {
-            Dfa newDfa = new();
+            Nfa newNfa = new();
             string postfix = this.infixToPostfix();
-            this.evaluatePostfix(postfix);
-            return newDfa;
+            return this.evaluatePostfix(postfix).toDfa();
         }
     }
 

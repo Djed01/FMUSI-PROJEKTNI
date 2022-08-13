@@ -1,0 +1,15 @@
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\RegularLanguageAnalyser\bin\Debug\net6.0\RegularLanguageAnalyser.exe
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\RegularLanguageAnalyser\bin\Debug\net6.0\RegularLanguageAnalyser.deps.json
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\RegularLanguageAnalyser\bin\Debug\net6.0\RegularLanguageAnalyser.runtimeconfig.json
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\RegularLanguageAnalyser\bin\Debug\net6.0\RegularLanguageAnalyser.dll
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\RegularLanguageAnalyser\bin\Debug\net6.0\RegularLanguageAnalyser.pdb
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\RegularLanguageAnalyser\obj\Debug\net6.0\RegularLanguageAnalyser.csproj.AssemblyReference.cache
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\RegularLanguageAnalyser\obj\Debug\net6.0\RegularLanguageAnalyser.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\RegularLanguageAnalyser\obj\Debug\net6.0\RegularLanguageAnalyser.AssemblyInfoInputs.cache
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\RegularLanguageAnalyser\obj\Debug\net6.0\RegularLanguageAnalyser.AssemblyInfo.cs
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\RegularLanguageAnalyser\obj\Debug\net6.0\RegularLanguageAnalyser.csproj.CoreCompileInputs.cache
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\RegularLanguageAnalyser\obj\Debug\net6.0\RegularLanguageAnalyser.dll
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\RegularLanguageAnalyser\obj\Debug\net6.0\refint\RegularLanguageAnalyser.dll
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\RegularLanguageAnalyser\obj\Debug\net6.0\RegularLanguageAnalyser.pdb
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\RegularLanguageAnalyser\obj\Debug\net6.0\RegularLanguageAnalyser.genruntimeconfig.cache
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\RegularLanguageAnalyser\obj\Debug\net6.0\ref\RegularLanguageAnalyser.dll

@@ -21,7 +21,7 @@ public class Dfa : Automat
             {
                 currentState = delta[(currentState, symbol)];
             }
-            catch (KeyNotFoundException e)
+            catch (KeyNotFoundException)
                 //Ukoliko je prosledjen neodgovarajuci string
             {
                 return false;
@@ -296,7 +296,6 @@ public class Dfa : Automat
         }
         // Dobijeni NKA automat pretvaramo u DKA te ga kao takvog vracamo iz metode
         // Ovim smo omogucili dalje ulancavanje operacija
-        // return newNfa.toDfa();
         Dfa newDfa = newNfa.toDfa();
         return newDfa;
     }
