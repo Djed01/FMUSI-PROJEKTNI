@@ -1,0 +1,12 @@
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\FMSI\bin\Debug\net6.0\FMSI.Lib.deps.json
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\FMSI\bin\Debug\net6.0\FMSI.Lib.dll
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\FMSI\bin\Debug\net6.0\FMSI.Lib.pdb
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\FMSI\obj\Debug\net6.0\FMSI.Lib.csproj.AssemblyReference.cache
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\FMSI\obj\Debug\net6.0\FMSI.Lib.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\FMSI\obj\Debug\net6.0\FMSI.Lib.AssemblyInfoInputs.cache
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\FMSI\obj\Debug\net6.0\FMSI.Lib.AssemblyInfo.cs
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\FMSI\obj\Debug\net6.0\FMSI.Lib.csproj.CoreCompileInputs.cache
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\FMSI\obj\Debug\net6.0\FMSI.Lib.dll
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\FMSI\obj\Debug\net6.0\refint\FMSI.Lib.dll
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\FMSI\obj\Debug\net6.0\FMSI.Lib.pdb
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\FMSI\obj\Debug\net6.0\ref\FMSI.Lib.dll

@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace FMUSI;
+namespace FMSI.Lib;
 
 public class AutomatGraph
 {

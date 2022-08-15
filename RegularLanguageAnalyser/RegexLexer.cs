@@ -80,10 +80,6 @@ namespace RegularLanguageAnalyser
                     {
                         throw new Exception("Line " + sourceLine + ": Unexpected character");
                     }
-                    else if (isLastKleeneStar)
-                    {
-                        throw new Exception("Line " + sourceLine + ": Operator * can't be folowed by another operator *");
-                    }
                     // Provjeravamo da li je operator * na pocetku, te bacamo izuzetak ako jeste.
                     if (sourceLine == 1)
                     {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FMUSI
+namespace FMSI.Lib
 {
-    internal class RegularExpression
+    public class RegularExpression
     {
         public static char EPSILON = '$';
         private string regex;
@@ -15,73 +15,29 @@ namespace FMUSI
             this.regex = regex;
         }
 
-        public int IPR(char c)
+        private static readonly Dictionary<char, int> IPR = new()
         {
-            switch (c)
-            {
-                case '+':
-                    return 2;
-                    break;
-                case '-':
-                    return 3;
-                    break;
-                case '*':
-                    return 4;
-                    break;
-                case '(':
-                    return 6;
-                    break;
-                case ')':
-                    return 1;
-                    break;
+            { '+', 2 },
+            { '-', 3 },
+            { '*', 4 },
+            { '(', 6 },
+            { ')', 1 },
+        };
 
-                default:
-                    return 0;
-                    break;
-            }
-        }
-
-        public int SPR(char c)
+        private static readonly Dictionary<char, int> SPR = new()
         {
-            switch (c)
-            {
-                case '+':
-                    return 2;
-                    break;
-                case '-':
-                    return 3;
-                    break;
-                case '*':
-                    return 4;
-                    break;
-                case '(':
-                    return 0;
-                    break;
+            { '+', 2 },
+            { '-', 3 },
+            { '*', 4 },
+            { '(', 0 }
+        };
 
-                default:
-                    return 0;
-                    break;
-            }
-        }
-
-        public int R(char c)
+        private static readonly Dictionary<char, int> R = new()
         {
-            switch (c)
-            {
-                case '+':
-                    return -1;
-                    break;
-                case '-':
-                    return -1;
-                    break;
-                case '*':
-                    return -1;
-                    break;
-                default:
-                    return 0;
-                    break;
-            }
-        }
+            { '+', -1 },
+            { '-', -1 },
+            { '*', 0 },
+        };
 
         public string infixToPostfix()
         {
@@ -103,23 +59,16 @@ namespace FMUSI
             {
                 if (Char.IsLetter(symbol))
                 {
-                    if (isLastSymbol)
+                    if (isLastSymbol || isLastCloseBracket || isLastKleeneStar)
                     {
                         this.regex = this.regex.Insert(i, "-");
+                        i++;
                     }
-                    else if (isLastCloseBracket)
-                    {
-                        this.regex = this.regex.Insert(i, "-");
-                    }
-                    else if (isLastKleeneStar)
-                    {
-                        this.regex = this.regex.Insert(i, "-");
-                    }
+
                     isLastSymbol = true;
                     isLastCloseBracket = false;
                     isLastOpenBracket = false;
-                    isLastKleeneStar = false;
-                    i++;
+                    isLastKleeneStar = false;   
                 }
                 else if (symbol == '(')
                 {
@@ -170,14 +119,14 @@ namespace FMUSI
                 }
                 else
                 {
-                    while (stack.Count != 0 && (IPR(next) <= SPR(stack.Peek())))
+                    while (stack.Count != 0 && (IPR[next] <= SPR[stack.Peek()]))
                     {
                         x = stack.Pop();
                         result += x;
-                        rank += R(x);
+                        rank += R[x];
                         if (rank < 1)
                         {
-               //                    throw new Exception("Nekorektan regex!");
+                          throw new Exception("Nekorektan regex!");
                         }
 
                     }
@@ -196,11 +145,11 @@ namespace FMUSI
             {
                 x = stack.Pop();
                 result += x;
-                rank += R(x);
+                rank += R[x];
             }
             if (rank != 1)
             {
-          //      throw new Exception("Nekorektan regex!");
+              throw new Exception("Nekorektan regex!");
             }
             return result;
         }

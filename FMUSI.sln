@@ -5,7 +5,11 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FMUSI", "FMUSI\FMUSI.csproj", "{D84797FA-F731-4F72-B978-BC5A560D555E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegularLanguageAnalyser", "RegularLanguageAnalyser\RegularLanguageAnalyser.csproj", "{CE3B04D5-D712-48B6-AC8A-B2213194A7AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegularLanguageAnalyser", "RegularLanguageAnalyser\RegularLanguageAnalyser.csproj", "{CE3B04D5-D712-48B6-AC8A-B2213194A7AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DfaCodeGenerator", "DfaCodeGenerator\DfaCodeGenerator.csproj", "{310C9708-918F-42D3-AFE8-A40AD3350C8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMSI.Lib", "FMSI\FMSI.Lib.csproj", "{A556B568-BB68-46C5-9061-4826A2731A38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{CE3B04D5-D712-48B6-AC8A-B2213194A7AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE3B04D5-D712-48B6-AC8A-B2213194A7AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE3B04D5-D712-48B6-AC8A-B2213194A7AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{310C9708-918F-42D3-AFE8-A40AD3350C8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{310C9708-918F-42D3-AFE8-A40AD3350C8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{310C9708-918F-42D3-AFE8-A40AD3350C8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{310C9708-918F-42D3-AFE8-A40AD3350C8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A556B568-BB68-46C5-9061-4826A2731A38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A556B568-BB68-46C5-9061-4826A2731A38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A556B568-BB68-46C5-9061-4826A2731A38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A556B568-BB68-46C5-9061-4826A2731A38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

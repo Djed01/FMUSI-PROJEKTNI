@@ -7,14 +7,27 @@
   "targets": {
     ".NETCoreApp,Version=v6.0": {
       "FMUSI/1.0.0": {
+        "dependencies": {
+          "FMSI.Lib": "1.0.0"
+        },
         "runtime": {
           "FMUSI.dll": {}
+        }
+      },
+      "FMSI.Lib/1.0.0": {
+        "runtime": {
+          "FMSI.Lib.dll": {}
         }
       }
     }
   },
   "libraries": {
     "FMUSI/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "FMSI.Lib/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

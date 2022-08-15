@@ -1,4 +1,4 @@
-﻿using FMUSI;
+﻿using FMSI.Lib;
 
 /*Dfa dfa = new();
 dfa.StartState = "q0";
@@ -130,5 +130,6 @@ Dfa dfa = nfaToDfa.toDfa();
 dfa.PrintStates();*/
 
 RegularExpression regex = new RegularExpression("A * B + C * D");
-Dfa newNfa = regex.toDfa();
+Nfa newNfa = regex.toNfa();
+int i = 0;
 

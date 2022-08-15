@@ -1,4 +1,4 @@
-namespace FMUSI;
+namespace FMSI.Lib;
 
 public class Dfa : Automat
 {

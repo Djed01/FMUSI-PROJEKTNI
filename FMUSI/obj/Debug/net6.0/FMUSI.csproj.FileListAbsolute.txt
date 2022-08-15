@@ -28,3 +28,6 @@ C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\FMUSI\obj\Debug\net6.0\refint\FMU
 C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\FMUSI\obj\Debug\net6.0\FMUSI.pdb
 C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\FMUSI\obj\Debug\net6.0\FMUSI.genruntimeconfig.cache
 C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\FMUSI\obj\Debug\net6.0\ref\FMUSI.dll
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\FMUSI\bin\Debug\net6.0\FMSI.Lib.dll
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\FMUSI\bin\Debug\net6.0\FMSI.Lib.pdb
+C:\Users\AMG_Computers\Desktop\FMUSI-PROJEKTNI\FMUSI\obj\Debug\net6.0\FMUSI.csproj.CopyComplete

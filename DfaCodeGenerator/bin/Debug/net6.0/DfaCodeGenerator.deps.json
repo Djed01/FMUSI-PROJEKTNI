@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "DfaCodeGenerator/1.0.0": {
+        "dependencies": {
+          "FMSI.Lib": "1.0.0"
+        },
+        "runtime": {
+          "DfaCodeGenerator.dll": {}
+        }
+      },
+      "FMSI.Lib/1.0.0": {
+        "runtime": {
+          "FMSI.Lib.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "DfaCodeGenerator/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "FMSI.Lib/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
