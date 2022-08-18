@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FMUSI", "FMUSI\FMUSI.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegularLanguageAnalyser", "RegularLanguageAnalyser\RegularLanguageAnalyser.csproj", "{CE3B04D5-D712-48B6-AC8A-B2213194A7AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DfaCodeGenerator", "DfaCodeGenerator\DfaCodeGenerator.csproj", "{310C9708-918F-42D3-AFE8-A40AD3350C8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DfaCodeGenerator", "DfaCodeGenerator\DfaCodeGenerator.csproj", "{310C9708-918F-42D3-AFE8-A40AD3350C8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FMSI.Lib", "FMSI\FMSI.Lib.csproj", "{A556B568-BB68-46C5-9061-4826A2731A38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FMSI.Lib", "FMSI\FMSI.Lib.csproj", "{A556B568-BB68-46C5-9061-4826A2731A38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTests", "ProjectTests\ProjectTests.csproj", "{D91F5E74-D751-4D7B-872C-64B1CB0E68DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{A556B568-BB68-46C5-9061-4826A2731A38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A556B568-BB68-46C5-9061-4826A2731A38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A556B568-BB68-46C5-9061-4826A2731A38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D91F5E74-D751-4D7B-872C-64B1CB0E68DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D91F5E74-D751-4D7B-872C-64B1CB0E68DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D91F5E74-D751-4D7B-872C-64B1CB0E68DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D91F5E74-D751-4D7B-872C-64B1CB0E68DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

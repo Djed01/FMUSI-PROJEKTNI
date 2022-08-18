@@ -7,9 +7,14 @@ public class AutomatGraph
     private readonly HashSet<string> eStates;
     private readonly int[,] ms;
     private readonly ArrayList nodes = new();
-    public int start;
+    private int start;
     private string startState;
     private readonly bool[] visited;
+
+    public int getStart()
+    {
+        return start; 
+    }
 
     //Konstruktor grafa
     public AutomatGraph(string startState, Dictionary<(string, char), HashSet<string>> delta)
@@ -75,6 +80,7 @@ public class AutomatGraph
 
     public HashSet<string> getEStates()
     {
+        Array.Clear(visited, 0, visited.Length);
         return eStates;
     }
 }

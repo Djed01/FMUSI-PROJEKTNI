@@ -45,13 +45,16 @@ namespace FMSI.Lib
             string result = "";
             int rank = 0;
             char x;
+            int openBrackets = 0;
+            int closedBrackets = 0;
             // Brisemo nepotrebne spejsove
             this.regex = this.regex.Replace(" ", String.Empty);
             bool isLastSymbol = false;
             bool isLastCloseBracket = false;
             bool isLastOpenBracket = false;
             bool isLastKleeneStar = false;
-            int i = 0;
+            bool isLastPlus = false;
+            int i = -1;
 
             // Dodajemo specijalni znak konkatenacije -
             // Na odgovarajuca mjesta
@@ -61,14 +64,17 @@ namespace FMSI.Lib
                 {
                     if (isLastSymbol || isLastCloseBracket || isLastKleeneStar)
                     {
+                        if (i > this.regex.Length) { this.regex += " "; }
                         this.regex = this.regex.Insert(i, "-");
+                        this.regex = this.regex.Replace(" ", String.Empty);
                         i++;
                     }
-
+                    
                     isLastSymbol = true;
                     isLastCloseBracket = false;
                     isLastOpenBracket = false;
-                    isLastKleeneStar = false;   
+                    isLastKleeneStar = false;
+                    isLastPlus = false;
                 }
                 else if (symbol == '(')
                 {
@@ -81,34 +87,74 @@ namespace FMSI.Lib
                         this.regex = this.regex.Insert(i, "-");
                     }
                     i++;
+                    openBrackets++;
                     isLastSymbol = false;
                     isLastCloseBracket = false;
                     isLastOpenBracket = true;
                     isLastKleeneStar = false;
+                    isLastPlus = false;
                 }
                 else if (symbol == ')')
                 {
+                    if (isLastPlus)
+                    {
+                        throw new Exception("Unexpected character");
+                    }
+                    else if (isLastOpenBracket)
+                    {
+                        throw new Exception("Unexpected character");
+                    }
+                    closedBrackets++;
                     isLastCloseBracket = true;
                     isLastSymbol = false;
                     isLastOpenBracket = false;
                     isLastKleeneStar = false;
+                    isLastPlus = false;
                 }
                 else if (symbol == '*')
                 {
+                    if (isLastOpenBracket)
+                    {
+                        throw new Exception("Unexpected character on this position!");
+                    }
+                    else if (isLastPlus)
+                    {
+                        throw new Exception("Operator + can't be folowed by operator *");
+                    }
                     isLastSymbol = false;
                     isLastCloseBracket = false;
                     isLastOpenBracket = false;
                     isLastKleeneStar = true;
+                    isLastPlus = false;
                 }
-                else
+                else if(symbol == '+')
                 {
+                    if (isLastPlus)
+                    {
+                        throw new Exception("Operator + can't be folowed by another operator +");
+                    }
+                    else if (isLastOpenBracket)
+                    {
+                        throw new Exception("Unexpected character");
+                    }
                     isLastSymbol = false;
                     isLastCloseBracket = false;
                     isLastOpenBracket = false;
                     isLastKleeneStar = false;
+                    isLastPlus = true;
+                }
+                else
+                {
+                    throw new Exception("Undefined symbol");
+                    isLastSymbol = false;
+                    isLastCloseBracket = false;
+                    isLastOpenBracket = false;
+                    isLastKleeneStar = false;
+                    isLastPlus = false;
                 }
                 i++;
             }
+            if (openBrackets != closedBrackets) { throw new Exception("Unpaired brackets!"); }
             // Vrsimo konverziju iz infiksa u postfiks
             foreach (char next in this.regex)
             {
@@ -163,7 +209,8 @@ namespace FMSI.Lib
         // Postupak se ponavlja skroz dok ne iscitamo citav postfix
         public Nfa evaluatePostfix(string postfix)
         {
-            Dictionary<string, Nfa> set = new();
+            string pomRegex = "";
+            Dictionary<string, Nfa> map = new();
             Stack<string> result = new();
             Nfa newNfa = new();
             int i = 0;
@@ -180,7 +227,17 @@ namespace FMSI.Lib
                     newNfa.AddFinalState("q" + (i - 1));
                     newNfa.AddSymbolToAlphabet(x);
                     newNfa.AddTransition("q" + (i - 2), x, "q" + (i - 1));
-                    set.Add(x.ToString(), new Nfa(newNfa));
+                    if (map.ContainsKey(x.ToString()))
+                    {
+                        map.Remove(x.ToString());
+                        map.Add(x.ToString(), new Nfa(newNfa));
+                        pomRegex = x.ToString();
+                    }
+                    else
+                    {
+                        map.Add(x.ToString(), new Nfa(newNfa));
+                        pomRegex = x.ToString();
+                    }
 
                     newNfa.states.Clear();
                     newNfa.finalStates.Clear();
@@ -193,9 +250,21 @@ namespace FMSI.Lib
                 {
 
                     string oprnd = result.Pop();
-                    newNfa = set[(oprnd)].KleenovaZvijezda();
+                    newNfa = map[(oprnd)].KleenovaZvijezda();
                     rez = oprnd.ToString() + x.ToString();
-                    set.Add(oprnd.ToString()+ x.ToString(), new Nfa(newNfa));
+                    if (map.ContainsKey(oprnd.ToString() + x.ToString()))
+                    {
+                        map.Remove(oprnd.ToString() + x.ToString());
+                        map.Add(oprnd.ToString() + x.ToString(), new Nfa(newNfa));
+                        pomRegex = oprnd.ToString() + x.ToString();
+                    }
+                    else
+                    {
+                        map.Add(oprnd.ToString() + x.ToString(), new Nfa(newNfa));
+                        pomRegex = oprnd.ToString() + x.ToString();
+                    }
+                  
+                    pomRegex = oprnd.ToString() + x.ToString();
                     result.Push(rez);
                     newNfa.states.Clear();
                     newNfa.finalStates.Clear();
@@ -211,8 +280,9 @@ namespace FMSI.Lib
                     string oprnd1 = result.Pop();
 
                     rez = oprnd1.ToString() + x.ToString() + oprnd2.ToString();
-                    newNfa = set[(oprnd2)].Unija(set[(oprnd1)]);
-                    set.Add(rez, new Nfa(newNfa));
+                    newNfa = map[(oprnd2)].Unija(map[(oprnd1)]);
+                    map.Add(rez, new Nfa(newNfa));
+                    pomRegex = rez;
                     result.Push(rez);
                     newNfa.states.Clear();
                     newNfa.finalStates.Clear();
@@ -226,8 +296,18 @@ namespace FMSI.Lib
                     string oprnd1 = result.Pop();
 
                     rez = oprnd1.ToString() + x.ToString() + oprnd2.ToString();
-                    newNfa = set[(oprnd1)].Spajanje(set[(oprnd2)]);
-                    set.Add(rez, new Nfa(newNfa));
+                    newNfa = map[(oprnd1)].Spajanje(map[(oprnd2)]);
+                    if (map.ContainsKey(rez))
+                    {
+                        map.Remove(rez);
+                        map.Add(rez, new Nfa(newNfa));
+                        pomRegex = rez;
+                    }
+                    else
+                    {
+                        map.Add(rez, new Nfa(newNfa));
+                        pomRegex = rez;
+                    }
                     result.Push(rez);
                     newNfa.states.Clear();
                     newNfa.finalStates.Clear();
@@ -245,7 +325,7 @@ namespace FMSI.Lib
             {
                 throw new Exception();
             }
-            return set[(this.regex.Replace("(",String.Empty).Replace(")",String.Empty))];
+            return map[pomRegex];
 
         }
 

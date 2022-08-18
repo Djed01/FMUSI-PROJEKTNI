@@ -22,7 +22,7 @@ public class Dfa : Automat
                 currentState = delta[(currentState, symbol)];
             }
             catch (KeyNotFoundException)
-                //Ukoliko je prosledjen neodgovarajuci string
+            //Ukoliko je prosledjen neodgovarajuci string
             {
                 return false;
             }

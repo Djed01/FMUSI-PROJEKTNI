@@ -71,7 +71,7 @@ public class Nfa : Automat
     {
         //Kreira se pomocni graf na osnovu kojeg pronalazimo sve epsilon prelaze
         var automatGraph = new AutomatGraph(StartState, delta);
-        automatGraph.dfs(automatGraph.start);
+        automatGraph.dfs(automatGraph.getStart());
         var eStates = automatGraph.getEStates();
         var tempSet = new HashSet<string>();
         //Za svaki simbol iz ulaza provjeravamo u koja stanja mozemo preci pocevsi od dobijenih epsilon stanja
@@ -88,7 +88,7 @@ public class Nfa : Automat
             foreach (var var in tempSet)
             {
                 automatGraph.setStart(var);
-                automatGraph.dfs(automatGraph.start);
+                automatGraph.dfs(automatGraph.getStart());
                 eStates = automatGraph.getEStates();
             }
 
@@ -103,7 +103,7 @@ public class Nfa : Automat
         return false;
     }
 
-    public void popuniStanjaIPrelazeAutomata(Nfa newNfa, Nfa other)
+    private void popuniStanjaIPrelazeAutomata(Nfa newNfa, Nfa other)
     {
         // Dodajemo stanja i simbole u novi automat
         foreach (var state1 in states)
@@ -174,6 +174,9 @@ public class Nfa : Automat
 
     public Nfa Unija(Nfa other)
     {
+        // Dodajemo jedno novo pocetno stanje i jedno zavrsno stanje
+        // Te iz novokreiranog pocetnog stanja dodamo epsilon prelaze na pocetna stanja automata
+        // A iz finalnih stanja automata dodamo epsilon prelaze u novo finalno stanje
         Nfa newNfa = new();
         newNfa.AddState("r" + i++);
         newNfa.AddState("f" + (i - 1));
@@ -196,8 +199,14 @@ public class Nfa : Automat
         return newNfa;
     }
 
+    public Nfa Unija(Dfa dfa)
+    {
+        return this.Unija(dfa.toNfa());
+    }
+
     public Nfa Presjek(Nfa other)
     {
+        // NEMA SMISLA
         Nfa newNfa = new();
         newNfa.StartState = StartState + other.StartState;
 
@@ -234,6 +243,7 @@ public class Nfa : Automat
 
     public Nfa SimetricnaRazlika(Nfa other)
     {
+        // NEMA SMISLA
         Nfa newNfa = new();
         newNfa.StartState = StartState + other.StartState;
 
@@ -374,15 +384,15 @@ public class Nfa : Automat
                 }
             }
         }
-        // Dodajemo novo stanje q
+        // Dodajemo novo stanje r
         newNfa.AddState("r"+i++);
         HashSet<string> tempSet = new();
         newNfa.delta.Add(("r"+(i-1), EPSILON), tempSet);
-        // Iz novog stanja q dodajemo epsilon prelaz u pocetno stanje trenutnog automata
+        // Iz novog stanja r dodajemo epsilon prelaz u pocetno stanje trenutnog automata
         newNfa.delta[("r"+(i-1), EPSILON)].Add(this.StartState);
         newNfa.StartState = "r"+(i-1);
-        // Stanje q smo postavili kao pocetno stanje
-        // Za svako finalno stanje automata dodajemo epsilon prelaz u novokreirano stanje q
+        // Stanje r smo postavili kao pocetno stanje
+        // Za svako finalno stanje automata dodajemo epsilon prelaz u novokreirano stanje r
         foreach (var state in this.finalStates)
         {
             if (!newNfa.delta.ContainsKey((state, EPSILON)))
@@ -416,6 +426,8 @@ public class Nfa : Automat
             foreach (char symbol in alphabet)
             {
                 if (delta.ContainsKey((temp, symbol)))
+                {
+                    if (symbol == EPSILON) shortestPath--;
                     foreach (string state in delta[(temp, symbol)])
                     {
                         if (finalStates.Contains(state))
@@ -430,6 +442,7 @@ public class Nfa : Automat
                             queue.Enqueue(state);
                         }
                     }
+                }
             }
             // Povecavamo brojac
             shortestPath++;
@@ -453,7 +466,7 @@ public class Nfa : Automat
         // stanja do kojih dolazimo epsilon prelazima
         // Pocetno stanje DKA je epsilon clousure pocetnog stanja e-NKA
         var automatGraph = new AutomatGraph(this.StartState, delta);
-        automatGraph.dfs(automatGraph.start);
+        automatGraph.dfs(automatGraph.getStart());
         var eStates = automatGraph.getEStates();
         newDfa.StartState = String.Join("", eStates); // Spajamo HashSet stanja u string
         newDfa.AddState(String.Join("", eStates));
@@ -486,7 +499,7 @@ public class Nfa : Automat
                     // I dodamo ih u set novih epsilon stanja
                     var tempAutomatGraph = new AutomatGraph(tempState, delta);
                     tempAutomatGraph.setStart(tempState);
-                    tempAutomatGraph.dfs(tempAutomatGraph.start);
+                    tempAutomatGraph.dfs(tempAutomatGraph.getStart());
                     var tempEStates = tempAutomatGraph.getEStates();
                     foreach (var temp in tempEStates)
                     {
