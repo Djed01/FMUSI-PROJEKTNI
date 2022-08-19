@@ -206,83 +206,29 @@ public class Nfa : Automat
 
     public Nfa Presjek(Nfa other)
     {
-        // NEMA SMISLA
-        Nfa newNfa = new();
-        newNfa.StartState = StartState + other.StartState;
-
-        foreach (var state1 in states)
-            foreach (var state2 in other.states)
-            {
-                var newState = state1 + state2;
-                newNfa.states.Add(newState);
-
-                //Ako su oba stanja finalna dodajemo novo stanje kao finalno u novi automat
-                if (finalStates.Contains(state1) && other.finalStates.Contains(state2)) newNfa.finalStates.Add(newState);
-
-                // Popunjavamo funkciju prelaza sa novim stanjima
-                foreach (var symbol in alphabet)
-                    if (delta.ContainsKey((state1, symbol)))
-                        foreach (var temp1 in delta[(state1, symbol)])
-                            if (other.delta.ContainsKey((state2, symbol)))
-                                foreach (var temp2 in other.delta[(state2, symbol)])
-                                    if (!newNfa.delta.ContainsKey((newState, symbol)))
-                                    {
-                                        HashSet<string> set = new();
-                                        newNfa.delta.Add((newState, symbol), set);
-                                        newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
-                                        newNfa.AddSymbolToAlphabet(symbol);
-                                    }
-                                    else
-                                    {
-                                        newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
-                                        newNfa.AddSymbolToAlphabet(symbol);
-                                    }
-            }
-        return newNfa;
+        // Pretvaramo u DKA te vrsimo operaciju
+        Dfa newDfa = this.toDfa().Presjek(other.toDfa());
+       // Vracamo u eNKA zboh ulancavanja operacija
+        return newDfa.toNfa();
+    }
+    
+    public Nfa Presjek(Dfa other)
+    {
+        Dfa newDfa = this.toDfa().Presjek(other);
+        return newDfa.toNfa();
     }
 
     public Nfa SimetricnaRazlika(Nfa other)
     {
-        // NEMA SMISLA
-        Nfa newNfa = new();
-        newNfa.StartState = StartState + other.StartState;
-
-        foreach (var state1 in states)
-            foreach (var state2 in other.states)
-            {
-                var newState = state1 + state2;
-                newNfa.states.Add(newState);
-
-                // Ako jedan automat sadrzi stanje a drugi ne sadrzi dodajemo novo stanje u novi automat
-                if ((finalStates.Contains(state1) &&
-                     other.finalStates.Contains(state2) == false) ||
-                    (finalStates.Contains(state1) == false && other.finalStates.Contains(state2)))
-                    newNfa.finalStates.Add(newState);
-
-                // Popunjavamo funkciju prelaza sa novim stanjima
-                foreach (var symbol in alphabet)
-                    if (delta.ContainsKey((state1, symbol)))
-                        foreach (var temp1 in delta[(state1, symbol)])
-                            if (other.delta.ContainsKey((state2, symbol)))
-                                foreach (var temp2 in other.delta[(state2, symbol)])
-                                    if (!newNfa.delta.ContainsKey((newState, symbol)))
-                                    {
-                                        HashSet<string> set = new();
-                                        newNfa.delta.Add((newState, symbol), set);
-                                        newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
-                                        newNfa.AddSymbolToAlphabet(symbol);
-                                    }
-                                    else
-                                    {
-                                        newNfa.delta[(newState, symbol)].Add(temp1 + temp2);
-                                        newNfa.AddSymbolToAlphabet(symbol);
-                                    }
-            }
-        return newNfa;
+        // Pretvaramo u DKA te vrsimo operaciju
+        Dfa newDfa = this.toDfa().SimetricnaRazlika(other.toDfa());
+        // Vracamo u eNKA zbog ulancavanja operacija
+        return newDfa.toNfa();
     }
     public Nfa SimetricnaRazlika(Dfa other)
     {
-        return this.SimetricnaRazlika(other.toNfa());
+        Dfa newDfa = this.toDfa().SimetricnaRazlika(other);
+        return newDfa.toNfa();
     }
 
     public Nfa Spajanje(Nfa other)

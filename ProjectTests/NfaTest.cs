@@ -195,6 +195,36 @@ namespace ProjectTests
             Assert.IsTrue(newDfa.Accepts("a"));
             Assert.IsTrue(newDfa.Accepts("baba"));
             Assert.IsFalse(newDfa.Accepts("aab"));
+
+            Nfa nfa2 = new();
+            nfa2.StartState = "q0";
+            nfa2.AddState("q0");
+            nfa2.AddState("q1");
+            nfa2.AddState("q2");
+            nfa2.AddState("q3");
+            nfa2.AddState("q4");
+            nfa2.AddState("q5");
+            nfa2.AddSymbolToAlphabet('a');
+            nfa2.AddSymbolToAlphabet('b');
+            nfa2.AddSymbolToAlphabet('$');
+            nfa2.AddTransition("q0",'a',"q1");
+            nfa2.AddTransition("q0", 'b', "q0");
+            nfa2.AddTransition("q1", 'b', "q1");
+            nfa2.AddTransition("q1", '$', "q2");
+            nfa2.AddTransition("q1", '$', "q4");
+            nfa2.AddTransition("q2", 'a', "q2");
+            nfa2.AddTransition("q2", 'b', "q5");
+            nfa2.AddTransition("q4", 'b', "q3");
+            nfa2.AddTransition("q3", 'a', "q4");
+            nfa2.AddTransition("q4", 'a', "q5");
+            nfa2.AddFinalState("q5");
+
+            Dfa newDfa2 = nfa2.toDfa();
+
+            Assert.IsTrue(newDfa2.Accepts("abbab"));
+            Assert.IsTrue(newDfa2.Accepts("baaaaab"));
+            Assert.IsFalse(newDfa2.Accepts("abbababa"));
+            Assert.IsFalse(newDfa2.Accepts("baabab"));
         }
 
         [Test]
@@ -263,6 +293,173 @@ namespace ProjectTests
             Assert.IsTrue(newNfa.Accepts("baa"));
             Assert.IsFalse(newNfa.Accepts("baac"));
             Assert.IsTrue(newNfa.Accepts("c"));
+        }
+
+        [Test]
+        public void presjekTest()
+        {
+            Nfa nfa = new();
+            nfa.StartState = "q0";
+            nfa.AddState("q0");
+            nfa.AddState("q1");
+            nfa.AddState("q2");
+            nfa.AddSymbolToAlphabet('a');
+            nfa.AddSymbolToAlphabet('b');
+            nfa.AddSymbolToAlphabet('$');
+            nfa.AddTransition("q0", 'b', "q1");
+            nfa.AddTransition("q0", '$', "q2");
+            nfa.AddTransition("q1", 'a', "q1");
+            nfa.AddTransition("q1", 'a', "q2");
+            nfa.AddTransition("q1", 'b', "q2");
+            nfa.AddTransition("q2", 'a', "q0");
+            nfa.AddFinalState("q0");
+
+            Nfa nfa2 = new();
+            nfa2.StartState = "p0";
+            nfa2.AddState("p0");
+            nfa2.AddState("p1");
+            nfa2.AddSymbolToAlphabet('a');
+            nfa2.AddSymbolToAlphabet('b');
+            nfa2.AddSymbolToAlphabet('$');
+            nfa2.AddTransition("p0", 'a', "p0");
+            nfa2.AddTransition("p0", '$', "p1");
+            nfa2.AddTransition("p1", 'b', "p1");
+            nfa2.AddFinalState("p0");
+
+            Nfa newNfa = nfa.Presjek(nfa2);
+
+            Assert.IsTrue(newNfa.Accepts("aaaaaa"));
+            Assert.IsFalse(newNfa.Accepts("aaab"));
+            Assert.IsFalse(newNfa.Accepts("ba"));
+        }
+
+        [Test]
+        public void simetricnaRazlikaTest()
+        {
+            Nfa nfa = new();
+            nfa.StartState = "q0";
+            nfa.AddState("q0");
+            nfa.AddState("q1");
+            nfa.AddState("q2");
+            nfa.AddSymbolToAlphabet('a');
+            nfa.AddSymbolToAlphabet('b');
+            nfa.AddSymbolToAlphabet('$');
+            nfa.AddTransition("q0", 'b', "q1");
+            nfa.AddTransition("q0", '$', "q2");
+            nfa.AddTransition("q1", 'a', "q1");
+            nfa.AddTransition("q1", 'a', "q2");
+            nfa.AddTransition("q1", 'b', "q2");
+            nfa.AddTransition("q2", 'a', "q0");
+            nfa.AddFinalState("q0");
+
+            Nfa nfa2 = new();
+            nfa2.StartState = "p0";
+            nfa2.AddState("p0");
+            nfa2.AddState("p1");
+            nfa2.AddSymbolToAlphabet('a');
+            nfa2.AddSymbolToAlphabet('b');
+            nfa2.AddSymbolToAlphabet('$');
+            nfa2.AddTransition("p0", 'a', "p0");
+            nfa2.AddTransition("p0", '$', "p1");
+            nfa2.AddTransition("p1", 'b', "p1");
+            nfa2.AddFinalState("p0");
+
+            Nfa newNfa = nfa.SimetricnaRazlika(nfa2);
+
+            Assert.IsTrue(newNfa.Accepts("baa"));
+            Assert.IsFalse(newNfa.Accepts("aaaaaa"));
+            Assert.IsFalse(newNfa.Accepts("aaab"));
+            Assert.IsFalse(newNfa.Accepts("ba"));
+        }
+
+        [Test]
+        public void presjekSaDfaTest()
+        {
+                Dfa dfa = new();
+                dfa.StartState = "q0";
+
+                dfa.AddSymbolToAlphabet('a');
+                dfa.AddSymbolToAlphabet('b');
+
+                dfa.AddState("q0");
+                dfa.AddState("q1");
+                dfa.AddState("q2");
+
+                dfa.AddTransition("q0", 'a', "q1");
+                dfa.AddTransition("q0", 'b', "q0");
+                dfa.AddTransition("q1", 'b', "q1");
+                dfa.AddTransition("q1", 'a', "q2");
+                dfa.AddTransition("q2", 'b', "q1");
+                dfa.AddTransition("q2", 'a', "q2");
+
+                dfa.AddFinalState("q2");
+
+                Nfa nfa = new();
+                nfa.StartState = "p0";
+                nfa.AddSymbolToAlphabet('a');
+                nfa.AddSymbolToAlphabet('b');
+                nfa.AddSymbolToAlphabet('$');
+                nfa.AddState("p0");
+                nfa.AddState("p1");
+                nfa.AddState("p2");
+
+                nfa.AddTransition("p0", 'a', "p1");
+                nfa.AddTransition("p0", 'b', "p1");
+                nfa.AddTransition("p1", '$', "p2");
+                nfa.AddTransition("p1", 'a', "p0");
+                nfa.AddTransition("p1", 'b', "p2");
+                nfa.AddTransition("p2", 'a', "p2");
+                nfa.AddTransition("p2", 'b', "p2");
+                nfa.AddFinalState("p2");
+
+                Nfa newNfa = nfa.Presjek(dfa);
+
+                Assert.IsTrue(newNfa.Accepts("ababaabbabba"));     
+        }
+
+        [Test]
+        public void simetricnaRazlikaSaDfa()
+        {
+            Dfa dfa = new();
+            dfa.StartState = "q0";
+
+            dfa.AddSymbolToAlphabet('a');
+            dfa.AddSymbolToAlphabet('b');
+
+            dfa.AddState("q0");
+            dfa.AddState("q1");
+            dfa.AddState("q2");
+
+            dfa.AddTransition("q0", 'a', "q1");
+            dfa.AddTransition("q0", 'b', "q0");
+            dfa.AddTransition("q1", 'b', "q1");
+            dfa.AddTransition("q1", 'a', "q2");
+            dfa.AddTransition("q2", 'b', "q1");
+            dfa.AddTransition("q2", 'a', "q2");
+
+            dfa.AddFinalState("q2");
+
+            Nfa nfa = new();
+            nfa.StartState = "p0";
+            nfa.AddSymbolToAlphabet('a');
+            nfa.AddSymbolToAlphabet('b');
+            nfa.AddSymbolToAlphabet('$');
+            nfa.AddState("p0");
+            nfa.AddState("p1");
+            nfa.AddState("p2");
+
+            nfa.AddTransition("p0", 'a', "p1");
+            nfa.AddTransition("p0", 'b', "p1");
+            nfa.AddTransition("p1", '$', "p2");
+            nfa.AddTransition("p1", 'a', "p0");
+            nfa.AddTransition("p1", 'b', "p2");
+            nfa.AddTransition("p2", 'a', "p2");
+            nfa.AddTransition("p2", 'b', "p2");
+            nfa.AddFinalState("p2");
+
+            Nfa newNfa = nfa.SimetricnaRazlika(dfa);
+
+            Assert.IsTrue(newNfa.Accepts("ab"));
         }
     }
 }
