@@ -10,6 +10,14 @@ public class Dfa : Automat
     }
     public void AddTransition(string currentState, char symbol, string nextState)
     {
+        if(!(this.states.Contains(currentState)) || !(this.states.Contains(nextState)))
+        {
+            throw new Exception("Undefined states!");
+        }
+        if (!this.alphabet.Contains(symbol))
+        {
+            throw new Exception("Undefined symbol!");
+        }
         delta[(currentState, symbol)] = nextState;
     }
 
@@ -32,6 +40,10 @@ public class Dfa : Automat
 
     public Dfa SimetricnaRazlika(Dfa other)
     {
+        if (!this.alphabet.SetEquals(other.alphabet))
+        {
+            throw new Exception("Alphabet is not the same in both!");
+        }
         Dfa newDfa = new();
 
         newDfa.StartState = StartState + other.StartState;
@@ -51,8 +63,18 @@ public class Dfa : Automat
                 // Popunjavamo funkciju prelaza sa novim stanjima
                 foreach (var symbol in alphabet)
                 {
-                    newDfa.AddSymbolToAlphabet(symbol);  
-                    newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
+                    newDfa.AddSymbolToAlphabet(symbol);
+                    if (delta.ContainsKey((state1, symbol)) && !(other.delta.ContainsKey((state2, symbol))))
+                    {
+                        newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + state2;
+                    } else if (!delta.ContainsKey((state1, symbol)) && (other.delta.ContainsKey((state2, symbol))))
+                    {
+                        newDfa.delta[(newState, symbol)] = state1 + other.delta[(state2, symbol)];
+                    }
+                    else 
+                    { 
+                        newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
+                    }
                 }
         }
 
@@ -67,6 +89,10 @@ public class Dfa : Automat
 
     public Dfa Unija(Dfa other)
     {
+        if (!this.alphabet.SetEquals(other.alphabet))
+        {
+            throw new Exception("Alphabet is not the same in both!");
+        }
         Dfa newDfa = new();
         newDfa.StartState = StartState + other.StartState;
 
@@ -83,7 +109,18 @@ public class Dfa : Automat
                 foreach (var symbol in alphabet)
                 {
                     newDfa.AddSymbolToAlphabet(symbol);
-                    newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
+                    if (delta.ContainsKey((state1, symbol)) && !(other.delta.ContainsKey((state2, symbol))))
+                    {
+                        newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + state2;
+                    }
+                    else if (!delta.ContainsKey((state1, symbol)) && (other.delta.ContainsKey((state2, symbol))))
+                    {
+                        newDfa.delta[(newState, symbol)] = state1 + other.delta[(state2, symbol)];
+                    }
+                    else
+                    {
+                        newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
+                    }
                 }
         }
 
@@ -97,6 +134,10 @@ public class Dfa : Automat
 
     public Dfa Presjek(Dfa other)
     {
+        if (!this.alphabet.SetEquals(other.alphabet))
+        {
+            throw new Exception("Alphabet is not the same in both!");
+        }
         Dfa newDfa = new();
         newDfa.StartState = StartState + other.StartState;
 
@@ -113,7 +154,18 @@ public class Dfa : Automat
                 foreach (var symbol in alphabet)
                 {
                     newDfa.AddSymbolToAlphabet(symbol);
-                    newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
+                    if (delta.ContainsKey((state1, symbol)) && !(other.delta.ContainsKey((state2, symbol))))
+                    {
+                        newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + state2;
+                    }
+                    else if (!delta.ContainsKey((state1, symbol)) && (other.delta.ContainsKey((state2, symbol))))
+                    {
+                        newDfa.delta[(newState, symbol)] = state1 + other.delta[(state2, symbol)];
+                    }
+                    else
+                    {
+                        newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
+                    }
                 }
         }
 
@@ -242,16 +294,16 @@ public class Dfa : Automat
         {
             newNfa.AddSymbolToAlphabet(symbol);
         }
-        // Popunjavanje finalnih stanja
-        foreach(var state in this.finalStates)
-        {
-            newNfa.AddFinalState(state);
-        }
         // Dodavanje stanja
-        foreach(var state in this.states)
+        foreach (var state in this.states)
         {
             newNfa.AddState(state);
         }
+        // Popunjavanje finalnih stanja
+        foreach (var state in this.finalStates)
+        {
+            newNfa.AddFinalState(state);
+        }     
         // Popunjavanje funkcije prelaza (delta)
         foreach (var state in this.states)
         {

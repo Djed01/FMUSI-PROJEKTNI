@@ -64,7 +64,7 @@ namespace FMSI.Lib
                 {
                     if (isLastSymbol || isLastCloseBracket || isLastKleeneStar)
                     {
-                        if (i > this.regex.Length) { this.regex += " "; }
+                      //  if (i > this.regex.Length) { this.regex += " "; }
                         this.regex = this.regex.Insert(i, "-");
                         this.regex = this.regex.Replace(" ", String.Empty);
                         i++;

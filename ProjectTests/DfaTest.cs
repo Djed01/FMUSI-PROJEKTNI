@@ -102,6 +102,10 @@ namespace ProjectTests
 
             Assert.IsTrue(unija.Accepts("aab"));
             Assert.IsFalse(unija.Accepts("aaaaaaa"));
+
+            dfa2.AddSymbolToAlphabet('c');
+            Dfa newDfa = new();
+            Assert.Throws<Exception>(() => newDfa = dfa1.Unija(dfa2));
         }
 
         [Test]
@@ -163,6 +167,10 @@ namespace ProjectTests
             Assert.IsFalse(newDfa.Accepts("abbbaabba"));
             Assert.IsTrue(newDfa.Accepts("abaa"));
             Assert.IsFalse(newDfa.Accepts("babbba"));
+
+            dfa2.AddSymbolToAlphabet('c');
+            Dfa newDfa2 = new();
+            Assert.Throws<Exception>(() => newDfa2 = dfa1.Presjek(dfa2));
         }
 
         [Test]
@@ -224,6 +232,10 @@ namespace ProjectTests
             Assert.IsFalse(newDfa.Accepts("babbba"));
             Assert.IsTrue(newDfa.Accepts("aabbab"));
             Assert.IsFalse(newDfa.Accepts("abbbaab"));
+
+            dfa2.AddSymbolToAlphabet('c');
+            Dfa newDfa2 = new();
+            Assert.Throws<Exception>(() => newDfa2 = dfa1.SimetricnaRazlika(dfa2));
         }
 
         [Test]
@@ -566,6 +578,83 @@ namespace ProjectTests
             Dfa newDfa = dfa.SimetricnaRazlika(nfa);
 
             Assert.IsTrue(newDfa.Accepts("ab"));
+        }
+
+        [Test]
+        public void multipleTests()
+        {
+            Dfa dfa_1 = new();
+            Dfa dfa_2 = new();
+
+            dfa_1.StartState = "q0";
+            dfa_1.AddState("q0");
+            dfa_1.AddState("q1");
+            dfa_1.AddState("q2");
+            dfa_1.AddSymbolToAlphabet('a');
+            dfa_1.AddSymbolToAlphabet('b');
+            dfa_1.AddTransition("q0", 'a', "q0");
+            dfa_1.AddTransition("q0", 'b', "q1");
+            dfa_1.AddTransition("q1", 'a', "q2");
+            dfa_1.AddTransition("q1", 'b', "q2");
+            dfa_1.AddTransition("q2", 'a', "q2");
+            dfa_1.AddTransition("q2", 'a', "q2");
+            dfa_1.AddFinalState("q1");
+
+            dfa_2.StartState = "q3";
+            dfa_2.AddState("q3");
+            dfa_2.AddState("q4");
+            dfa_2.AddSymbolToAlphabet('a');
+            dfa_2.AddSymbolToAlphabet('b');
+            dfa_2.AddTransition("q3", 'a', "q4");
+            dfa_2.AddTransition("q3", 'b', "q3");
+            dfa_2.AddTransition("q4", 'a', "q3");
+            dfa_2.AddTransition("q4", 'b', "q4");
+            dfa_2.AddFinalState("q4");
+
+            Dfa unija = dfa_1.Unija(dfa_2);
+            Dfa presjek = dfa_1.Presjek(dfa_2);
+            Dfa simetricnaRazlika = dfa_1.SimetricnaRazlika(dfa_2);
+            Dfa spajanje = dfa_1.Spajanje(dfa_2);
+            Dfa komplement2 = dfa_2.Komplement();
+            Dfa kleenovaZvijezda = dfa_1.KleenovaZvijezda();
+            Dfa ulancavanje = dfa_1.Presjek(dfa_2).KleenovaZvijezda();
+
+            Assert.IsTrue(unija.Accepts("abb"));
+            Assert.IsTrue(unija.Accepts("babbb"));
+            Assert.IsTrue(unija.Accepts("aaaaa"));
+            Assert.IsFalse(unija.Accepts("ababb"));
+            Assert.IsFalse(unija.Accepts("baabb"));
+
+            Assert.IsTrue(presjek.Accepts("aaab"));
+            Assert.IsTrue(presjek.Accepts("ab"));
+            Assert.IsFalse(presjek.Accepts("aba"));
+            Assert.IsFalse(presjek.Accepts("bba"));
+
+            Assert.IsTrue(simetricnaRazlika.Accepts("aaa"));
+            Assert.IsTrue(simetricnaRazlika.Accepts("babb"));
+            Assert.IsFalse(simetricnaRazlika.Accepts("ab"));
+            Assert.IsFalse(simetricnaRazlika.Accepts("bbb"));
+
+            Assert.IsTrue(spajanje.Accepts("abbba"));
+            Assert.IsTrue(spajanje.Accepts("bba"));
+            Assert.IsFalse(spajanje.Accepts("bbbb"));
+            Assert.IsFalse(spajanje.Accepts("ababa"));
+
+            Assert.IsTrue(komplement2.Accepts("baba"));
+            Assert.IsFalse(komplement2.Accepts("bbabb"));
+
+            Assert.IsTrue(kleenovaZvijezda.Accepts("babab"));
+            Assert.IsFalse(kleenovaZvijezda.Accepts("baba"));
+
+            Assert.That(dfa_1.najkracaRijec(), Is.EqualTo(1));
+            Assert.That(dfa_2.najkracaRijec(), Is.EqualTo(1));
+
+
+            Assert.IsTrue(ulancavanje.Accepts("aaabaaab"));
+            Assert.IsTrue(ulancavanje.Accepts("ababab"));
+            Assert.IsFalse(ulancavanje.Accepts("abaaba"));
+            Assert.IsFalse(ulancavanje.Accepts("aba"));
+   
         }
     }
 }

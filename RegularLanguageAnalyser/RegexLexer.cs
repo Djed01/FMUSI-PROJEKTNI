@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RegularLanguageAnalyser
 {
-    internal class RegexLexer : Lexer
+    public class RegexLexer : Lexer
     {
         public RegexLexer(string path) : base(path) { }
         // Bool promjenljive za provjeru posljednjeg simbola

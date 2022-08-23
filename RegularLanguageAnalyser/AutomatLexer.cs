@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RegularLanguageAnalyser
 {
-    internal class AutomatLexer : Lexer
+    public class AutomatLexer : Lexer
     {
         // Bool promjenljive kako bi znali sta citamo
         private bool isStates = false;

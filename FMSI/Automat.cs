@@ -20,6 +20,10 @@ public abstract class Automat
 
     public void AddFinalState(string state)
     {
+        if (!states.Contains(state))
+        {
+            throw new Exception("Undefined state!");
+        }
         finalStates.Add(state);
     }
 

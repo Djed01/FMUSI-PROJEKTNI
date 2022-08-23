@@ -190,6 +190,10 @@ namespace ProjectTests
 
             nfa.AddFinalState("q0");
 
+            Assert.IsTrue(nfa.Accepts("a"));
+            Assert.IsTrue(nfa.Accepts("baba"));
+            Assert.IsFalse(nfa.Accepts("aab"));
+
             Dfa newDfa = nfa.toDfa();
 
             Assert.IsTrue(newDfa.Accepts("a"));
@@ -218,6 +222,11 @@ namespace ProjectTests
             nfa2.AddTransition("q3", 'a', "q4");
             nfa2.AddTransition("q4", 'a', "q5");
             nfa2.AddFinalState("q5");
+
+            Assert.IsTrue(nfa2.Accepts("abbab"));
+            Assert.IsTrue(nfa2.Accepts("baaaaab"));
+            Assert.IsFalse(nfa2.Accepts("abbababa"));
+            Assert.IsFalse(nfa2.Accepts("baabab"));
 
             Dfa newDfa2 = nfa2.toDfa();
 
@@ -460,6 +469,56 @@ namespace ProjectTests
             Nfa newNfa = nfa.SimetricnaRazlika(dfa);
 
             Assert.IsTrue(newNfa.Accepts("ab"));
+        }
+
+        [Test]
+        public void ulancavanjeTest()
+        {
+            Nfa nfa1 = new();
+            Nfa nfa2 = new();
+            Nfa nfa3 = new();
+
+            nfa1.StartState = "q0";
+            nfa1.AddState("q0");
+            nfa1.AddState("q1");
+            nfa1.AddState("q2");
+            nfa1.AddSymbolToAlphabet('a');
+            nfa1.AddSymbolToAlphabet('b');
+            nfa1.AddSymbolToAlphabet('$');
+            nfa1.AddTransition("q0",'$',"q2");
+            nfa1.AddTransition("q0", 'b', "q1");
+            nfa1.AddTransition("q1", 'a', "q1");
+            nfa1.AddTransition("q1", 'b', "q2");
+            nfa1.AddTransition("q1", 'a', "q2");
+            nfa1.AddTransition("q2", 'a', "q0");
+            nfa1.AddFinalState("q2");
+
+            nfa2.StartState = "p0";
+            nfa2.AddState("p0");
+            nfa2.AddState("p1");
+            nfa2.AddState("p2");
+            nfa2.AddSymbolToAlphabet('a');
+            nfa2.AddSymbolToAlphabet('b');
+            nfa2.AddSymbolToAlphabet('$');
+            nfa2.AddTransition("p0", '$', "p1");
+            nfa2.AddTransition("p0", 'a', "p1");
+            nfa2.AddTransition("p1", 'b', "p2");
+            nfa2.AddFinalState("p2");
+
+            nfa3.StartState = "k0";
+            nfa3.AddState("k0");
+            nfa3.AddState("k1");
+            nfa3.AddSymbolToAlphabet('c');
+            nfa3.AddTransition("k0", 'c', "k1");
+            nfa3.AddFinalState("k1");
+
+            Nfa ulancavanje = nfa1.Unija(nfa2).Spajanje(nfa3).KleenovaZvijezda();
+
+            Assert.IsTrue(ulancavanje.Accepts("baaabcbc"));
+            Assert.IsTrue(ulancavanje.Accepts("abcabc"));
+            Assert.IsFalse(ulancavanje.Accepts("bab"));
+            Assert.IsFalse(ulancavanje.Accepts("ab"));
+
         }
     }
 }

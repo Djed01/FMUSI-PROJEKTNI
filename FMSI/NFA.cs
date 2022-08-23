@@ -54,6 +54,15 @@ public class Nfa : Automat
 
     public void AddTransition(string currentState, char symbol, string nextState)
     {
+        if(!this.states.Contains(currentState) || !this.states.Contains(nextState))
+        {
+            throw new Exception("Undefined state!");
+        }
+        if (!this.alphabet.Contains(symbol))
+        {
+            throw new Exception("Undefinded symbol!");
+        }
+
         // Popunjavanje Dictionary-a
         if (!delta.ContainsKey((currentState, symbol)))
         {
@@ -298,15 +307,15 @@ public class Nfa : Automat
         {
             newNfa.AddSymbolToAlphabet(symbol);
         }
-        // Popunjavanje finalnih stanja
-        foreach (var state in this.finalStates)
-        {
-            newNfa.AddFinalState(state);
-        }
         // Dodavanje stanja
         foreach (var state in this.states)
         {
             newNfa.AddState(state);
+        }
+        // Popunjavanje finalnih stanja
+        foreach (var state in this.finalStates)
+        {
+            newNfa.AddFinalState(state);
         }
         // Popunjavanje funkcije prelaza (delta)
         foreach (var state in this.states)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RegularLanguageAnalyser
 {
-    internal abstract class Lexer
+    public abstract class Lexer
     { 
         protected string source;
         protected int sourceLine;
