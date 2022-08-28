@@ -21,7 +21,7 @@ namespace RegularLanguageAnalyser
 
         public void analyse()
         {
-            foreach(string line in System.IO.File.ReadLines(source))
+            foreach(string line in System.IO.File.ReadLines(AUTOMAT_PATH+source))
             {
                 // Ako naidjemo na neku od kljucnih rijeci postavljamo odgovarajucu bool promjenljivu na true
                 if ("States:".Equals(line))
@@ -61,7 +61,7 @@ namespace RegularLanguageAnalyser
                         // Ukoliko stanje sadrzi neki od neocekivanih simbola bacamo izuzetak
                         if (!line.All(Char.IsLetterOrDigit))
                         {
-                            throw new Exception("Nonvalid state format");
+                            throw new Exception("Line " + sourceLine + ": "+"Nonvalid state format");
                         }
                         //Dodajemo stanje u set
                         states.Add(line);

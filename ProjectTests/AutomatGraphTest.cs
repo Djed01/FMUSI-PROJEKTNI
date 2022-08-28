@@ -42,12 +42,12 @@ namespace ProjectTests
             var automatGraph = new AutomatGraph(nfa.StartState, nfa.getDelta());
             automatGraph.dfs(automatGraph.getStart());
             var eStates = automatGraph.getEStates();
-            Assert.AreEqual(3, eStates.Count);
+            Assert.That(eStates.Count,Is.EqualTo(3));
 
             var automatGraph2 = new AutomatGraph("q1", nfa.getDelta());
             automatGraph2.dfs(automatGraph2.getStart());
             var eStates2 = automatGraph2.getEStates();
-            Assert.AreEqual(2, eStates2.Count);
+            Assert.That(eStates2.Count, Is.EqualTo(2));
 
         }
     }

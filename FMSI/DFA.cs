@@ -3,20 +3,21 @@ namespace FMSI.Lib;
 public class Dfa : Automat
 {
     private Dictionary<(string, char), string> delta = new(); // F-JA PRELAZA IZMEDJU STANJA
-    private static int i = 0;
+
     public Dictionary<(string, char), string> getDelta()
     {
         return delta;
     }
+
     public void AddTransition(string currentState, char symbol, string nextState)
     {
         if(!(this.states.Contains(currentState)) || !(this.states.Contains(nextState)))
         {
-            throw new Exception("Undefined states!");
+            throw new Exception("Undefined states!"); // STANJE NIJE DODANO U SKUP
         }
         if (!this.alphabet.Contains(symbol))
         {
-            throw new Exception("Undefined symbol!");
+            throw new Exception("Undefined symbol!"); // SIMBOL NIJE DODAT U SKUP
         }
         delta[(currentState, symbol)] = nextState;
     }
@@ -37,13 +38,15 @@ public class Dfa : Automat
 
         return finalStates.Contains(currentState);
     }
-
+ 
     public Dfa SimetricnaRazlika(Dfa other)
     {
+        // PROVJERA DA LI SU ALFABETI JEDNAKI
         if (!this.alphabet.SetEquals(other.alphabet))
         {
             throw new Exception("Alphabet is not the same in both!");
         }
+
         Dfa newDfa = new();
 
         newDfa.StartState = StartState + other.StartState;
@@ -64,14 +67,15 @@ public class Dfa : Automat
                 foreach (var symbol in alphabet)
                 {
                     newDfa.AddSymbolToAlphabet(symbol);
-                    if (delta.ContainsKey((state1, symbol)) && !(other.delta.ContainsKey((state2, symbol))))
+                    // Tri slucaja
+                    if (delta.ContainsKey((state1, symbol)) && !(other.delta.ContainsKey((state2, symbol)))) // Prvi ima prelaz, drugi nema
                     {
                         newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + state2;
-                    } else if (!delta.ContainsKey((state1, symbol)) && (other.delta.ContainsKey((state2, symbol))))
+                    } else if (!delta.ContainsKey((state1, symbol)) && (other.delta.ContainsKey((state2, symbol)))) // Drugi ima prelaz, prvi nema
                     {
                         newDfa.delta[(newState, symbol)] = state1 + other.delta[(state2, symbol)];
                     }
-                    else 
+                    else // Oba imaju prelaz
                     { 
                         newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
                     }
@@ -89,6 +93,7 @@ public class Dfa : Automat
 
     public Dfa Unija(Dfa other)
     {
+        // PROVJERA DA LI SU ALFABETI JEDNAKI
         if (!this.alphabet.SetEquals(other.alphabet))
         {
             throw new Exception("Alphabet is not the same in both!");
@@ -109,15 +114,16 @@ public class Dfa : Automat
                 foreach (var symbol in alphabet)
                 {
                     newDfa.AddSymbolToAlphabet(symbol);
-                    if (delta.ContainsKey((state1, symbol)) && !(other.delta.ContainsKey((state2, symbol))))
+                    // Tri slucaja
+                    if (delta.ContainsKey((state1, symbol)) && !(other.delta.ContainsKey((state2, symbol)))) // Prvi ima prelaz, drugi nema
                     {
                         newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + state2;
                     }
-                    else if (!delta.ContainsKey((state1, symbol)) && (other.delta.ContainsKey((state2, symbol))))
+                    else if (!delta.ContainsKey((state1, symbol)) && (other.delta.ContainsKey((state2, symbol)))) // Drugi ima prelaz, prvi nema
                     {
                         newDfa.delta[(newState, symbol)] = state1 + other.delta[(state2, symbol)];
                     }
-                    else
+                    else // Oba imaju prelaz
                     {
                         newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
                     }
@@ -134,6 +140,7 @@ public class Dfa : Automat
 
     public Dfa Presjek(Dfa other)
     {
+        // PROVJERA DA LI SU ALFABETI JEDNAKI
         if (!this.alphabet.SetEquals(other.alphabet))
         {
             throw new Exception("Alphabet is not the same in both!");
@@ -154,15 +161,16 @@ public class Dfa : Automat
                 foreach (var symbol in alphabet)
                 {
                     newDfa.AddSymbolToAlphabet(symbol);
-                    if (delta.ContainsKey((state1, symbol)) && !(other.delta.ContainsKey((state2, symbol))))
+                    // Tri slucaja
+                    if (delta.ContainsKey((state1, symbol)) && !(other.delta.ContainsKey((state2, symbol)))) // Prvi ima prelaz, drugi nema
                     {
                         newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + state2;
                     }
-                    else if (!delta.ContainsKey((state1, symbol)) && (other.delta.ContainsKey((state2, symbol))))
+                    else if (!delta.ContainsKey((state1, symbol)) && (other.delta.ContainsKey((state2, symbol)))) // Drugi ima prelaz, prvi nema
                     {
                         newDfa.delta[(newState, symbol)] = state1 + other.delta[(state2, symbol)];
                     }
-                    else
+                    else // Oba imaju prelaz
                     {
                         newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
                     }
@@ -179,82 +187,7 @@ public class Dfa : Automat
 
     public Dfa Spajanje(Dfa other)
     {
-        // Pravimo novi NKA automat sa pocetnim stanjem prvog automata
-        Nfa newNfa = new();
-        newNfa.StartState = StartState;
-        newNfa.AddSymbolToAlphabet(EPSILON);
-        // Dodajemo stanja i simbole u novi automat
-        foreach (var state1 in states)
-        {
-            newNfa.AddState(state1);
-        }
-        foreach (var state2 in other.states)
-        {
-            newNfa.AddState(state2);
-        }
-        foreach (var symbol in alphabet)
-        {
-            newNfa.AddSymbolToAlphabet(symbol);
-        }
-        foreach (var symbol in other.alphabet)
-        {
-            newNfa.AddSymbolToAlphabet(symbol);
-        }
-        // Popunjavamo f-ju prelaza za novi automat sa prelazima prvog automata
-        foreach (var state in states)
-        {
-            foreach (var symbol in alphabet)
-            {
-                if (delta.ContainsKey((state, symbol)))
-                {
-                        if (!newNfa.getDelta().ContainsKey((state, symbol)))
-                        {
-                            HashSet<string> set = new();
-                            newNfa.getDelta().Add((state, symbol), set);
-                            newNfa.getDelta()[(state, symbol)].Add(this.delta[(state, symbol)]);
-                        }
-                        else
-                        {
-                            newNfa.getDelta()[(state, symbol)].Add(this.delta[(state, symbol)]);
-                        }
-                }
-
-             }
-        }
-        // Popunjavamo f-ju prelaza za novi automat sa prelazima drugog automata
-        foreach (var state in other.states)
-        {
-            foreach (var symbol in other.alphabet)
-            {
-                if (other.delta.ContainsKey((state, symbol)))
-                {
-                    if (!newNfa.getDelta().ContainsKey((state, symbol)))
-                    {
-                        HashSet<string> set = new();
-                        newNfa.getDelta().Add((state, symbol), set);
-                        newNfa.getDelta()[(state, symbol)].Add(other.delta[(state, symbol)]);
-                    }
-                    else
-                    {
-                        newNfa.getDelta()[(state, symbol)].Add(other.delta[(state, symbol)]);
-                    }
-                }
-
-            }
-        }
-        // Dodajemo finalna stanja u novi automat od drugog automata
-        foreach (var finalState in other.finalStates)
-        {
-            newNfa.AddFinalState(finalState);
-        }
-        // Za svako finalno stanje prvog automata dodajemo epsilon prelaz u pocetno stanje drugog automata
-        foreach (var initialFinalState in this.finalStates)
-        {
-            newNfa.AddTransition(initialFinalState, EPSILON, other.StartState);
-        }
-        // Vracamo novokreirani automat
-        return newNfa.toDfa();
-
+        return this.toNfa().Spajanje(other.toNfa()).toDfa();
     }
 
     public Dfa Spajanje(Nfa other)
@@ -285,71 +218,7 @@ public class Dfa : Automat
 
     public Dfa KleenovaZvijezda()
     {
-        // Kreiramo novi NFA automat koji ce imati ista stanja i prelaze kao trenutni automat
-        Nfa newNfa = new();
-        newNfa.StartState = this.StartState;
-        newNfa.AddSymbolToAlphabet(EPSILON);
-        // Popunjavanje alfabeta
-        foreach (var symbol in this.alphabet)
-        {
-            newNfa.AddSymbolToAlphabet(symbol);
-        }
-        // Dodavanje stanja
-        foreach (var state in this.states)
-        {
-            newNfa.AddState(state);
-        }
-        // Popunjavanje finalnih stanja
-        foreach (var state in this.finalStates)
-        {
-            newNfa.AddFinalState(state);
-        }     
-        // Popunjavanje funkcije prelaza (delta)
-        foreach (var state in this.states)
-        {
-            foreach (var symbol in this.alphabet)
-            {
-                if (this.delta.ContainsKey((state, symbol)))
-                {
-                    if (!newNfa.getDelta().ContainsKey((state, symbol)))
-                    {
-                        HashSet<string> set = new();
-                        newNfa.getDelta().Add((state, symbol), set);
-                        newNfa.getDelta()[(state, symbol)].Add(this.delta[(state,symbol)]);
-                    }
-                    else
-                    {
-                        newNfa.getDelta()[(state, symbol)].Add(this.delta[(state, symbol)]);
-                    }
-                }
-            }
-        }
-       // Dodajemo novo stanje q
-        newNfa.AddState("r"+i++);
-        HashSet<string> tempSet = new();
-        newNfa.getDelta().Add(("r"+(i-1), EPSILON), tempSet);
-        // Iz novog stanja q dodajemo epsilon prelaz u pocetno stanje trenutnog automata
-        newNfa.getDelta()[("r"+(i-1), EPSILON)].Add(this.StartState);
-        newNfa.StartState = "r"+(i-1);
-        // Stanje q smo postavili kao pocetno stanje
-        // Za svako finalno stanje automata dodajemo epsilon prelaz u novokreirano stanje q
-        foreach (var state in this.finalStates)
-        {
-            if (!newNfa.getDelta().ContainsKey((state, EPSILON)))
-            {
-                HashSet<string> set = new();
-                newNfa.getDelta().Add((state, EPSILON), set);
-                newNfa.getDelta()[(state, EPSILON)].Add(newNfa.StartState);
-            }
-            else
-            {
-                newNfa.getDelta()[(state, EPSILON)].Add(newNfa.StartState);
-            }
-        }
-        // Dobijeni NKA automat pretvaramo u DKA te ga kao takvog vracamo iz metode
-        // Ovim smo omogucili dalje ulancavanje operacija
-        Dfa newDfa = newNfa.toDfa();
-        return newDfa;
+        return this.toNfa().KleenovaZvijezda().toDfa(); // Pretvaramo u NKA vršimo operaciju Kleenove zvijezde i va?amo DKA
     }
 
 

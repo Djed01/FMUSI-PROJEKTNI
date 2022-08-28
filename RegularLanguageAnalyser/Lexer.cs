@@ -10,7 +10,8 @@ namespace RegularLanguageAnalyser
     { 
         protected string source;
         protected int sourceLine;
-
+        protected static string REGEX_PATH = "./regex/";
+        protected static string AUTOMAT_PATH = "./automat/";
         public Lexer(string path)
         {
             source = path;

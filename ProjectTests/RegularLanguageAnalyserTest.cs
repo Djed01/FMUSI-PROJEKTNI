@@ -54,7 +54,7 @@ namespace ProjectTests
             RegexLexer regexLexer2 = new(REGEX_PATH + "regex2.txt"); // 3: neocekivani simbol * na tom mjestu
             Assert.Throws<Exception>(() => regexLexer2.analyse());
 
-            RegexLexer regexLexer3 = new(REGEX_PATH + "regex3.txt"); // 13: nebalansirane zagrade
+            RegexLexer regexLexer3 = new(REGEX_PATH + "regex3.txt"); // nebalansirane zagrade
             Assert.Throws<Exception>(() => regexLexer3.analyse());
 
             RegexLexer regexLexer4 = new(REGEX_PATH + "regex4.txt"); // 9: * nakon +

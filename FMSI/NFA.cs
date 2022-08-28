@@ -4,7 +4,6 @@ public class Nfa : Automat
 {
     private Dictionary<(string, char), HashSet<string>> delta = new();
     private static int i = 0;
-    private static int j = 0;
     public Dictionary<(string, char), HashSet<string>> getDelta()
     {
         return delta;
@@ -215,29 +214,25 @@ public class Nfa : Automat
 
     public Nfa Presjek(Nfa other)
     {
-        // Pretvaramo u DKA te vrsimo operaciju
-        Dfa newDfa = this.toDfa().Presjek(other.toDfa());
-       // Vracamo u eNKA zboh ulancavanja operacija
-        return newDfa.toNfa();
+       // Pretvaramo u DKA te vrsimo operaciju
+       // Vracamo u eNKA zbog ulancavanja operacija
+        return this.toDfa().Presjek(other.toDfa()).toNfa();
     }
     
     public Nfa Presjek(Dfa other)
     {
-        Dfa newDfa = this.toDfa().Presjek(other);
-        return newDfa.toNfa();
+        return this.toDfa().Presjek(other).toNfa();
     }
 
     public Nfa SimetricnaRazlika(Nfa other)
     {
         // Pretvaramo u DKA te vrsimo operaciju
-        Dfa newDfa = this.toDfa().SimetricnaRazlika(other.toDfa());
         // Vracamo u eNKA zbog ulancavanja operacija
-        return newDfa.toNfa();
+        return this.toDfa().SimetricnaRazlika(other.toDfa()).toNfa();
     }
     public Nfa SimetricnaRazlika(Dfa other)
     {
-        Dfa newDfa = this.toDfa().SimetricnaRazlika(other);
-        return newDfa.toNfa();
+        return this.toDfa().SimetricnaRazlika(other).toNfa();
     }
 
     public Nfa Spajanje(Nfa other)
@@ -382,7 +377,7 @@ public class Nfa : Automat
             {
                 if (delta.ContainsKey((temp, symbol)))
                 {
-                    if (symbol == EPSILON) shortestPath--;
+                    if (symbol == EPSILON) shortestPath--; // Ne racunamo epsilon prelaze
                     foreach (string state in delta[(temp, symbol)])
                     {
                         if (finalStates.Contains(state))

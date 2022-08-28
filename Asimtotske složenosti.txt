@@ -1,0 +1,98 @@
+DFA:
+Add Transition
+O(n)
+Ω(1)
+Accepts
+O(n)
+Ω(1)
+Simetricna razlika
+O(n^3)
+Ω(1)
+Unija
+O(n^3)
+Ω(1)
+Presjek
+O(n^3)
+Ω(1)
+Spajanje
+O(n^2)
+Ω(1)
+Komplement
+O(n^2)
+Ω(1)
+Kleenova zvijezda
+O(n^2)
+Ω(1)
+Najkraca rijec
+O(n^2)
+Ω(1)
+ToNfa
+O(n^2)
+Ω(1)
+
+NFA:
+Nfa
+O(n^3)
+Ω(1)
+Add Transition
+O(n)
+Ω(1)
+Accepts
+O(n^3)
+Ω(1)
+Unija
+O(n^3)
+Ω(1)
+Presjek
+O(n^3)
+Ω(1)
+Simetricna razlika
+O(n^3)
+Ω(1)
+Spajanje
+O(n)
+Ω(1)
+Komplement
+O(n^3)
+Ω(1)
+Kleenova zvijezda
+O(n^2)
+Ω(1)
+Najkraca rijec
+O(n^3)
+Ω(1)
+ToDfa
+O(n^3)
+Ω(1)
+
+Automat Graph:
+AutomatGraph
+O(n^2)
+Ω(1)
+Dfs
+O(V+E)
+Ω(V+E)
+
+Regular Expression:
+InfixToPostfix
+O(n^2)
+Ω(1)
+EvaluatePostfix
+O(n)
+Ω(1)
+
+
+RegularLanguageAnalyser:
+AutomatAnalyse
+O(n^2)
+Ω(1)
+RegexAnalyse
+O(n)
+Ω(1)
+
+CodeGenerator:
+Generate
+O(n^2)
+Ω(1)
+
+

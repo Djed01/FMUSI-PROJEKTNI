@@ -21,6 +21,8 @@ namespace ProjectTests
             Nfa newNfa = regex.toNfa();
             Assert.IsTrue(newNfa.Accepts("aab"));
             Assert.IsTrue(newNfa.Accepts("caab"));
+            Assert.IsFalse(newNfa.Accepts("abb"));
+            Assert.IsFalse(newNfa.Accepts("cab"));
 
             RegularExpression regex1 = new RegularExpression("ab**+(c+a)*");
             Nfa newNfa1 = regex1.toNfa();

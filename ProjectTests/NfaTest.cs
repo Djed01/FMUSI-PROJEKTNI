@@ -92,6 +92,7 @@ namespace ProjectTests
             Nfa newNfa = nfa1.Spajanje(nfa2);
             Assert.IsTrue(newNfa.Accepts("ab"));
             Assert.IsFalse(newNfa.Accepts("a"));
+            Assert.IsFalse(newNfa.Accepts(""));
         }
 
         [Test]
@@ -119,6 +120,7 @@ namespace ProjectTests
             Assert.IsTrue(newNfa.Accepts("b"));
             Assert.IsTrue(newNfa.Accepts("ba"));
             Assert.IsTrue(newNfa.Accepts("aba"));
+            Assert.IsTrue(newNfa.Accepts(""));
         }
 
         [Test]
@@ -143,7 +145,9 @@ namespace ProjectTests
 
             Nfa newNfa = nfa.KleenovaZvijezda();
             Assert.IsTrue(newNfa.Accepts("abbabbab"));
+            Assert.IsTrue(newNfa.Accepts("babab"));
             Assert.IsFalse(newNfa.Accepts("abba"));
+            Assert.IsFalse(newNfa.Accepts("baba"));
         }
 
         [Test]
@@ -266,7 +270,9 @@ namespace ProjectTests
             Nfa newNfa = nfa.Spajanje(dfa);
 
             Assert.IsTrue(newNfa.Accepts("baac"));
+            Assert.IsTrue(newNfa.Accepts("c"));
             Assert.IsFalse(newNfa.Accepts("baa"));
+            Assert.IsFalse(newNfa.Accepts("ababba"));
 
         }
 
@@ -302,6 +308,7 @@ namespace ProjectTests
             Assert.IsTrue(newNfa.Accepts("baa"));
             Assert.IsFalse(newNfa.Accepts("baac"));
             Assert.IsTrue(newNfa.Accepts("c"));
+            Assert.IsFalse(newNfa.Accepts("caab"));
         }
 
         [Test]
@@ -423,7 +430,10 @@ namespace ProjectTests
 
                 Nfa newNfa = nfa.Presjek(dfa);
 
-                Assert.IsTrue(newNfa.Accepts("ababaabbabba"));     
+                Assert.IsTrue(newNfa.Accepts("ababaabbabba"));
+                Assert.IsFalse(newNfa.Accepts(""));
+                Assert.IsTrue(newNfa.Accepts("babba"));
+                Assert.IsFalse(newNfa.Accepts("abbbb"));
         }
 
         [Test]
@@ -469,6 +479,7 @@ namespace ProjectTests
             Nfa newNfa = nfa.SimetricnaRazlika(dfa);
 
             Assert.IsTrue(newNfa.Accepts("ab"));
+            Assert.IsFalse(newNfa.Accepts("ababaabaa"));
         }
 
         [Test]

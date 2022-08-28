@@ -23,9 +23,9 @@ namespace RegularLanguageAnalyser
         public void analyse()
         {
             // Broj linija fajla
-            int lengthOfFile = System.IO.File.ReadLines(source).Count();
+            int lengthOfFile = System.IO.File.ReadLines(REGEX_PATH + source).Count();
 
-            foreach (string line in System.IO.File.ReadLines(source))
+            foreach (string line in System.IO.File.ReadLines(REGEX_PATH + source))
             {
                 // Provjeravamo duzinu linije koja mora biti 1
                 if (line.Length != 1)

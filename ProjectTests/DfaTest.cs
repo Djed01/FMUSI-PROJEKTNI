@@ -30,6 +30,9 @@ namespace ProjectTests
             dfa.AddFinalState("q3");
 
             Assert.IsTrue(dfa.Accepts("abb"));
+            Assert.IsFalse(dfa.Accepts(""));
+            Assert.IsFalse(dfa.Accepts("a"));
+            Assert.IsFalse(dfa.Accepts("ab"));      
             Assert.IsFalse(dfa.Accepts("aaaabb"));
         }
 
@@ -56,6 +59,10 @@ namespace ProjectTests
 
             Assert.IsFalse(dfa.Accepts("aaaaaaaaabb"));
             Assert.IsTrue(dfa.Accepts("abaabba"));
+            Assert.IsFalse(dfa.Accepts(""));
+            Assert.IsFalse(dfa.Accepts("a"));
+            Assert.IsFalse(dfa.Accepts("ab"));
+            Assert.IsFalse(dfa.Accepts("abab"));
         }
 
         [Test]
@@ -298,10 +305,17 @@ namespace ProjectTests
             dfa1.AddFinalState("q3");
             dfa1.AddFinalState("q4");
 
+            Assert.IsFalse(dfa1.Accepts("ababb"));
+            Assert.IsFalse(dfa1.Accepts("aaaab"));
+            Assert.IsTrue(dfa1.Accepts("babb"));
+            Assert.IsTrue(dfa1.Accepts("bbbaab"));
+
             Dfa newDfa = dfa1.Komplement();
 
             Assert.IsTrue(newDfa.Accepts("ababb"));
+            Assert.IsTrue(newDfa.Accepts("aaaab"));
             Assert.IsFalse(newDfa.Accepts("babb"));
+            Assert.IsFalse(newDfa.Accepts("bbbaab"));
         }
 
         [Test]
@@ -400,11 +414,20 @@ namespace ProjectTests
             dfa.AddFinalState("q2");
 
             Assert.IsTrue(dfa.Accepts("aba"));
+            Assert.IsTrue(dfa.Accepts("aa"));
+            Assert.IsTrue(dfa.Accepts("ababa"));
             Assert.IsFalse(dfa.Accepts("ababb"));
+            Assert.IsFalse(dfa.Accepts("ba"));
+            Assert.IsFalse(dfa.Accepts(""));
+
 
             Nfa newNfa = dfa.toNfa();
             Assert.IsTrue(newNfa.Accepts("aba"));
+            Assert.IsTrue(dfa.Accepts("aa"));
+            Assert.IsTrue(dfa.Accepts("ababa"));
             Assert.IsFalse(newNfa.Accepts("ababb"));
+            Assert.IsFalse(dfa.Accepts("ba"));
+            Assert.IsFalse(dfa.Accepts(""));
         }
 
         [Test]
@@ -442,7 +465,10 @@ namespace ProjectTests
 
             Dfa newDfa = dfa.Spajanje(nfa);
             Assert.IsTrue(newDfa.Accepts("ababbaa"));
+            Assert.IsTrue(newDfa.Accepts("abbaa"));
             Assert.IsFalse(newDfa.Accepts("aba"));
+            Assert.IsFalse(newDfa.Accepts(""));
+            Assert.IsFalse(newDfa.Accepts("bbbbabbb"));
         }
 
         [Test]
@@ -488,6 +514,8 @@ namespace ProjectTests
             Dfa newDfa = dfa.Presjek(nfa);
 
             Assert.IsTrue(newDfa.Accepts("ababaabbabba"));
+            Assert.IsFalse(newDfa.Accepts(""));
+            Assert.IsFalse(newDfa.Accepts("bababb"));
         }
 
         [Test]
@@ -533,6 +561,8 @@ namespace ProjectTests
             Dfa newDfa = dfa.Unija(nfa);
 
             Assert.IsTrue(newDfa.Accepts("aba"));
+            Assert.IsTrue(newDfa.Accepts("ababba"));
+            Assert.IsFalse(newDfa.Accepts(""));
         }
 
         [Test]
@@ -578,6 +608,8 @@ namespace ProjectTests
             Dfa newDfa = dfa.SimetricnaRazlika(nfa);
 
             Assert.IsTrue(newDfa.Accepts("ab"));
+            Assert.IsFalse(newDfa.Accepts("aba"));
+            Assert.IsFalse(newDfa.Accepts("ababba"));
         }
 
         [Test]

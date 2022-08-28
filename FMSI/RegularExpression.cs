@@ -64,7 +64,6 @@ namespace FMSI.Lib
                 {
                     if (isLastSymbol || isLastCloseBracket || isLastKleeneStar)
                     {
-                      //  if (i > this.regex.Length) { this.regex += " "; }
                         this.regex = this.regex.Insert(i, "-");
                         this.regex = this.regex.Replace(" ", String.Empty);
                         i++;
@@ -146,11 +145,6 @@ namespace FMSI.Lib
                 else
                 {
                     throw new Exception("Undefined symbol");
-                    isLastSymbol = false;
-                    isLastCloseBracket = false;
-                    isLastOpenBracket = false;
-                    isLastKleeneStar = false;
-                    isLastPlus = false;
                 }
                 i++;
             }
@@ -220,14 +214,14 @@ namespace FMSI.Lib
             {
                 if (Char.IsLetter(x))
                 {
-
+                    // Novi automat x
                     newNfa.AddState("q" + i++);
                     newNfa.AddState("q" + i++);
                     newNfa.StartState = "q" + (i - 2);
                     newNfa.AddFinalState("q" + (i - 1));
                     newNfa.AddSymbolToAlphabet(x);
                     newNfa.AddTransition("q" + (i - 2), x, "q" + (i - 1));
-                    if (map.ContainsKey(x.ToString()))
+                    if (map.ContainsKey(x.ToString())) // Uklanjamo ako postoji automat sa isitim imenom i dodajemo novi (zbog stanja)
                     {
                         map.Remove(x.ToString());
                         map.Add(x.ToString(), new Nfa(newNfa));
@@ -252,7 +246,7 @@ namespace FMSI.Lib
                     string oprnd = result.Pop();
                     newNfa = map[(oprnd)].KleenovaZvijezda();
                     rez = oprnd.ToString() + x.ToString();
-                    if (map.ContainsKey(oprnd.ToString() + x.ToString()))
+                    if (map.ContainsKey(oprnd.ToString() + x.ToString())) // Uklanjamo ako postoji automat sa isitim imenom i dodajemo novi (zbog stanja)
                     {
                         map.Remove(oprnd.ToString() + x.ToString());
                         map.Add(oprnd.ToString() + x.ToString(), new Nfa(newNfa));
@@ -297,7 +291,7 @@ namespace FMSI.Lib
 
                     rez = oprnd1.ToString() + x.ToString() + oprnd2.ToString();
                     newNfa = map[(oprnd1)].Spajanje(map[(oprnd2)]);
-                    if (map.ContainsKey(rez))
+                    if (map.ContainsKey(rez)) // Uklanjamo ako postoji automat sa isitim imenom i dodajemo novi (zbog stanja)
                     {
                         map.Remove(rez);
                         map.Add(rez, new Nfa(newNfa));
