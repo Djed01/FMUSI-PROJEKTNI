@@ -157,7 +157,6 @@ namespace ProjectTests
 
             nfa.StartState = "q0";
             nfa.AddSymbolToAlphabet('a');
-            nfa.AddSymbolToAlphabet('b');
             nfa.AddSymbolToAlphabet('$');
 
             nfa.AddState("q0");
@@ -172,6 +171,69 @@ namespace ProjectTests
 
             nfa.AddFinalState("q3");
             Assert.That(nfa.najkracaRijec(), Is.EqualTo(1));
+
+            Nfa nfa2 = new();
+            nfa2.StartState = "q0";
+            nfa2.AddSymbolToAlphabet('a');
+            nfa2.AddSymbolToAlphabet('$');
+
+            nfa2.AddState("q0");
+            nfa2.AddState("q1");
+            nfa2.AddState("q2");
+            nfa2.AddState("q3");
+            nfa2.AddState("q4");
+
+            nfa2.AddTransition("q0", '$', "q1");
+            nfa2.AddTransition("q1", '$', "q2");
+            nfa2.AddTransition("q2", '$', "q3");
+            nfa2.AddTransition("q0", 'a', "q4");
+            nfa2.AddTransition("q4", 'a', "q3");
+
+            nfa2.AddFinalState("q3");
+            Assert.That(nfa2.najkracaRijec(), Is.EqualTo(0));
+
+            Nfa nfa3 = new();
+            nfa3.StartState = "q0";
+            nfa3.AddSymbolToAlphabet('a');
+            nfa3.AddSymbolToAlphabet('$');
+
+            nfa3.AddState("q0");
+            nfa3.AddState("q1");
+            nfa3.AddState("q2");
+            nfa3.AddState("q3");
+            nfa3.AddState("q4");
+
+            nfa3.AddTransition("q0", '$', "q1");
+            nfa3.AddTransition("q1", '$', "q2");
+            nfa3.AddTransition("q2", 'a', "q3");
+            nfa3.AddTransition("q0", 'a', "q4");
+            nfa3.AddTransition("q4", 'a', "q3");
+
+            nfa3.AddFinalState("q3");
+            Assert.That(nfa3.najkracaRijec(), Is.EqualTo(1));
+            
+            Nfa nfa4 = new();
+            nfa4.StartState = "q0";
+            nfa4.AddSymbolToAlphabet('a');
+            nfa4.AddSymbolToAlphabet('$');
+
+            nfa4.AddState("q0");
+            nfa4.AddState("q1");
+            nfa4.AddState("q2");
+            nfa4.AddState("q3");
+            nfa4.AddState("q4");
+            nfa4.AddState("q5");
+
+            nfa4.AddTransition("q0", '$', "q1");
+            nfa4.AddTransition("q1", '$', "q2");
+            nfa4.AddTransition("q2", 'a', "q3");
+            nfa4.AddTransition("q0", 'a', "q4");
+            nfa4.AddTransition("q4", 'a', "q5");
+            nfa4.AddTransition("q5", 'a', "q3");
+
+            nfa4.AddFinalState("q3");
+            Assert.That(nfa4.najkracaRijec(), Is.EqualTo(1)); 
+
         }
 
         [Test]

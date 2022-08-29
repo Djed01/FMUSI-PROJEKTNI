@@ -25,7 +25,7 @@ public class Nfa : Automat
         {
             this.AddSymbolToAlphabet(symbol);
         }
-        // Popunjavamo f-ju prelaza za novi automat sa prelazima prvog automata
+        // Popunjavamo f-ju prelaza za novi automat sa prelazima prosledjenog automata
         foreach (var state in other.states)
         {
             foreach (var symbol in other.alphabet)
@@ -53,7 +53,7 @@ public class Nfa : Automat
 
     public void AddTransition(string currentState, char symbol, string nextState)
     {
-        if(!this.states.Contains(currentState) || !this.states.Contains(nextState))
+        if (!this.states.Contains(currentState) || !this.states.Contains(nextState))
         {
             throw new Exception("Undefined state!");
         }
@@ -186,24 +186,24 @@ public class Nfa : Automat
         // Te iz novokreiranog pocetnog stanja dodamo epsilon prelaze na pocetna stanja automata
         // A iz finalnih stanja automata dodamo epsilon prelaze u novo finalno stanje
         Nfa newNfa = new();
-        newNfa.AddState("r" + i++);
-        newNfa.AddState("f" + (i - 1));
-        newNfa.StartState = "r" + (i - 1);
-        newNfa.AddFinalState("f" + (i - 1));
+        newNfa.AddState("r" + i);
+        newNfa.AddState("f" + i);
+        newNfa.StartState = "r" + i;
+        newNfa.AddFinalState("f" + i);
         newNfa.AddSymbolToAlphabet(EPSILON);
         this.popuniStanjaIPrelazeAutomata(newNfa, other);
 
-        newNfa.AddTransition("r" + (i - 1), EPSILON, this.StartState);
-        newNfa.AddTransition("r" + (i - 1), EPSILON, other.StartState);
-        foreach(var finalState in this.finalStates)
+        newNfa.AddTransition("r" + i, EPSILON, this.StartState);
+        newNfa.AddTransition("r" + i, EPSILON, other.StartState);
+        foreach (var finalState in this.finalStates)
         {
-            newNfa.AddTransition(finalState, EPSILON, "f"+(i-1));
+            newNfa.AddTransition(finalState, EPSILON, "f" + i);
         }
-        foreach(var finalState in other.finalStates)
+        foreach (var finalState in other.finalStates)
         {
-            newNfa.AddTransition(finalState, EPSILON, "f" + (i - 1));
+            newNfa.AddTransition(finalState, EPSILON, "f" + i);
         }
-
+        i++;
         return newNfa;
     }
 
@@ -214,11 +214,11 @@ public class Nfa : Automat
 
     public Nfa Presjek(Nfa other)
     {
-       // Pretvaramo u DKA te vrsimo operaciju
-       // Vracamo u eNKA zbog ulancavanja operacija
+        // Pretvaramo u DKA te vrsimo operaciju
+        // Vracamo u eNKA zbog ulancavanja operacija
         return this.toDfa().Presjek(other.toDfa()).toNfa();
     }
-    
+
     public Nfa Presjek(Dfa other)
     {
         return this.toDfa().Presjek(other).toNfa();
@@ -335,12 +335,12 @@ public class Nfa : Automat
             }
         }
         // Dodajemo novo stanje r
-        newNfa.AddState("r"+i++);
+        newNfa.AddState("r" + i++);
         HashSet<string> tempSet = new();
-        newNfa.delta.Add(("r"+(i-1), EPSILON), tempSet);
+        newNfa.delta.Add(("r" + (i - 1), EPSILON), tempSet);
         // Iz novog stanja r dodajemo epsilon prelaz u pocetno stanje trenutnog automata
-        newNfa.delta[("r"+(i-1), EPSILON)].Add(this.StartState);
-        newNfa.StartState = "r"+(i-1);
+        newNfa.delta[("r" + (i - 1), EPSILON)].Add(this.StartState);
+        newNfa.StartState = "r" + (i - 1);
         // Stanje r smo postavili kao pocetno stanje
         // Za svako finalno stanje automata dodajemo epsilon prelaz u novokreirano stanje r
         foreach (var state in this.finalStates)
@@ -362,42 +362,14 @@ public class Nfa : Automat
 
     public int najkracaRijec()
     {
-        int shortestPath = 0;
-        Queue<string> queue = new Queue<string>();
-        // Dodajemo pocetno stanje na kraj reda
-        queue.Enqueue(StartState);
-
-        while (queue.Count != 0)
+        // Provjerimo da li imamo direktno epsilon prelaze do finalnog stanja ili je pocetno stanje finalno
+        // Tj. da li automat prihvata praznu rijec
+        if (this.Accepts(""))
         {
-            // Uklanjamo stanje sa pocetka reda i dodjeljujemo ga pomocnoj promjenljivoj temp
-            string temp = queue.Dequeue();
-
-            // Za svaki simbol alfabeta automata citamo sljedece stanje i provjeravamo da li je finalno
-            foreach (char symbol in alphabet)
-            {
-                if (delta.ContainsKey((temp, symbol)))
-                {
-                    if (symbol == EPSILON) shortestPath--; // Ne racunamo epsilon prelaze
-                    foreach (string state in delta[(temp, symbol)])
-                    {
-                        if (finalStates.Contains(state))
-                        {
-                            // Ako je finalno povecavamo brojac i vracamo vrijednost brojaca
-                            shortestPath++;
-                            return shortestPath;
-                        }
-                        else
-                        {
-                            // Inace stanje dodajemo na kraj reda
-                            queue.Enqueue(state);
-                        }
-                    }
-                }
-            }
-            // Povecavamo brojac
-            shortestPath++;
+            return 0;
         }
-        return -1;
+        // Ako ne prihvata pretvorimo ga u DKA i izvrsimo funkciju
+        return this.toDfa().najkracaRijec();
     }
 
 

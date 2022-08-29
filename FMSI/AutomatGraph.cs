@@ -4,16 +4,18 @@ namespace FMSI.Lib;
 
 public class AutomatGraph
 {
+    public static char EPSILON = '$';
     private readonly HashSet<string> eStates;
     private readonly int[,] ms;
-    private readonly ArrayList nodes = new();
+    private readonly List<string> nodes = new();
     private int start;
     private string startState;
     private readonly bool[] visited;
+    private string lastAdded = "";
 
     public int getStart()
     {
-        return start; 
+        return start;
     }
 
     //Konstruktor grafa
@@ -32,23 +34,23 @@ public class AutomatGraph
         // Provjeravamo da li imamo stanje koje nema ni jednog prelaza
         // I ako ono postoji dodajemo ga u listu
         foreach (var var in delta.Values)
-        foreach (var pom in var)
-            if (!nodes.Contains(pom))
-                nodes.Add(pom);
+            foreach (var pom in var)
+                if (!nodes.Contains(pom))
+                    nodes.Add(pom);
 
         // Kreiramo matricu susjednosti te je popunjavamo na nacin da
         // Ukoliko imamo epsilon prelaz izmedju stanja unosimo 1 u matricu susjednosti
         // Inace unosimo 0
         ms = new int[nodes.Count, nodes.Count];
         for (var i = 0; i < nodes.Count; i++)
-        for (var j = 0; j < nodes.Count; j++)
-            if (delta.ContainsKey((nodes[i].ToString(), '$')))
-            {
-                if (delta[(nodes[i].ToString(), '$')].Contains(nodes[j].ToString()))
-                    ms[i, j] = 1;
-                else
-                    ms[i, j] = 0;
-            }
+            for (var j = 0; j < nodes.Count; j++)
+                if (delta.ContainsKey((nodes[i].ToString(), EPSILON)))
+                {
+                    if (delta[(nodes[i].ToString(), EPSILON)].Contains(nodes[j].ToString()))
+                        ms[i, j] = 1;
+                    else
+                        ms[i, j] = 0;
+                }
 
         start = nodes.IndexOf(startState);
         visited = new bool[nodes.Count];
@@ -60,13 +62,15 @@ public class AutomatGraph
     {
         // Dodajemo u set trenutno stanje
         eStates.Add(nodes[start].ToString());
+        lastAdded = nodes[start].ToString();
         //  Console.WriteLine(nodes[start]);
 
         // Postavljamo trenutno stanje kao posjeceno
         visited[start] = true;
 
         // Za svaki cvor grafa
-        for (var i = 0; i < nodes.Count; i++) // Ukoliko imamo epsilon prelaz ( 1 u matrici susjednosti)
+        for (var i = 0; i < nodes.Count; i++)
+            // Ukoliko imamo epsilon prelaz ( 1 u matrici susjednosti)
             // i covr nije vec posjecen
             if (ms[start, i] == 1 && !visited[i])
                 dfs(i);
@@ -82,5 +86,10 @@ public class AutomatGraph
     {
         Array.Clear(visited, 0, visited.Length);
         return eStates;
+    }
+
+    public string getLastAdded()
+    {
+        return lastAdded;
     }
 }

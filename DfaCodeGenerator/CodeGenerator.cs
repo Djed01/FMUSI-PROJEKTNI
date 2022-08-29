@@ -14,7 +14,7 @@ namespace DfaCodeGenerator
         public void generate(Dfa dfa)
         {
             // Dodajemo dead state u automat i za svako stanje, ukoliko nema prelaz za neki simbol
-            // iz alfabeta, dodajemo prelaz u dead state
+            // iz alfabeta, dodajemo prelaz u dead state da dobijemo potpun automat
             // Ovo radimo kako bismo imali uvijek isti broj argumenata u funkcijama (svako stanje za svaki simbol iz alfabeta ima prelaz u drugo stanje) 
             dfa.AddState(deadState);
             foreach(var state in dfa.states)

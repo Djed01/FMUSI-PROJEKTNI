@@ -131,5 +131,5 @@ dfa.PrintStates();*/
 
 RegularExpression regex3 = new RegularExpression("(abc)*+a*b+a*");
 Nfa newNfa3 = regex3.toNfa();
-int i = 0;
+
 

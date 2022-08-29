@@ -68,7 +68,7 @@ namespace FMSI.Lib
                         this.regex = this.regex.Replace(" ", String.Empty);
                         i++;
                     }
-                    
+
                     isLastSymbol = true;
                     isLastCloseBracket = false;
                     isLastOpenBracket = false;
@@ -81,7 +81,7 @@ namespace FMSI.Lib
                     {
                         this.regex = this.regex.Insert(i, "-");
                     }
-                    else if(isLastKleeneStar)
+                    else if (isLastKleeneStar)
                     {
                         this.regex = this.regex.Insert(i, "-");
                     }
@@ -118,7 +118,7 @@ namespace FMSI.Lib
                     }
                     else if (isLastPlus)
                     {
-                        throw new Exception("Operator + can't be folowed by operator *");
+                        throw new Exception("Operator + can't be followed by operator *");
                     }
                     isLastSymbol = false;
                     isLastCloseBracket = false;
@@ -126,11 +126,11 @@ namespace FMSI.Lib
                     isLastKleeneStar = true;
                     isLastPlus = false;
                 }
-                else if(symbol == '+')
+                else if (symbol == '+')
                 {
                     if (isLastPlus)
                     {
-                        throw new Exception("Operator + can't be folowed by another operator +");
+                        throw new Exception("Operator + can't be followed by another operator +");
                     }
                     else if (isLastOpenBracket)
                     {
@@ -166,7 +166,7 @@ namespace FMSI.Lib
                         rank += R[x];
                         if (rank < 1)
                         {
-                          throw new Exception("Nekorektan regex!");
+                            throw new Exception("Nekorektan regex!");
                         }
 
                     }
@@ -189,7 +189,7 @@ namespace FMSI.Lib
             }
             if (rank != 1)
             {
-              throw new Exception("Nekorektan regex!");
+                throw new Exception("Nekorektan regex!");
             }
             return result;
         }
@@ -257,7 +257,7 @@ namespace FMSI.Lib
                         map.Add(oprnd.ToString() + x.ToString(), new Nfa(newNfa));
                         pomRegex = oprnd.ToString() + x.ToString();
                     }
-                  
+
                     pomRegex = oprnd.ToString() + x.ToString();
                     result.Push(rez);
                     newNfa.states.Clear();
@@ -317,7 +317,7 @@ namespace FMSI.Lib
             rez = result.Pop().ToString();
             if (result.Count != 0)
             {
-                throw new Exception();
+                throw new Exception("NEKOREKTAN REGEX");
             }
             return map[pomRegex];
 
