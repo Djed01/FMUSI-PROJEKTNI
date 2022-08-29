@@ -224,6 +224,10 @@ public class Dfa : Automat
 
     public int najkracaRijec()
     {
+        if (this.finalStates.Count == 0)
+        {
+            throw new Exception("No final state");
+        }
         int shortestPath = 0;
         Queue<string> queue = new Queue<string>();
         // Dodajemo pocetno stanje na kraj reda

@@ -169,6 +169,8 @@ namespace ProjectTests
             nfa.AddTransition("q1", '$', "q2");
             nfa.AddTransition("q2", 'a', "q3");
 
+            Assert.Throws<Exception>(() => nfa.najkracaRijec());
+
             nfa.AddFinalState("q3");
             Assert.That(nfa.najkracaRijec(), Is.EqualTo(1));
 
@@ -233,6 +235,8 @@ namespace ProjectTests
 
             nfa4.AddFinalState("q3");
             Assert.That(nfa4.najkracaRijec(), Is.EqualTo(1)); 
+
+
 
         }
 

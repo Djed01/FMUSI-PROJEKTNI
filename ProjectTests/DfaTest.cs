@@ -363,6 +363,8 @@ namespace ProjectTests
             dfa.AddTransition("q1", 'a', "q2");
             dfa.AddTransition("q2", 'b', "q1");
 
+            Assert.Throws<Exception>(() => dfa.najkracaRijec());
+
             dfa.AddFinalState("q2");
 
             Assert.That(dfa.najkracaRijec(), Is.EqualTo(2));

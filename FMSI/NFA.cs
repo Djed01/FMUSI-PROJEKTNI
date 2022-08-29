@@ -362,6 +362,10 @@ public class Nfa : Automat
 
     public int najkracaRijec()
     {
+        if(this.finalStates.Count == 0)
+        {
+            throw new Exception("No final state");
+        }
         // Provjerimo da li imamo direktno epsilon prelaze do finalnog stanja ili je pocetno stanje finalno
         // Tj. da li automat prihvata praznu rijec
         if (this.Accepts(""))
