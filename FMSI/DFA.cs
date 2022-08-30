@@ -39,6 +39,28 @@ public class Dfa : Automat
         return finalStates.Contains(currentState);
     }
 
+    private void popuniDelta(string state1,char symbol,string state2,string newState, Dfa other, Dfa newDfa)
+    {
+        newDfa.AddSymbolToAlphabet(symbol);
+        // Cetiri slucaja
+        if (delta.ContainsKey((state1, symbol)) && !(other.delta.ContainsKey((state2, symbol)))) // Prvi ima prelaz, drugi nema
+        {
+            newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + DEADSTATE;
+        }
+        else if (!delta.ContainsKey((state1, symbol)) && (other.delta.ContainsKey((state2, symbol)))) // Drugi ima prelaz, prvi nema
+        {
+            newDfa.delta[(newState, symbol)] = DEADSTATE + other.delta[(state2, symbol)];
+        }
+        else if (!delta.ContainsKey((state1, symbol)) && (!other.delta.ContainsKey((state2, symbol)))) // Oba nemaju
+        {
+            newDfa.delta[(newState, symbol)] = DEADSTATE + DEADSTATE;
+        }
+        else // Oba imaju prelaz
+        {
+            newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
+        }
+    }
+
     public Dfa SimetricnaRazlika(Dfa other)
     {
         // PROVJERA DA LI SU ALFABETI JEDNAKI
@@ -57,7 +79,7 @@ public class Dfa : Automat
                 var newState = state1 + state2;
                 newDfa.states.Add(newState);
 
-                // Ako jedan automat sadrzi stanje a drugi ne sadrzi dodajemo novo stanje u novi automat
+                // Ako jedan automat sadrzi stanje a drugi ne sadrzi dodajemo novo stanje u novi automat kao finalno
                 if ((finalStates.Contains(state1) &&
                      other.finalStates.Contains(state2) == false) ||
                     (finalStates.Contains(state1) == false && other.finalStates.Contains(state2)))
@@ -66,24 +88,7 @@ public class Dfa : Automat
                 // Popunjavamo funkciju prelaza sa novim stanjima
                 foreach (var symbol in alphabet)
                 {
-                    newDfa.AddSymbolToAlphabet(symbol);
-                    // Cetiri slucaja
-                    if (delta.ContainsKey((state1, symbol)) && !(other.delta.ContainsKey((state2, symbol)))) // Prvi ima prelaz, drugi nema
-                    {
-                        newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + DEADSTATE;
-                    }
-                    else if (!delta.ContainsKey((state1, symbol)) && (other.delta.ContainsKey((state2, symbol)))) // Drugi ima prelaz, prvi nema
-                    {
-                        newDfa.delta[(newState, symbol)] = DEADSTATE + other.delta[(state2, symbol)];
-                    }
-                    else if(!delta.ContainsKey((state1, symbol)) && (!other.delta.ContainsKey((state2, symbol)))) // Oba nemaju
-                    {
-                        newDfa.delta[(newState, symbol)] = DEADSTATE + DEADSTATE;
-                    }
-                    else // Oba imaju prelaz
-                    {
-                        newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
-                    }
+                    popuniDelta(state1, symbol, state2, newState, other, newDfa);
                 }
             }
 
@@ -117,24 +122,7 @@ public class Dfa : Automat
                 // Popunjavamo funkciju prelaza sa novim stanjima
                 foreach (var symbol in alphabet)
                 {
-                    newDfa.AddSymbolToAlphabet(symbol);
-                    // Cetiri slucaja
-                    if (delta.ContainsKey((state1, symbol)) && !(other.delta.ContainsKey((state2, symbol)))) // Prvi ima prelaz, drugi nema
-                    {
-                        newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + DEADSTATE;
-                    }
-                    else if (!delta.ContainsKey((state1, symbol)) && (other.delta.ContainsKey((state2, symbol)))) // Drugi ima prelaz, prvi nema
-                    {
-                        newDfa.delta[(newState, symbol)] = DEADSTATE + other.delta[(state2, symbol)];
-                    }
-                    else if (!delta.ContainsKey((state1, symbol)) && (!other.delta.ContainsKey((state2, symbol)))) // Oba nemaju
-                    {
-                        newDfa.delta[(newState, symbol)] = DEADSTATE + DEADSTATE;
-                    }
-                    else // Oba imaju prelaz
-                    {
-                        newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
-                    }
+                    popuniDelta(state1, symbol, state2, newState, other, newDfa);
                 }
             }
 
@@ -168,24 +156,7 @@ public class Dfa : Automat
                 // Popunjavamo funkciju prelaza sa novim stanjima
                 foreach (var symbol in alphabet)
                 {
-                    newDfa.AddSymbolToAlphabet(symbol);
-                    // Cetiri slucaja
-                    if (delta.ContainsKey((state1, symbol)) && !(other.delta.ContainsKey((state2, symbol)))) // Prvi ima prelaz, drugi nema
-                    {
-                        newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + DEADSTATE;
-                    }
-                    else if (!delta.ContainsKey((state1, symbol)) && (other.delta.ContainsKey((state2, symbol)))) // Drugi ima prelaz, prvi nema
-                    {
-                        newDfa.delta[(newState, symbol)] = DEADSTATE + other.delta[(state2, symbol)];
-                    }
-                    else if (!delta.ContainsKey((state1, symbol)) && (!other.delta.ContainsKey((state2, symbol)))) // Oba nemaju prelaz
-                    {
-                        newDfa.delta[(newState, symbol)] = DEADSTATE + DEADSTATE;
-                    }
-                    else // Oba imaju prelaz
-                    {
-                        newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + other.delta[(state2, symbol)];
-                    }
+                    popuniDelta(state1, symbol, state2, newState, other, newDfa);
                 }
             }
 
@@ -230,7 +201,7 @@ public class Dfa : Automat
 
     public Dfa KleenovaZvijezda()
     {
-        return this.toNfa().KleenovaZvijezda().toDfa(); // Pretvaramo u NKA vršimo operaciju Kleenove zvijezde i vacamo DKA
+        return this.toNfa().KleenovaZvijezda().toDfa(); // Pretvaramo u NKA vršimo operaciju Kleenove zvijezde i vracamo DKA
     }
 
 
