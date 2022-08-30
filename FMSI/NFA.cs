@@ -335,12 +335,13 @@ public class Nfa : Automat
             }
         }
         // Dodajemo novo stanje r
-        newNfa.AddState("r" + i++);
+        newNfa.AddState("r" + i);
         HashSet<string> tempSet = new();
-        newNfa.delta.Add(("r" + (i - 1), EPSILON), tempSet);
+        newNfa.delta.Add(("r" + i, EPSILON), tempSet);
         // Iz novog stanja r dodajemo epsilon prelaz u pocetno stanje trenutnog automata
-        newNfa.delta[("r" + (i - 1), EPSILON)].Add(this.StartState);
-        newNfa.StartState = "r" + (i - 1);
+        newNfa.delta[("r" + i, EPSILON)].Add(this.StartState);
+        newNfa.StartState = "r" + i;
+        i++;
         // Stanje r smo postavili kao pocetno stanje
         // Za svako finalno stanje automata dodajemo epsilon prelaz u novokreirano stanje r
         foreach (var state in this.finalStates)

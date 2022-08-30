@@ -3,7 +3,7 @@ namespace FMSI.Lib;
 public class Dfa : Automat
 {
     private Dictionary<(string, char), string> delta = new(); // F-JA PRELAZA IZMEDJU STANJA
-
+    private static string DEADSTATE = "qd";
     public Dictionary<(string, char), string> getDelta()
     {
         return delta;
@@ -67,14 +67,18 @@ public class Dfa : Automat
                 foreach (var symbol in alphabet)
                 {
                     newDfa.AddSymbolToAlphabet(symbol);
-                    // Tri slucaja
+                    // Cetiri slucaja
                     if (delta.ContainsKey((state1, symbol)) && !(other.delta.ContainsKey((state2, symbol)))) // Prvi ima prelaz, drugi nema
                     {
-                        newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + state2;
+                        newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + DEADSTATE;
                     }
                     else if (!delta.ContainsKey((state1, symbol)) && (other.delta.ContainsKey((state2, symbol)))) // Drugi ima prelaz, prvi nema
                     {
-                        newDfa.delta[(newState, symbol)] = state1 + other.delta[(state2, symbol)];
+                        newDfa.delta[(newState, symbol)] = DEADSTATE + other.delta[(state2, symbol)];
+                    }
+                    else if(!delta.ContainsKey((state1, symbol)) && (!other.delta.ContainsKey((state2, symbol)))) // Oba nemaju
+                    {
+                        newDfa.delta[(newState, symbol)] = DEADSTATE + DEADSTATE;
                     }
                     else // Oba imaju prelaz
                     {
@@ -114,14 +118,18 @@ public class Dfa : Automat
                 foreach (var symbol in alphabet)
                 {
                     newDfa.AddSymbolToAlphabet(symbol);
-                    // Tri slucaja
+                    // Cetiri slucaja
                     if (delta.ContainsKey((state1, symbol)) && !(other.delta.ContainsKey((state2, symbol)))) // Prvi ima prelaz, drugi nema
                     {
-                        newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + state2;
+                        newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + DEADSTATE;
                     }
                     else if (!delta.ContainsKey((state1, symbol)) && (other.delta.ContainsKey((state2, symbol)))) // Drugi ima prelaz, prvi nema
                     {
-                        newDfa.delta[(newState, symbol)] = state1 + other.delta[(state2, symbol)];
+                        newDfa.delta[(newState, symbol)] = DEADSTATE + other.delta[(state2, symbol)];
+                    }
+                    else if (!delta.ContainsKey((state1, symbol)) && (!other.delta.ContainsKey((state2, symbol)))) // Oba nemaju
+                    {
+                        newDfa.delta[(newState, symbol)] = DEADSTATE + DEADSTATE;
                     }
                     else // Oba imaju prelaz
                     {
@@ -161,14 +169,18 @@ public class Dfa : Automat
                 foreach (var symbol in alphabet)
                 {
                     newDfa.AddSymbolToAlphabet(symbol);
-                    // Tri slucaja
+                    // Cetiri slucaja
                     if (delta.ContainsKey((state1, symbol)) && !(other.delta.ContainsKey((state2, symbol)))) // Prvi ima prelaz, drugi nema
                     {
-                        newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + state2;
+                        newDfa.delta[(newState, symbol)] = delta[(state1, symbol)] + DEADSTATE;
                     }
                     else if (!delta.ContainsKey((state1, symbol)) && (other.delta.ContainsKey((state2, symbol)))) // Drugi ima prelaz, prvi nema
                     {
-                        newDfa.delta[(newState, symbol)] = state1 + other.delta[(state2, symbol)];
+                        newDfa.delta[(newState, symbol)] = DEADSTATE + other.delta[(state2, symbol)];
+                    }
+                    else if (!delta.ContainsKey((state1, symbol)) && (!other.delta.ContainsKey((state2, symbol)))) // Oba nemaju prelaz
+                    {
+                        newDfa.delta[(newState, symbol)] = DEADSTATE + DEADSTATE;
                     }
                     else // Oba imaju prelaz
                     {

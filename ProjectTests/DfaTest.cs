@@ -631,7 +631,7 @@ namespace ProjectTests
             dfa_1.AddTransition("q1", 'a', "q2");
             dfa_1.AddTransition("q1", 'b', "q2");
             dfa_1.AddTransition("q2", 'a', "q2");
-            dfa_1.AddTransition("q2", 'a', "q2");
+            dfa_1.AddTransition("q2", 'b', "q2");
             dfa_1.AddFinalState("q1");
 
             dfa_2.StartState = "q3";

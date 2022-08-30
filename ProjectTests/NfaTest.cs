@@ -234,9 +234,10 @@ namespace ProjectTests
             nfa4.AddTransition("q5", 'a', "q3");
 
             nfa4.AddFinalState("q3");
-            Assert.That(nfa4.najkracaRijec(), Is.EqualTo(1)); 
+            Assert.That(nfa4.najkracaRijec(), Is.EqualTo(1));
 
-
+            nfa4.AddFinalState("q2");
+            Assert.That(nfa4.najkracaRijec(), Is.EqualTo(0));
 
         }
 
