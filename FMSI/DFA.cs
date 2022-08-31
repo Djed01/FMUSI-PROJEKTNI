@@ -201,7 +201,7 @@ public class Dfa : Automat
 
     public Dfa KleenovaZvijezda()
     {
-        return this.toNfa().KleenovaZvijezda().toDfa(); // Pretvaramo u NKA vršimo operaciju Kleenove zvijezde i vracamo DKA
+        return this.toNfa().KleenovaZvijezda().toDfa(); // Pretvaramo u NKA vrsimo operaciju Kleenove zvijezde i vracamo DKA
     }
 
 

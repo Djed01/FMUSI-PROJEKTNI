@@ -11,7 +11,6 @@ public class AutomatGraph
     private int start;
     private string startState;
     private readonly bool[] visited;
-    private string lastAdded = "";
 
     public int getStart()
     {
@@ -62,7 +61,6 @@ public class AutomatGraph
     {
         // Dodajemo u set trenutno stanje
         eStates.Add(nodes[start].ToString());
-        lastAdded = nodes[start].ToString();
         //  Console.WriteLine(nodes[start]);
 
         // Postavljamo trenutno stanje kao posjeceno
@@ -88,8 +86,4 @@ public class AutomatGraph
         return eStates;
     }
 
-    public string getLastAdded()
-    {
-        return lastAdded;
-    }
 }

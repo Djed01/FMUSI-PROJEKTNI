@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "dr9tZaRMy4g//r991DK9u3/vTBK+3iXnhEj4wKiIiOdwyCjgt7n7JxioF7fUt7Utt64feNNAr1XpzkgdmvTxHQ==",
+  "dgSpecHash": "R/UnIMzzgKL5EHMKLDeryXbkwLkbpUkbqkNF+p/sPjRSq8RXTWfMJSvN2ZG5IoSyVlm9aMLnvDxYgif8jq86kQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\DfaCodeGenerator\\DfaCodeGenerator.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "/home/gordan/Desktop/FMUSI-PROJEKTNI/DfaCodeGenerator/DfaCodeGenerator.csproj",
+  "expectedPackageFiles": [
+    "/home/gordan/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.2/microsoft.aspnetcore.app.ref.6.0.2.nupkg.sha512"
+  ],
   "logs": []
 }

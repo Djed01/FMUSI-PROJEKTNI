@@ -398,7 +398,7 @@ namespace ProjectTests
             nfa.AddFinalState("q0");
 
             Nfa nfa2 = new();
-            nfa2.StartState = "p0";
+            nfa2.StartState = "p0"; 
             nfa2.AddState("p0");
             nfa2.AddState("p1");
             nfa2.AddSymbolToAlphabet('a');
