@@ -78,9 +78,9 @@ namespace DfaCodeGenerator
             // Pri cemu se pozivaju f-je pri ulasku i izlasku iz stanja
             code.Append("public void chainReaction(Specification input, Specification output,");
             for(int i=0; i < dfa.states.Count(); i++) { code.Append("Specification spec" + i + ", "); }
-            code.Append("HashSet<char> alphabet){\n");
+            code.Append("string word){\n");
             code.Append("string initState = \"" + dfa.StartState + "\";\n");
-            code.Append("foreach(var symbol in alphabet){\n\n");
+            code.Append("foreach(var symbol in word){\n\n");
             foreach(var state in dfa.states)
             {
                 code.Append("if(initState == \"" + state + "\"){\n");

@@ -77,9 +77,9 @@ throw new Exception();
 return currentState;
 }
 
-public void chainReaction(Specification input, Specification output,Specification spec0, Specification spec1, Specification spec2, HashSet<char> alphabet){
+public void chainReaction(Specification input, Specification output,Specification spec0, Specification spec1, Specification spec2, string word){
 string initState = "q0";
-foreach(var symbol in alphabet){
+foreach(var symbol in word){
 
 if(initState == "q0"){
 output.doStateActions(initState);

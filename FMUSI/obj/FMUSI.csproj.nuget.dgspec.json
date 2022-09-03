@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "/home/gordan/Desktop/FMUSI-PROJEKTNI/FMUSI/FMUSI.csproj": {}
+    "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\FMUSI\\FMUSI.csproj": {}
   },
   "projects": {
-    "/home/gordan/Desktop/FMUSI-PROJEKTNI/FMSI/FMSI.Lib.csproj": {
+    "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\FMSI\\FMSI.Lib.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/gordan/Desktop/FMUSI-PROJEKTNI/FMSI/FMSI.Lib.csproj",
+        "projectUniqueName": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\FMSI\\FMSI.Lib.csproj",
         "projectName": "FMSI.Lib",
-        "projectPath": "/home/gordan/Desktop/FMUSI-PROJEKTNI/FMSI/FMSI.Lib.csproj",
-        "packagesPath": "/home/gordan/.nuget/packages/",
-        "outputPath": "/home/gordan/Desktop/FMUSI-PROJEKTNI/FMSI/obj/",
+        "projectPath": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\FMSI\\FMSI.Lib.csproj",
+        "packagesPath": "C:\\Users\\AMG_Computers\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\FMSI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/gordan/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\AMG_Computers\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -47,45 +49,41 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[6.0.2, 6.0.2]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.102/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/gordan/Desktop/FMUSI-PROJEKTNI/FMUSI/FMUSI.csproj": {
+    "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\FMUSI\\FMUSI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/gordan/Desktop/FMUSI-PROJEKTNI/FMUSI/FMUSI.csproj",
+        "projectUniqueName": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\FMUSI\\FMUSI.csproj",
         "projectName": "FMUSI",
-        "projectPath": "/home/gordan/Desktop/FMUSI-PROJEKTNI/FMUSI/FMUSI.csproj",
-        "packagesPath": "/home/gordan/.nuget/packages/",
-        "outputPath": "/home/gordan/Desktop/FMUSI-PROJEKTNI/FMUSI/obj/",
+        "projectPath": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\FMUSI\\FMUSI.csproj",
+        "packagesPath": "C:\\Users\\AMG_Computers\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\FMUSI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/gordan/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\AMG_Computers\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "/home/gordan/Desktop/FMUSI-PROJEKTNI/FMSI/FMSI.Lib.csproj": {
-                "projectPath": "/home/gordan/Desktop/FMUSI-PROJEKTNI/FMSI/FMSI.Lib.csproj"
+              "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\FMSI\\FMSI.Lib.csproj": {
+                "projectPath": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\FMSI\\FMSI.Lib.csproj"
               }
             }
           }
@@ -109,18 +107,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[6.0.2, 6.0.2]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.102/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }

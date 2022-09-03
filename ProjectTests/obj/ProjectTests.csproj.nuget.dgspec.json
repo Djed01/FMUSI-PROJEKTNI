@@ -1,33 +1,35 @@
 {
   "format": 1,
   "restore": {
-    "/home/gordan/Desktop/FMUSI-PROJEKTNI/ProjectTests/ProjectTests.csproj": {}
+    "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\ProjectTests\\ProjectTests.csproj": {}
   },
   "projects": {
-    "/home/gordan/Desktop/FMUSI-PROJEKTNI/DfaCodeGenerator/DfaCodeGenerator.csproj": {
+    "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\DfaCodeGenerator\\DfaCodeGenerator.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/gordan/Desktop/FMUSI-PROJEKTNI/DfaCodeGenerator/DfaCodeGenerator.csproj",
+        "projectUniqueName": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\DfaCodeGenerator\\DfaCodeGenerator.csproj",
         "projectName": "DfaCodeGenerator",
-        "projectPath": "/home/gordan/Desktop/FMUSI-PROJEKTNI/DfaCodeGenerator/DfaCodeGenerator.csproj",
-        "packagesPath": "/home/gordan/.nuget/packages/",
-        "outputPath": "/home/gordan/Desktop/FMUSI-PROJEKTNI/DfaCodeGenerator/obj/",
+        "projectPath": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\DfaCodeGenerator\\DfaCodeGenerator.csproj",
+        "packagesPath": "C:\\Users\\AMG_Computers\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\DfaCodeGenerator\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/gordan/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\AMG_Computers\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "/home/gordan/Desktop/FMUSI-PROJEKTNI/FMSI/FMSI.Lib.csproj": {
-                "projectPath": "/home/gordan/Desktop/FMUSI-PROJEKTNI/FMSI/FMSI.Lib.csproj"
+              "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\FMSI\\FMSI.Lib.csproj": {
+                "projectPath": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\FMSI\\FMSI.Lib.csproj"
               }
             }
           }
@@ -51,37 +53,33 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[6.0.2, 6.0.2]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.102/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/gordan/Desktop/FMUSI-PROJEKTNI/FMSI/FMSI.Lib.csproj": {
+    "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\FMSI\\FMSI.Lib.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/gordan/Desktop/FMUSI-PROJEKTNI/FMSI/FMSI.Lib.csproj",
+        "projectUniqueName": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\FMSI\\FMSI.Lib.csproj",
         "projectName": "FMSI.Lib",
-        "projectPath": "/home/gordan/Desktop/FMUSI-PROJEKTNI/FMSI/FMSI.Lib.csproj",
-        "packagesPath": "/home/gordan/.nuget/packages/",
-        "outputPath": "/home/gordan/Desktop/FMUSI-PROJEKTNI/FMSI/obj/",
+        "projectPath": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\FMSI\\FMSI.Lib.csproj",
+        "packagesPath": "C:\\Users\\AMG_Computers\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\FMSI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/gordan/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\AMG_Computers\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -109,51 +107,47 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[6.0.2, 6.0.2]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.102/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/gordan/Desktop/FMUSI-PROJEKTNI/ProjectTests/ProjectTests.csproj": {
+    "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\ProjectTests\\ProjectTests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/gordan/Desktop/FMUSI-PROJEKTNI/ProjectTests/ProjectTests.csproj",
+        "projectUniqueName": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\ProjectTests\\ProjectTests.csproj",
         "projectName": "ProjectTests",
-        "projectPath": "/home/gordan/Desktop/FMUSI-PROJEKTNI/ProjectTests/ProjectTests.csproj",
-        "packagesPath": "/home/gordan/.nuget/packages/",
-        "outputPath": "/home/gordan/Desktop/FMUSI-PROJEKTNI/ProjectTests/obj/",
+        "projectPath": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\ProjectTests\\ProjectTests.csproj",
+        "packagesPath": "C:\\Users\\AMG_Computers\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\ProjectTests\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/gordan/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\AMG_Computers\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "/home/gordan/Desktop/FMUSI-PROJEKTNI/DfaCodeGenerator/DfaCodeGenerator.csproj": {
-                "projectPath": "/home/gordan/Desktop/FMUSI-PROJEKTNI/DfaCodeGenerator/DfaCodeGenerator.csproj"
+              "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\DfaCodeGenerator\\DfaCodeGenerator.csproj": {
+                "projectPath": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\DfaCodeGenerator\\DfaCodeGenerator.csproj"
               },
-              "/home/gordan/Desktop/FMUSI-PROJEKTNI/FMSI/FMSI.Lib.csproj": {
-                "projectPath": "/home/gordan/Desktop/FMUSI-PROJEKTNI/FMSI/FMSI.Lib.csproj"
+              "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\FMSI\\FMSI.Lib.csproj": {
+                "projectPath": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\FMSI\\FMSI.Lib.csproj"
               },
-              "/home/gordan/Desktop/FMUSI-PROJEKTNI/RegularLanguageAnalyser/RegularLanguageAnalyser.csproj": {
-                "projectPath": "/home/gordan/Desktop/FMUSI-PROJEKTNI/RegularLanguageAnalyser/RegularLanguageAnalyser.csproj"
+              "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\RegularLanguageAnalyser\\RegularLanguageAnalyser.csproj": {
+                "projectPath": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\RegularLanguageAnalyser\\RegularLanguageAnalyser.csproj"
               }
             }
           }
@@ -199,37 +193,33 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[6.0.2, 6.0.2]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.102/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/gordan/Desktop/FMUSI-PROJEKTNI/RegularLanguageAnalyser/RegularLanguageAnalyser.csproj": {
+    "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\RegularLanguageAnalyser\\RegularLanguageAnalyser.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/gordan/Desktop/FMUSI-PROJEKTNI/RegularLanguageAnalyser/RegularLanguageAnalyser.csproj",
+        "projectUniqueName": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\RegularLanguageAnalyser\\RegularLanguageAnalyser.csproj",
         "projectName": "RegularLanguageAnalyser",
-        "projectPath": "/home/gordan/Desktop/FMUSI-PROJEKTNI/RegularLanguageAnalyser/RegularLanguageAnalyser.csproj",
-        "packagesPath": "/home/gordan/.nuget/packages/",
-        "outputPath": "/home/gordan/Desktop/FMUSI-PROJEKTNI/RegularLanguageAnalyser/obj/",
+        "projectPath": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\RegularLanguageAnalyser\\RegularLanguageAnalyser.csproj",
+        "packagesPath": "C:\\Users\\AMG_Computers\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\RegularLanguageAnalyser\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/gordan/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\AMG_Computers\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -257,18 +247,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[6.0.2, 6.0.2]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.102/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }

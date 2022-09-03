@@ -1,10 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "UOgH05sIhTtmTwTG8DseIG4AoGdzpEydmlkszWoFNqBC47V8zaQHCFnMZpmmSzByW7Ry1AwcIofBcWPQAECk1A==",
+  "dgSpecHash": "ZZwUe2uyK0thx0QYY2EnuioYZShm352hiKf5gQWOUTQaCiEmnhxw0zFSd6NBTxUL+xJgjkB5j3kVJ0a8tJVVvQ==",
   "success": true,
-  "projectFilePath": "/home/gordan/Desktop/FMUSI-PROJEKTNI/FMUSI/FMUSI.csproj",
-  "expectedPackageFiles": [
-    "/home/gordan/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.2/microsoft.aspnetcore.app.ref.6.0.2.nupkg.sha512"
-  ],
+  "projectFilePath": "C:\\Users\\AMG_Computers\\Desktop\\FMUSI-PROJEKTNI\\FMUSI\\FMUSI.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }
