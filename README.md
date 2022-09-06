@@ -6,7 +6,7 @@ i/ili regularnim izrazima. Realizovati sljedeće funkcionalnosti za rad sa regul
 
 • Izvršavanje konačnih automata (DKA i ε-NKA) formiranih od strane korisnika biblioteke
 
-• Konstrukcije reprezentacija unije, presjeka, razlike ispajanja jezika, komplementa jezika irezultata
+• Konstrukcije reprezentacija unije, presjeka, razlike i spajanja jezika, komplementa jezika i rezultata
 primjene Kleenove zvijezde nad jezikom, uz podršku za ulančavanje operacija
 
 • Određivanje dužina najkraće riječi u jeziku
