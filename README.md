@@ -26,3 +26,10 @@ mogu da specificiraju reakciju na događaje ulaska u stanje i izlaska iz stanja.
 generisanog koda za svaki simbol alfabeta automata mogu da specificiraju reakciju na izvršavanje prelaza
 za taj simbol, a koja može da zavisi od stanja iz kojeg se vrši prelaz. Treba biti omogućeno nadovezivanje
 reakcija, tako da se efektivno može formirati lanac reakcija na neki događaj.
+
+Pridržavati se principa OOP, principa pisanja čistog koda, DRY principa, principa ponovne upotrebe koda,
+SOLID principa i konvencija za korišteni programski jezik. Pravilno dokumentovati kod upotrebom
+komentara. Obratiti pažnju na performanse po pitanju vremena izvršavanja i zauzeća memorije pri pisanju
+i odabiru algoritama i struktura podataka, te dokumentovati asimptotsku kompleksnost istih. Pravilno
+pokriti funkcionalnosti iz ove specifikacije sa jediničnim testovima. Dozvoljeno je korištenje standardne
+biblioteke, ali ne i nestandardnih biblioteka, za odabrani programski jezik.
