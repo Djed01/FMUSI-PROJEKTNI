@@ -1,5 +1,5 @@
 # FMUSI-PROJEKTNI
-###Projektni zadatak iz *Formalnih metoda u softverskom inženjerstvu*.
+### Projektni zadatak iz *Formalnih metoda u softverskom inženjerstvu*.
 
 Napisati biblioteku za rad sa regularnim jezicima koji se reprezentuju konačnim automatima (DKA i ε-NKA)
 i/ili regularnim izrazima. Realizovati sljedeće funkcionalnosti za rad sa regularnim jezicima:
